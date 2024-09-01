@@ -50,25 +50,6 @@ public class RoomGeneration : MonoBehaviour
 
         ArrayUtility.Add(ref roomPos, transform.position);
 
-        // int a = 1;
-        // foreach(Room room in rooms){
-        //     Debug.Log("------------------");
-        //     Debug.Log("Object " + a++);
-        //     Debug.Log("Name : " + room.name);
-        //     Debug.Log("Range : " + room.min + " - " + room.max);
-        //     Debug.Log("------------------");
-        // }
-
-        // Debug.Log("initial position : " + (Vector2)transform.position);
-        // Debug.Log("initial position : " + transform.position);
-        // Debug.Log("home position" + roomPos[0]);
-
-        // Debug.Log("dictionary : " + dict.Count);
-
-        // foreach(KeyValuePair<string, int> kv in dict){
-        //     Debug.Log("Key : " + kv.Key + " ,Value : " + kv.Value);
-        // }
-
     }
 
     void Update(){
@@ -89,31 +70,6 @@ public class RoomGeneration : MonoBehaviour
 
     private void getNextRoom(){
         emptySpace = new Vector3[0];
-
-        // foreach (Vector3 vec3 in cardinalDirection){
-        //     // if(roomPos.Length == 2){
-        //     //     Debug.Log(roomPos[0] + " != " + (Vector2)(transform.position + vec3 * tileSize));
-        //     //     Debug.Log(roomPos[0] != (Vector2)(transform.position + vec3 * tileSize));
-        //     //     // Debug.Log("Therefore, contain should return the value : " + ArrayUtility.Contains(roomPos, transform.position) + " for " + transform.position);
-        //     // }
-
-        //     // if(roomPos.Length == 2){
-        //     //     Debug.Log((Vector2)(transform.position + vec3 * tileSize) + " will be added if my value is true : " + !ArrayUtility.Contains(roomPos, (Vector2)(transform.position + vec3 * tileSize)));
-        //     //     Debug.Log(roomPos[0] != (Vector2)(transform.position + vec3 * tileSize));
-        //     //     Debug.Log(ArrayUtility.FindIndex(roomPos, x => x ==(Vector2)(transform.position + vec3 * tileSize)));
-        //     // }
-
-        //     // contains method is bugged :/
-        //     // if (!ArrayUtility.Contains(
-        //     // roomPos, 
-        //     // (Vector2)(transform.position + vec3 * tileSize))){
-        //     //     ArrayUtility.Add(ref emptySpace, transform.position + vec3 * tileSize);
-        //     // }
-
-        //     if (ArrayUtility.FindIndex(roomPos, x => x == (Vector2)(transform.position + vec3 * tileSize)) == -1){
-        //         ArrayUtility.Add(ref emptySpace, transform.position + vec3 * tileSize);
-        //     }
-        // }
 
         emptySpace = getCardinalVec3(emptySpace, transform.position);
 
@@ -138,36 +94,16 @@ public class RoomGeneration : MonoBehaviour
         emptySpace = new Vector3[0];
 
         int i = 1;
-        // foreach (Vector3 vec3 in roomPos){
-        //     Debug.Log("room " + i++ + " is in " + vec3);
-        // }
 
         for (i = 1 ; 
             i < roomPos.Length - 1 ; 
             i++){
             
-            // foreach(Vector2 vec2 in cardinalDirection){
-            //     // if (!ArrayUtility.Contains(roomPos, roomPos[i] + vec2 * tileSize) && 
-            //     //     !ArrayUtility.Contains(emptySpace, roomPos[i] + vec2 * tileSize)){
-            //     //     ArrayUtility.Add(ref emptySpace, roomPos[i] + vec2 * tileSize);
-            //     // }
-            //     if (ArrayUtility.FindIndex(roomPos, x => x == (roomPos[i] + vec2 * tileSize)) == -1 && 
-            //         ArrayUtility.FindIndex(emptySpace, x => (Vector2)x == (roomPos[i] + vec2 * tileSize)) == -1){
-            //         ArrayUtility.Add(ref emptySpace, roomPos[i] + vec2 * tileSize);
-            //     }
-            // }
             emptySpace = getCardinalVec3(emptySpace, roomPos[i]);
         }
 
-        // Debug.Log("----------------------");
-        // i = 1;
         foreach(Vector3 vec3 in emptySpace){
-            // Debug.Log("empty space " + i++ + " is in " + vec3);
-            // Instantiate(FindRoom("special"), vec3, Quaternion.identity);
 
-            // rooms[Random.Range(0, rooms.Length)]
-            // }
-    
             string room;
             if (Random.Range(0, 2) == 0){
 
