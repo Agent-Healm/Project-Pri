@@ -6,6 +6,7 @@ using System;
 
 using Random = UnityEngine.Random;
 
+// namespace ArrayUtility;
 public class RoomGeneration : MonoBehaviour
 {
     public Transform[] startPos;
@@ -119,11 +120,11 @@ public class RoomGeneration : MonoBehaviour
         }
     }
     
-    // <summary>
-    // Find room based on the names defined in the unity
-    // </summary>
-    // <param name="roomName"></param>
-    // <return>A room GameObject</returns>
+    /// <summary>
+    /// Find room based on the names defined in the unity
+    /// </summary>
+    /// <param name="roomName"></param>
+    /// <return>A room GameObject</returns>
     private GameObject FindRoom(string roomName){
         Room room = Array.Find(rooms, x => x.name == roomName);
         if (room == null){
@@ -156,6 +157,7 @@ public class RoomGeneration : MonoBehaviour
         _emptySpace = getCardinalVec3(_emptySpace, transform.position);
 
         transform.position = _emptySpace[Random.Range(0, _emptySpace.Length)];
+        ArrayUtility.Remove(ref _emptySpace, transform.position);
 
         if (maxRooms > 1){
             Instantiate(FindRoom("mob"), 
@@ -166,9 +168,25 @@ public class RoomGeneration : MonoBehaviour
             Instantiate(FindRoom("exit"), 
                 transform.position, 
                 Quaternion.identity);
-
+            return;
         }
         ArrayUtility.Add(ref _roomPos, transform.position);
+        
+        if (_roomPos.Length > 2 && _extraRooms.Length != 0){
+            foreach(Vector3 vec3 in _emptySpace){
+                string room;
+                if (Random.Range(0, 2) == 0){
+                    room = _extraRooms[Random.Range(0, _extraRooms.Length)];
+                    ArrayUtility.Remove(ref _extraRooms, room);
+                    Instantiate(
+                        FindRoom(room),
+                        vec3,
+                        Quaternion.identity
+                    );
+                    ArrayUtility.Add(ref _roomPos, vec3);
+                }
+            }
+        }
     }
 
 }
