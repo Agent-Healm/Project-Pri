@@ -12,19 +12,19 @@ public class RoomGeneration : MonoBehaviour
     public Room[] rooms;
     public int maxRooms = 3;
     public float tileSize = 1.0f;
-    private float timeRoomInterval = 0.0f;
 
-    private string[] extraRooms = new string[0];
-    private string[] extraRoomsMax = new string[0];
-    private Vector2[] roomPos = new Vector2[0];
-    private Vector3[] cardinalDirection = new Vector3[] 
+    private float _timeRoomInterval = 0.0f;
+    private string[] _extraRooms = new string[0];
+    private string[] _extraRoomsMax = new string[0];
+    private Vector2[] _roomPos = new Vector2[0];
+    private Vector3[] _cardinalDirection = new Vector3[] 
     {
     Vector3.up, 
     Vector3.right, 
     Vector3.down, 
     Vector3.left,
     };
-    private Vector3[] emptySpace;
+    private Vector3[] _emptySpace;
 
     // Start is called before the first frame update
     void Start()
@@ -32,10 +32,10 @@ public class RoomGeneration : MonoBehaviour
         foreach(Room room in rooms){
             if(room.isIncluded){
                 for (int i = 1 ; i <= room.min ; i++){
-                    ArrayUtility.Add(ref extraRooms, room.name);
+                    ArrayUtility.Add(ref _extraRooms, room.name);
                 }
                 // for (int i = 1 ; i <= room.max - room.min ; i++){
-                //     ArrayUtility.Add(ref extraRoomsMax, room.name);
+                //     ArrayUtility.Add(ref _extraRoomsMax, room.name);
                 //     Debug.Log("The room  " + room.name + "  has (i) more rooms : " + i);
                 // }
             }
@@ -48,20 +48,20 @@ public class RoomGeneration : MonoBehaviour
                     transform.position, 
                     Quaternion.identity);
 
-        ArrayUtility.Add(ref roomPos, transform.position);
+        ArrayUtility.Add(ref _roomPos, transform.position);
 
     }
 
     void Update(){
         if(maxRooms > 0){
-            if(timeRoomInterval <= 0 ){
+            if(_timeRoomInterval <= 0 ){
                 // getNextRoom();
                 procGenRoom();
-                timeRoomInterval = 0.1f;
+                _timeRoomInterval = 0.1f;
                 maxRooms -= 1;
             }
             else {
-                timeRoomInterval -= Time.deltaTime;
+                _timeRoomInterval -= Time.deltaTime;
             }
         }
         // else if (maxRooms == 0){generateExtraRooms();
@@ -69,11 +69,11 @@ public class RoomGeneration : MonoBehaviour
     }
 
     private void getNextRoom(){
-        emptySpace = new Vector3[0];
+        _emptySpace = new Vector3[0];
 
-        emptySpace = getCardinalVec3(emptySpace, transform.position);
+        _emptySpace = getCardinalVec3(_emptySpace, transform.position);
 
-        transform.position = emptySpace[Random.Range(0, emptySpace.Length)];
+        transform.position = _emptySpace[Random.Range(0, _emptySpace.Length)];
 
         if (maxRooms > 1){
             Instantiate(FindRoom("mob"), 
@@ -86,36 +86,36 @@ public class RoomGeneration : MonoBehaviour
                 Quaternion.identity);
 
         }
-        ArrayUtility.Add(ref roomPos, transform.position);
+        ArrayUtility.Add(ref _roomPos, transform.position);
 
     }
 
     private void generateExtraRooms(){
-        emptySpace = new Vector3[0];
+        _emptySpace = new Vector3[0];
 
         int i = 1;
 
         for (i = 1 ; 
-            i < roomPos.Length - 1 ; 
+            i < _roomPos.Length - 1 ; 
             i++){
             
-            emptySpace = getCardinalVec3(emptySpace, roomPos[i]);
+            _emptySpace = getCardinalVec3(_emptySpace, _roomPos[i]);
         }
 
-        foreach(Vector3 vec3 in emptySpace){
+        foreach(Vector3 vec3 in _emptySpace){
 
             string room;
             if (Random.Range(0, 2) == 0){
 
-                room = extraRooms[Random.Range(0, extraRooms.Length)];
-                ArrayUtility.Remove(ref extraRooms, room);
+                room = _extraRooms[Random.Range(0, _extraRooms.Length)];
+                ArrayUtility.Remove(ref _extraRooms, room);
                 Instantiate(
                     FindRoom(room),
                     vec3,
                     Quaternion.identity
                 );
             }
-            if (extraRooms.Length == 0){return;}
+            if (_extraRooms.Length == 0){return;}
         }
     }
     
@@ -138,8 +138,8 @@ public class RoomGeneration : MonoBehaviour
     private Vector3[] getCardinalVec3(Vector3[] emptySpace, Vector3 currentPos){
         
         // ArrayUtility.contains method is still bugged
-        foreach (Vector3 vec3 in cardinalDirection){
-            if ((ArrayUtility.FindIndex(roomPos, x => x == (Vector2)(currentPos + vec3 * tileSize))) == -1 &&
+        foreach (Vector3 vec3 in _cardinalDirection){
+            if ((ArrayUtility.FindIndex(_roomPos, x => x == (Vector2)(currentPos + vec3 * tileSize))) == -1 &&
                 (ArrayUtility.FindIndex(emptySpace, x => (Vector2)x == (Vector2)(currentPos + vec3 * tileSize))) == -1){
                 ArrayUtility.Add(ref emptySpace, currentPos + vec3 * tileSize);
             }
@@ -151,11 +151,11 @@ public class RoomGeneration : MonoBehaviour
 
     private void procGenRoom(){
         // WORK IN PROGRESS
-        emptySpace = new Vector3[0];
+        _emptySpace = new Vector3[0];
 
-        emptySpace = getCardinalVec3(emptySpace, transform.position);
+        _emptySpace = getCardinalVec3(_emptySpace, transform.position);
 
-        transform.position = emptySpace[Random.Range(0, emptySpace.Length)];
+        transform.position = _emptySpace[Random.Range(0, _emptySpace.Length)];
 
         if (maxRooms > 1){
             Instantiate(FindRoom("mob"), 
@@ -168,7 +168,7 @@ public class RoomGeneration : MonoBehaviour
                 Quaternion.identity);
 
         }
-        ArrayUtility.Add(ref roomPos, transform.position);
+        ArrayUtility.Add(ref _roomPos, transform.position);
     }
 
 }
