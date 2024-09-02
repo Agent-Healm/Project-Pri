@@ -171,10 +171,9 @@ public class RoomGeneration : MonoBehaviour
             return;
         }
         ArrayUtility.Add(ref _roomPos, transform.position);
-        Debug.Log("generated a room at " + transform.position);
         
         if (_roomPos.Length > 2 && _extraRooms.Length != 0){
-            
+
             string room;
             foreach(Vector3 vec3 in _emptySpace){
 
@@ -182,7 +181,6 @@ public class RoomGeneration : MonoBehaviour
 
                 if (Random.Range(0, 2) == 0){
                     room = _extraRooms[Random.Range(0, _extraRooms.Length)];
-                    Debug.Log("generated a special room " + room + " at " + vec3);
                     ArrayUtility.Remove(ref _extraRooms, room);
                     Instantiate(
                         FindRoom(room),
