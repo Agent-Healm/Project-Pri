@@ -142,7 +142,7 @@ public class RoomGeneration : MonoBehaviour
         foreach (Vector3 vec3 in _adjacentDirection){
             if ((ArrayUtility.FindIndex(_roomPos, x => x == (Vector2)(currentPos + vec3 * tileSize))) == -1 &&
                 (ArrayUtility.FindIndex(emptySpace, x => (Vector2)x == (Vector2)(currentPos + vec3 * tileSize))) == -1){
-                ArrayUtility.Add(ref emptySpace, currentPos + vec3 * tileSize);
+                ArrayUtility.Add(ref emptySpace, vec3);
             }
         }
 
@@ -153,24 +153,26 @@ public class RoomGeneration : MonoBehaviour
     private void procGenRoom(){
         // WORK IN PROGRESS
         _emptySpace = new Vector3[0];
+        Vector3 _newPosition;
 
         _emptySpace = getAdjacentVec3(_emptySpace, transform.position);
 
-        transform.position = _emptySpace[Random.Range(0, _emptySpace.Length)];
-        ArrayUtility.Remove(ref _emptySpace, transform.position);
+        _newPosition = _emptySpace[Random.Range(0, _emptySpace.Length)];
+        ArrayUtility.Remove(ref _emptySpace, _newPosition);
+        _newPosition = transform.position + _newPosition * tileSize;
 
         if (maxRooms > 1){
             Instantiate(FindRoom("mob"), 
-                transform.position, 
+                _newPosition, 
                 Quaternion.identity);
         }
         else if (maxRooms == 1){
             Instantiate(FindRoom("exit"), 
-                transform.position, 
+                _newPosition, 
                 Quaternion.identity);
             return;
         }
-        ArrayUtility.Add(ref _roomPos, transform.position);
+        ArrayUtility.Add(ref _roomPos, _newPosition);
         
         if (_roomPos.Length > 2 && _extraRooms.Length != 0){
 
@@ -184,13 +186,15 @@ public class RoomGeneration : MonoBehaviour
                     ArrayUtility.Remove(ref _extraRooms, room);
                     Instantiate(
                         FindRoom(room),
-                        vec3,
+                        transform.position + vec3 * tileSize,
                         Quaternion.identity
                     );
-                    ArrayUtility.Add(ref _roomPos, vec3);
+                    ArrayUtility.Add(ref _roomPos, transform.position + vec3 * tileSize);
                 }
             }
         }
+
+        transform.position = _newPosition;
     }
 
 }
