@@ -18,7 +18,7 @@ public class RoomGeneration : MonoBehaviour
     private string[] _extraRooms = new string[0];
     private string[] _extraRoomsMax = new string[0];
     private Vector2[] _roomPos = new Vector2[0];
-    private Vector3[] _cardinalDirection = new Vector3[] 
+    private Vector3[] _adjacentDirection = new Vector3[] 
     {
     Vector3.up, 
     Vector3.right, 
@@ -72,7 +72,7 @@ public class RoomGeneration : MonoBehaviour
     private void getNextRoom(){
         _emptySpace = new Vector3[0];
 
-        _emptySpace = getCardinalVec3(_emptySpace, transform.position);
+        _emptySpace = getAdjacentVec3(_emptySpace, transform.position);
 
         transform.position = _emptySpace[Random.Range(0, _emptySpace.Length)];
 
@@ -100,7 +100,7 @@ public class RoomGeneration : MonoBehaviour
             i < _roomPos.Length - 1 ; 
             i++){
             
-            _emptySpace = getCardinalVec3(_emptySpace, _roomPos[i]);
+            _emptySpace = getAdjacentVec3(_emptySpace, _roomPos[i]);
         }
 
         foreach(Vector3 vec3 in _emptySpace){
@@ -136,10 +136,10 @@ public class RoomGeneration : MonoBehaviour
         }
     }
 
-    private Vector3[] getCardinalVec3(Vector3[] emptySpace, Vector3 currentPos){
+    private Vector3[] getAdjacentVec3(Vector3[] emptySpace, Vector3 currentPos){
         
         // ArrayUtility.contains method is still bugged
-        foreach (Vector3 vec3 in _cardinalDirection){
+        foreach (Vector3 vec3 in _adjacentDirection){
             if ((ArrayUtility.FindIndex(_roomPos, x => x == (Vector2)(currentPos + vec3 * tileSize))) == -1 &&
                 (ArrayUtility.FindIndex(emptySpace, x => (Vector2)x == (Vector2)(currentPos + vec3 * tileSize))) == -1){
                 ArrayUtility.Add(ref emptySpace, currentPos + vec3 * tileSize);
@@ -154,7 +154,7 @@ public class RoomGeneration : MonoBehaviour
         // WORK IN PROGRESS
         _emptySpace = new Vector3[0];
 
-        _emptySpace = getCardinalVec3(_emptySpace, transform.position);
+        _emptySpace = getAdjacentVec3(_emptySpace, transform.position);
 
         transform.position = _emptySpace[Random.Range(0, _emptySpace.Length)];
         ArrayUtility.Remove(ref _emptySpace, transform.position);
