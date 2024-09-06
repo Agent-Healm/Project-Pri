@@ -70,7 +70,7 @@ public class RoomGeneration : MonoBehaviour
 
         RoomUtility.Vec3Shuffle(ref _emptySpace);
 
-        _newPosition = _emptySpace[Random.Range(0, _emptySpace.Length)];
+        _newPosition = _emptySpace[0];
         ArrayUtility.Remove(ref _emptySpace, _newPosition);
         _newPosition = transform.position + _newPosition * tileSize;
 
@@ -96,6 +96,8 @@ public class RoomGeneration : MonoBehaviour
                     ArrayUtility.Remove(ref _extraRooms, room);
                     RenderRoom(room,
                             transform.position + vec3 * tileSize);
+                    RenderRoom("path",
+                            transform.position + (vec3 * tileSize) / 2);
                 }
             }
         }
@@ -125,8 +127,9 @@ public class RoomGeneration : MonoBehaviour
             pos,
             Quaternion.identity
         );
-        ArrayUtility.Add(ref _roomPos, pos);
-        
+        if(roomName != "path"){
+            ArrayUtility.Add(ref _roomPos, pos);
+        }
     }
 }
 
