@@ -140,14 +140,14 @@ public class RoomGeneration : MonoBehaviour
         
         // ArrayUtility.contains method is still bugged
         foreach (Vector3 vec3 in _adjacentDirection){
-            if ((ArrayUtility.FindIndex(_roomPos, x => x == (Vector2)(currentPos + vec3 * tileSize))) == -1 &&
-                (ArrayUtility.FindIndex(emptySpace, x => (Vector2)x == (Vector2)(currentPos + vec3 * tileSize))) == -1){
+            if ((ArrayUtility.FindIndex(_roomPos, x => x == (Vector2)(currentPos + vec3 * tileSize))) == -1 
+                && (ArrayUtility.FindIndex(emptySpace, x => (Vector2)x == (Vector2)(currentPos + vec3 * tileSize))) == -1
+                ){
                 ArrayUtility.Add(ref emptySpace, vec3);
             }
         }
 
         return emptySpace;
-
     }
 
     private void procGenRoom(){
