@@ -31,7 +31,7 @@ public class test : MonoBehaviour
         // foreach(int i in listInt){
         //     Debug.Log(i);
         // }
-        
+
         // Debug.Log("Num : " + testMethod.num());
         // Debug.Log("Num : " + testMethod.num(5));
         
