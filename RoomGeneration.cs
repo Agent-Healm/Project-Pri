@@ -69,57 +69,6 @@ public class RoomGeneration : MonoBehaviour
         // maxRooms -=1;}
     }
 
-    private void getNextRoom(){
-        _emptySpace = new Vector3[0];
-
-        _emptySpace = getAdjacentVec3(_emptySpace, transform.position);
-
-        transform.position = _emptySpace[Random.Range(0, _emptySpace.Length)];
-
-        if (maxRooms > 1){
-            Instantiate(FindRoom("mob"), 
-                transform.position, 
-                Quaternion.identity);
-        }
-        else if (maxRooms == 1){
-            Instantiate(FindRoom("exit"), 
-                transform.position, 
-                Quaternion.identity);
-
-        }
-        ArrayUtility.Add(ref _roomPos, transform.position);
-
-    }
-
-    private void generateExtraRooms(){
-        _emptySpace = new Vector3[0];
-
-        int i = 1;
-
-        for (i = 1 ; 
-            i < _roomPos.Length - 1 ; 
-            i++){
-            
-            _emptySpace = getAdjacentVec3(_emptySpace, _roomPos[i]);
-        }
-
-        foreach(Vector3 vec3 in _emptySpace){
-
-            string room;
-            if (Random.Range(0, 2) == 0){
-
-                room = _extraRooms[Random.Range(0, _extraRooms.Length)];
-                ArrayUtility.Remove(ref _extraRooms, room);
-                Instantiate(
-                    FindRoom(room),
-                    vec3,
-                    Quaternion.identity
-                );
-            }
-            if (_extraRooms.Length == 0){return;}
-        }
-    }
-    
     /// <summary>
     /// Find room based on the names defined in the unity
     /// </summary>
@@ -197,4 +146,18 @@ public class RoomGeneration : MonoBehaviour
         transform.position = _newPosition;
     }
 
+}
+
+public static class RoomUtility {
+    public static void Vec3Shuffle(this Vector3[] arr){
+        int rand;
+        Vector3 temp;
+
+        for (int i = 0 ; i < arr.Length ; i++){
+            rand = Random.Range(0, arr.Length);
+            temp = arr[rand];
+            arr[rand] = arr[i];
+            arr[i] = temp;
+        }
+    }
 }
