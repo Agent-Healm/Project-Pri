@@ -68,6 +68,8 @@ public class RoomGeneration : MonoBehaviour
 
         RoomUtility.getAdjacentVec3(ref _emptySpace, transform.position, _roomPos, tileSize);
 
+        RoomUtility.Vec3Shuffle(ref _emptySpace);
+
         _newPosition = _emptySpace[Random.Range(0, _emptySpace.Length)];
         ArrayUtility.Remove(ref _emptySpace, _newPosition);
         _newPosition = transform.position + _newPosition * tileSize;
@@ -135,7 +137,7 @@ public static class RoomUtility {
         yield return Vector3.down;
         yield return Vector3.left;
     }
-    public static void Vec3Shuffle(this Vector3[] arr){
+    public static void Vec3Shuffle(ref Vector3[] arr){
         /// <summary>
         /// Shuffles an array of Vector3
         /// </summary>
