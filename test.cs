@@ -34,7 +34,7 @@ public class test : MonoBehaviour
 
         // Debug.Log("Num : " + testMethod.num());
         // Debug.Log("Num : " + testMethod.num(5));
-        
+        // Debug.Log(Vector3.Angle(Vector3.right, Vector3.down));
     }
 }
 

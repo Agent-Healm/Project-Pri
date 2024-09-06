@@ -45,7 +45,7 @@ public class RoomGeneration : MonoBehaviour
 
         transform.position = startPos[0].position;
         RenderRoom("home", 
-                transform.position);
+                Vector3.zero);
     }
 
     void Update(){
@@ -72,7 +72,6 @@ public class RoomGeneration : MonoBehaviour
 
         _newPosition = _emptySpace[0];
         ArrayUtility.Remove(ref _emptySpace, _newPosition);
-        _newPosition = transform.position + _newPosition * tileSize;
 
         if (maxRooms > 1){
             RenderRoom("mob",
@@ -95,14 +94,12 @@ public class RoomGeneration : MonoBehaviour
                     room = _extraRooms[Random.Range(0, _extraRooms.Length)];
                     ArrayUtility.Remove(ref _extraRooms, room);
                     RenderRoom(room,
-                            transform.position + vec3 * tileSize);
-                    RenderRoom("path",
-                            transform.position + (vec3 * tileSize) / 2);
+                            vec3);
                 }
             }
         }
 
-        transform.position = _newPosition;
+        transform.position += _newPosition * tileSize;
     }
 
     private GameObject FindRoom(string roomName){
@@ -121,15 +118,20 @@ public class RoomGeneration : MonoBehaviour
         }
     }
 
-    private void RenderRoom(string roomName, Vector3 pos){
+    private void RenderRoom(string roomName, Vector3 directionPos){
         Instantiate(
             FindRoom(roomName),
-            pos,
+            transform.position + directionPos * tileSize,
             Quaternion.identity
         );
         if(roomName != "path"){
-            ArrayUtility.Add(ref _roomPos, pos);
+            ArrayUtility.Add(ref _roomPos, transform.position + directionPos * tileSize);
         }
+        Instantiate(
+            FindRoom("path"),
+            transform.position + directionPos * tileSize * 0.5f,
+            Quaternion.FromToRotation(Vector3.right, directionPos)
+        );
     }
 }
 
