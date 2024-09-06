@@ -6,7 +6,6 @@ using System;
 
 using Random = UnityEngine.Random;
 
-// namespace ArrayUtility;
 public class RoomGeneration : MonoBehaviour
 {
     public Transform[] startPos;
@@ -45,18 +44,13 @@ public class RoomGeneration : MonoBehaviour
         if (maxRooms <=1){maxRooms = 2;}
 
         transform.position = startPos[0].position;
-        Instantiate(FindRoom("home"), 
-                    transform.position, 
-                    Quaternion.identity);
-
-        ArrayUtility.Add(ref _roomPos, transform.position);
-
+        RenderRoom("home", 
+                transform.position);
     }
 
     void Update(){
         if(maxRooms > 0){
             if(_timeRoomInterval <= 0 ){
-                // getNextRoom();
                 procGenRoom();
                 _timeRoomInterval = 0.1f;
                 maxRooms -= 1;
@@ -65,8 +59,46 @@ public class RoomGeneration : MonoBehaviour
                 _timeRoomInterval -= Time.deltaTime;
             }
         }
-        // else if (maxRooms == 0){generateExtraRooms();
-        // maxRooms -=1;}
+    }
+
+    private void procGenRoom(){
+        
+        _emptySpace = new Vector3[0];
+        Vector3 _newPosition;
+
+        RoomUtility.getAdjacentVec3(ref _emptySpace, transform.position, _roomPos, tileSize);
+
+        _newPosition = _emptySpace[Random.Range(0, _emptySpace.Length)];
+        ArrayUtility.Remove(ref _emptySpace, _newPosition);
+        _newPosition = transform.position + _newPosition * tileSize;
+
+        if (maxRooms > 1){
+            RenderRoom("mob",
+                    _newPosition);
+        }
+        else if (maxRooms == 1){
+            RenderRoom("exit",
+                    _newPosition);
+            return;
+        }
+        
+        if (_roomPos.Length > 2 && _extraRooms.Length != 0){
+
+            string room;
+            foreach(Vector3 vec3 in _emptySpace){
+
+                if (_extraRooms.Length == 0){break;}
+
+                if (Random.Range(0, 2) == 0){
+                    room = _extraRooms[Random.Range(0, _extraRooms.Length)];
+                    ArrayUtility.Remove(ref _extraRooms, room);
+                    RenderRoom(room,
+                            transform.position + vec3 * tileSize);
+                }
+            }
+        }
+
+        transform.position = _newPosition;
     }
 
     private GameObject FindRoom(string roomName){
@@ -85,75 +117,7 @@ public class RoomGeneration : MonoBehaviour
         }
     }
 
-    private Vector3[] XgetAdjacentVec3(Vector3[] emptySpace, Vector3 currentPos){
-        
-        // ArrayUtility.contains method is still bugged
-        foreach (Vector3 vec3 in _adjacentDirection){
-            if ((ArrayUtility.FindIndex(_roomPos, x => x == (Vector2)(currentPos + vec3 * tileSize))) == -1 
-                // && (ArrayUtility.FindIndex(emptySpace, x => (Vector2)x == (Vector2)(currentPos + vec3 * tileSize))) == -1
-                ){
-                ArrayUtility.Add(ref emptySpace, vec3);
-            }
-        }
-
-        return emptySpace;
-    }
-`
-    private void procGenRoom(){
-        // WORK IN PROGRESS
-        _emptySpace = new Vector3[0];
-        Vector3 _newPosition;
-
-        // _emptySpace = getAdjacentVec3(_emptySpace, transform.position);
-        RoomUtility.getAdjacentVec3(ref _emptySpace, transform.position, _roomPos, tileSize);
-
-        _newPosition = _emptySpace[Random.Range(0, _emptySpace.Length)];
-        ArrayUtility.Remove(ref _emptySpace, _newPosition);
-        _newPosition = transform.position + _newPosition * tileSize;
-
-        if (maxRooms > 1){
-            // Instantiate(FindRoom("mob"), 
-            //     _newPosition, 
-            //     Quaternion.identity);
-            RenderRoom("mob",
-                    _newPosition);
-        }
-        else if (maxRooms == 1){
-            // Instantiate(FindRoom("exit"), 
-            //     _newPosition, 
-            //     Quaternion.identity);
-            RenderRoom("exit",
-                    _newPosition);
-            return;
-        }
-        // ArrayUtility.Add(ref _roomPos, _newPosition);
-        
-        if (_roomPos.Length > 2 && _extraRooms.Length != 0){
-
-            string room;
-            foreach(Vector3 vec3 in _emptySpace){
-
-                if (_extraRooms.Length == 0){break;}
-
-                if (Random.Range(0, 2) == 0){
-                    room = _extraRooms[Random.Range(0, _extraRooms.Length)];
-                    ArrayUtility.Remove(ref _extraRooms, room);
-                    // Instantiate(
-                    //     FindRoom(room),
-                    //     transform.position + vec3 * tileSize,
-                    //     Quaternion.identity
-                    // );
-                    // ArrayUtility.Add(ref _roomPos, transform.position + vec3 * tileSize);
-                    RenderRoom(room,
-                            transform.position + vec3 * tileSize);
-                }
-            }
-        }
-
-        transform.position = _newPosition;
-    }
-
-    public void RenderRoom(string roomName, Vector3 pos){
+    private void RenderRoom(string roomName, Vector3 pos){
         Instantiate(
             FindRoom(roomName),
             pos,
@@ -187,16 +151,16 @@ public static class RoomUtility {
     }
     public static void getAdjacentVec3(ref Vector3[] emptySpace, Vector3 currentPos, Vector2[] _roomPos, float tileSize){
         
+        /// <summary>
+        /// scanning empty spaces adjacent to the current tile position
+        /// </summary>
         // ArrayUtility.contains method is still bugged
         foreach (Vector3 vec3 in adjacentDirection()){
             if ((ArrayUtility.FindIndex(_roomPos, x => x == (Vector2)(currentPos + vec3 * tileSize))) == -1 
-                // && (ArrayUtility.FindIndex(emptySpace, x => (Vector2)x == (Vector2)(currentPos + vec3 * tileSize))) == -1
                 ){
                 ArrayUtility.Add(ref emptySpace, vec3);
             }
         }
-
-        // return emptySpace;
     }
 
 }
