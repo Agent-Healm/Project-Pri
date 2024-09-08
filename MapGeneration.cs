@@ -6,7 +6,7 @@ using System;
 
 using Random = UnityEngine.Random;
 
-public class RoomGeneration : MonoBehaviour
+public class MapGeneration : MonoBehaviour
 {
     public Transform[] startPos;
     public Room[] rooms;
