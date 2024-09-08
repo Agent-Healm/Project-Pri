@@ -2,7 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class spawn : MonoBehaviour
+public class RoomGeneration : MonoBehaviour
 {
     public GameObject[] objects;
     // Start is called before the first frame update
