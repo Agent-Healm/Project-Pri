@@ -17,13 +17,16 @@ public class MapGeneration : MonoBehaviour
     private string[] _extraRooms = new string[0];
     private string[] _extraRoomsMax = new string[0];
     private Vector2[] _roomPos = new Vector2[0];
-    private Vector3[] _adjacentDirection = new Vector3[] 
-    {
-    Vector3.up, 
-    Vector3.right, 
-    Vector3.down, 
-    Vector3.left,
-    };
+    // private Vector3[] _adjacentDirection = new Vector3[] 
+    // {
+    // Vector3.up, 
+    // Vector3.right, 
+    // Vector3.down, 
+    // Vector3.left,
+    // };
+
+    private Vector2[] _worldPoints = new Vector2[0];
+    private Vector2 _worldPoint = Vector2.zero;
     private Vector3[] _emptySpace;
 
     // Start is called before the first frame update
@@ -80,6 +83,15 @@ public class MapGeneration : MonoBehaviour
         else if (maxRooms == 1){
             RenderRoom("exit",
                     _newPosition);
+
+            // foreach(Vector2 vec2 in _roomPos){
+            //     Debug.Log("Room position at : " + vec2);
+            // }
+
+            // foreach(Vector2 vec2 in _worldPoints){
+            //     Debug.Log("Room position at : " + vec2);
+            // }
+
             return;
         }
         
@@ -100,6 +112,9 @@ public class MapGeneration : MonoBehaviour
         }
 
         transform.position += _newPosition * tileSize;
+
+        // _worldPoint += (Vector2)_newPosition;
+
     }
 
     private GameObject FindRoom(string roomName){
@@ -124,14 +139,19 @@ public class MapGeneration : MonoBehaviour
             transform.position + directionPos * tileSize,
             Quaternion.identity
         );
+
         if(roomName != "path"){
             ArrayUtility.Add(ref _roomPos, transform.position + directionPos * tileSize);
+            // ArrayUtility.Add(ref _worldPoints, _worldPoint + (Vector2)directionPos);
         }
-        Instantiate(
-            FindRoom("path"),
-            transform.position + directionPos * tileSize * 0.5f,
-            Quaternion.FromToRotation(Vector3.right, directionPos)
-        );
+        if (_roomPos.Length >=2){
+            Instantiate(
+                FindRoom("path"),
+                transform.position + directionPos * tileSize * 0.5f,
+                Quaternion.FromToRotation(Vector3.right, directionPos)
+            );
+        }
+
     }
 }
 
@@ -163,6 +183,7 @@ public static class RoomUtility {
         /// </summary>
         // ArrayUtility.contains method is still bugged
         foreach (Vector3 vec3 in adjacentDirection()){
+            // if ((ArrayUtility.FindIndex(_roomPos, x => x == (Vector2)(currentPos + vec3 * tileSize))) == -1 
             if ((ArrayUtility.FindIndex(_roomPos, x => x == (Vector2)(currentPos + vec3 * tileSize))) == -1 
                 ){
                 ArrayUtility.Add(ref emptySpace, vec3);

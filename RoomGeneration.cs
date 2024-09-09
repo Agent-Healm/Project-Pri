@@ -21,6 +21,10 @@ public class RoomGeneration : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
+        switch(roomType){
+            case RoomType.Room : {this.name = "Room"; break;}
+            case RoomType.Gate : {this.name = "Gate"; break;}
+        }
 
         _center = transform.position;
         Vector2Int pos;
@@ -36,9 +40,4 @@ public class RoomGeneration : MonoBehaviour
 
     }
 
-    // Update is called once per frame
-    void Update()
-    {
-        
-    }
 }
