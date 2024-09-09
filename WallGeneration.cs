@@ -20,23 +20,23 @@ public class WallGeneration : MonoBehaviour
         // Instantiate(objects[0], _center + Vector2.up, Quaternion.identity, transform);
         int i;
         Vector2Int pos;
-        int halfLength = length / 2;
-        int halfWidth = width / 2;
+        int halfLength = (length - 1) / 2;
+        int halfWidth = (width - 1) / 2;
 
         for (i = 0 ; i <= length ; i++){
             pos = new Vector2Int(i - halfLength, halfWidth + 1);
             Instantiate(objects[0], _center + pos, Quaternion.identity, transform);
         }
         for (i = 0 ; i <= width ; i++){
-            pos = new Vector2Int(halfLength + 1, halfWidth - i);
+            pos = new Vector2Int(length - halfLength, halfWidth - i);
             Instantiate(objects[0], _center + pos, Quaternion.identity, transform);
         }
-        for (i = 0 ; i <= length ; i++){
-            pos = new Vector2Int(halfLength - i, -1 - halfWidth);
+        for (i = 1 ; i <= (length + 1) ; i++){
+            pos = new Vector2Int(length - halfLength - i, halfWidth - width);
             Instantiate(objects[0], _center + pos, Quaternion.identity, transform);
         }
-        for (i = 0 ; i <= width ; i++){
-            pos = new Vector2Int(-1 - halfLength, i - halfWidth);
+        for (i = 1 ; i <= (width + 1) ; i++){
+            pos = new Vector2Int(-1 - halfLength, halfWidth - width + i);
             Instantiate(objects[0], _center + pos, Quaternion.identity, transform);
         }
         // i = 17;
