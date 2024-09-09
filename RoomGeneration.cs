@@ -4,12 +4,27 @@ using UnityEngine;
 
 public class RoomGeneration : MonoBehaviour
 {
-    public GameObject[] objects;
+    public GameObject floorTile;
+    public GameObject wallTile;
+    public int length;
+    public int width;
+
+    private Vector2 _center;
     // Start is called before the first frame update
     void Start()
     {
-        int rand = Random.Range(0, objects.Length);
-        Instantiate(objects[rand], transform.position, Quaternion.identity);
+
+        _center = transform.position;
+        Vector2Int pos;
+        int halfLength = (length - 1) / 2;
+        int halfWidth = (width - 1) / 2;
+
+        for (int w = 0 ; w < width ; w++){
+            for (int l = 0 ; l < length ; l++){
+                pos = new Vector2Int(l - halfLength, halfWidth - w);
+                Instantiate(floorTile, _center + pos, Quaternion.identity, transform);
+            }
+        }
     }
 
     // Update is called once per frame
