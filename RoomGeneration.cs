@@ -2,10 +2,18 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
+public enum RoomType {
+    Room = 0,
+    Gate = 1
+};
 public class RoomGeneration : MonoBehaviour
 {
+
     public GameObject floorTile;
+    public GameObject gateTile;
+    public GameObject torchTile;
     public GameObject wallTile;
+    public RoomType roomType;
     public int length;
     public int width;
 
@@ -25,6 +33,7 @@ public class RoomGeneration : MonoBehaviour
                 Instantiate(floorTile, _center + pos, Quaternion.identity, transform);
             }
         }
+
     }
 
     // Update is called once per frame
