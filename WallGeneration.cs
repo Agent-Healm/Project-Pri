@@ -18,6 +18,8 @@ public class WallGeneration : MonoBehaviour
     private RoomGeneration _roomGen;
     private Vector2 _center;
     private RoomType _roomType;
+    private int halfLength;
+    private int halfWidth;
 
     // Start is called before the first frame update
     void Start()
@@ -33,8 +35,8 @@ public class WallGeneration : MonoBehaviour
         _gateTile = _roomGen.gateTile;
         _roomType = _roomGen.roomType;
 
-        int halfLength = (_length - 1) / 2;
-        int halfWidth = (_width - 1) / 2;
+        halfLength = (_length - 1) / 2;
+        halfWidth = (_width - 1) / 2;
 
         if(_roomType == RoomType.Room){
             pos = new Vector2Int(- 1 - halfLength, halfWidth + 1);
@@ -50,53 +52,52 @@ public class WallGeneration : MonoBehaviour
             GenerateWall(_wallTile, pos); // Bottom Left Corner
         }
 
-        void GenerateWall(GameObject tile, Vector2Int vec2i){
+    }
+    private void GenerateWall(GameObject tile, Vector2Int vec2i){
             Instantiate(tile, _center + vec2i, 
                         Quaternion.identity, transform);
         }
 
-        void GenerateGate(Vector2 vec2, bool hasGate = false){
+    public void GenerateGate(Vector2 vec2, bool hasGate = false){
 
-            int i;
-            Vector2Int pos;
+        int i;
+        Vector2Int pos;
+        // Debug.Log("Vector2 : " + vec2);
+        // Debug.Log("halfLength : " + halfLength);
 
-            if (vec2.x == 1.0f){ 
-                //EAST
-                for (i = 0 ; i < _width ; i++){
-                    pos = new Vector2Int(_length - halfLength, halfWidth - i);
-                    GenerateWall(_wallTile, pos);
-                }
+        // for some reason, the length and width is 0
+        if (vec2.x == 1.0f){ 
+            //EAST
+            for (i = 0 ; i < _width ; i++){
+                pos = new Vector2Int(_length - halfLength, halfWidth - i);
+                GenerateWall(_wallTile, pos);
             }
-
-            else if (vec2.x == -1.0f){
-                //WEST
-                for (i = 0 ; i < _width ; i++){
-                    pos = new Vector2Int(- halfLength - 1, halfWidth - i);
-                    GenerateWall(_wallTile, pos);
-                }
-            }
-
-            else if(vec2.x == 0.0f){
-                if (vec2.y == 1.0f){
-                    //NORTH
-                    for (i = 0 ; i < _length ; i++){
-                        pos = new Vector2Int(i - halfLength, halfWidth + 1);
-                        GenerateWall(_wallTile, pos);
-                    }
-                }
-                else if(vec2.y == -1.0f){
-                    //SOUTH
-                    for (i = 0 ; i < _length ; i++){
-                        pos = new Vector2Int(i - halfLength, halfWidth - _width);
-                        GenerateWall(_wallTile, pos);
-                    }
-                }
-            }
-
         }
-
+        else if (vec2.x == -1.0f){
+            //WEST
+            for (i = 0 ; i < _width ; i++){
+                pos = new Vector2Int(- halfLength - 1, halfWidth - i);
+                GenerateWall(_wallTile, pos);
+            }
+        }
+        else if(vec2.x == 0.0f){
+            if (vec2.y == 1.0f){
+                //NORTH
+                for (i = 0 ; i < _length ; i++){
+                    pos = new Vector2Int(i - halfLength, halfWidth + 1);
+                    GenerateWall(_wallTile, pos);
+                }
+            }
+            else if(vec2.y == -1.0f){
+                //SOUTH
+                for (i = 0 ; i < _length ; i++){
+                    pos = new Vector2Int(i - halfLength, halfWidth - _width);
+                    GenerateWall(_wallTile, pos);
+                }
+            }
+        }
+        
     }
-    
 
     // let gate close the room 
     // if there is gate, generate wall with gate in the middle

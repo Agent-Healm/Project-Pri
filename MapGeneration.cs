@@ -17,16 +17,8 @@ public class MapGeneration : MonoBehaviour
     private string[] _extraRooms = new string[0];
     private string[] _extraRoomsMax = new string[0];
     private Vector2[] _roomPos = new Vector2[0];
-    // private Vector3[] _adjacentDirection = new Vector3[] 
-    // {
-    // Vector3.up, 
-    // Vector3.right, 
-    // Vector3.down, 
-    // Vector3.left,
-    // };
-
-    private Vector2[] _worldPoints = new Vector2[0];
-    private Vector2 _worldPoint = Vector2.zero;
+    // private Vector2[] _worldPoints = new Vector2[0];
+    // private Vector2 _worldPoint = Vector2.zero;
     private Vector3[] _emptySpace;
 
     // Start is called before the first frame update
@@ -134,11 +126,28 @@ public class MapGeneration : MonoBehaviour
     }
 
     private void RenderRoom(string roomName, Vector3 directionPos){
-        Instantiate(
-            FindRoom(roomName),
-            transform.position + directionPos * tileSize,
-            Quaternion.identity
-        );
+        
+        if(roomName == "mob"){
+            GameObject room = FindRoom(roomName);
+            // WallGeneration wall = room.GetComponent<WallGeneration>();
+            RoomGeneration roomGeneration = room.GetComponent<RoomGeneration>();
+            // Debug.Log(roomGeneration.length);
+            // wall.GenerateGate(directionPos);
+            // Debug.Log("directionPos : " + directionPos);
+            Instantiate(
+                room,
+                transform.position + directionPos * tileSize,
+                Quaternion.identity
+            );
+
+        }
+        else {
+            Instantiate(
+                FindRoom(roomName),
+                transform.position + directionPos * tileSize,
+                Quaternion.identity
+            );
+        }
 
         ArrayUtility.Add(ref _roomPos, transform.position + directionPos * tileSize);
         // if(roomName != "path"){
