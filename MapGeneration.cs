@@ -95,7 +95,7 @@ public class MapGeneration : MonoBehaviour
             return;
         }
         
-        if (_roomPos.Length > 2 && _extraRooms.Length != 0){
+        if (_roomPos.Length > 222 && _extraRooms.Length != 0){
 
             string room;
             foreach(Vector3 vec3 in _emptySpace){
@@ -140,15 +140,17 @@ public class MapGeneration : MonoBehaviour
             Quaternion.identity
         );
 
-        if(roomName != "path"){
-            ArrayUtility.Add(ref _roomPos, transform.position + directionPos * tileSize);
+        ArrayUtility.Add(ref _roomPos, transform.position + directionPos * tileSize);
+        // if(roomName != "path"){
+            // ArrayUtility.Add(ref _roomPos, transform.position + directionPos * tileSize);
             // ArrayUtility.Add(ref _worldPoints, _worldPoint + (Vector2)directionPos);
-        }
+        // }
         if (_roomPos.Length >=2){
             Instantiate(
                 FindRoom("path"),
                 transform.position + directionPos * tileSize * 0.5f,
-                Quaternion.FromToRotation(Vector3.right, directionPos)
+                // Quaternion.FromToRotation(Vector3.right, directionPos)
+                Quaternion.identity
             );
         }
 

@@ -2,6 +2,13 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
+// public enum GateOrientation {
+//     East = 0,
+//     South = 1,
+//     West = 2,
+//     North = 3
+// }
+
 public class WallGeneration : MonoBehaviour
 {
     private GameObject _wallTile;
@@ -17,7 +24,6 @@ public class WallGeneration : MonoBehaviour
     {
 
         _center = transform.position;
-        int i;
         Vector2Int pos;
         _roomGen = this.GetComponent<RoomGeneration>();
 
@@ -29,22 +35,6 @@ public class WallGeneration : MonoBehaviour
 
         int halfLength = (_length - 1) / 2;
         int halfWidth = (_width - 1) / 2;
-
-        for (i = 0 ; i < _length ; i++){
-            pos = new Vector2Int(i - halfLength, halfWidth + 1);
-            GenerateWall(_wallTile, pos);
-
-            pos = new Vector2Int(i - halfLength, halfWidth - _width);
-            GenerateWall(_wallTile, pos);
-        }
-
-        for (i = 0 ; i < _width ; i++){
-            pos = new Vector2Int(_length - halfLength, halfWidth - i);
-            GenerateWall(_gateTile, pos);
-
-            pos = new Vector2Int(- halfLength - 1, halfWidth - i);
-            GenerateWall(_gateTile, pos);
-        }
 
         if(_roomType == RoomType.Room){
             pos = new Vector2Int(- 1 - halfLength, halfWidth + 1);
@@ -65,6 +55,51 @@ public class WallGeneration : MonoBehaviour
                         Quaternion.identity, transform);
         }
 
+        void GenerateGate(Vector2 vec2, bool hasGate = false){
+
+            int i;
+            Vector2Int pos;
+
+            if (vec2.x == 1.0f){ 
+                //EAST
+                for (i = 0 ; i < _width ; i++){
+                    pos = new Vector2Int(_length - halfLength, halfWidth - i);
+                    GenerateWall(_wallTile, pos);
+                }
+            }
+
+            else if (vec2.x == -1.0f){
+                //WEST
+                for (i = 0 ; i < _width ; i++){
+                    pos = new Vector2Int(- halfLength - 1, halfWidth - i);
+                    GenerateWall(_wallTile, pos);
+                }
+            }
+
+            else if(vec2.x == 0.0f){
+                if (vec2.y == 1.0f){
+                    //NORTH
+                    for (i = 0 ; i < _length ; i++){
+                        pos = new Vector2Int(i - halfLength, halfWidth + 1);
+                        GenerateWall(_wallTile, pos);
+                    }
+                }
+                else if(vec2.y == -1.0f){
+                    //SOUTH
+                    for (i = 0 ; i < _length ; i++){
+                        pos = new Vector2Int(i - halfLength, halfWidth - _width);
+                        GenerateWall(_wallTile, pos);
+                    }
+                }
+            }
+
+        }
+
     }
     
+
+    // let gate close the room 
+    // if there is gate, generate wall with gate in the middle
+    // otherwise, generate solid wall
+
 }
