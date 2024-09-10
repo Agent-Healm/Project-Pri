@@ -11,6 +11,10 @@ using UnityEngine;
 
 public class WallGeneration : MonoBehaviour
 {
+    public bool gateEast;
+    public bool gateSouth;
+    public bool gateWest;
+    public bool gateNorth;
     private GameObject _wallTile;
     private GameObject _gateTile;
     private int _length;
@@ -18,8 +22,8 @@ public class WallGeneration : MonoBehaviour
     private RoomGeneration _roomGen;
     private Vector2 _center;
     private RoomType _roomType;
-    private int halfLength;
-    private int halfWidth;
+    private int _halfLength;
+    private int _halfWidth;
 
     // Start is called before the first frame update
     void Start()
@@ -35,23 +39,33 @@ public class WallGeneration : MonoBehaviour
         _gateTile = _roomGen.gateTile;
         _roomType = _roomGen.roomType;
 
-        halfLength = (_length - 1) / 2;
-        halfWidth = (_width - 1) / 2;
+        _halfLength = (_length - 1) / 2;
+        _halfWidth = (_width - 1) / 2;
 
         if(_roomType == RoomType.Room){
-            pos = new Vector2Int(- 1 - halfLength, halfWidth + 1);
+            pos = new Vector2Int(- 1 - _halfLength, _halfWidth + 1);
             GenerateWall(_wallTile, pos); // Top Left Corner
 
-            pos = new Vector2Int(_length - halfLength, halfWidth + 1);
+            pos = new Vector2Int(_length - _halfLength, _halfWidth + 1);
             GenerateWall(_wallTile, pos); // Top Right Corner
 
-            pos = new Vector2Int(_length - halfLength, halfWidth - _width);
+            pos = new Vector2Int(_length - _halfLength, _halfWidth - _width);
             GenerateWall(_wallTile, pos); // Bottom Right Corner
                         
-            pos = new Vector2Int(- 1 - halfLength, halfWidth - _width);
+            pos = new Vector2Int(- 1 - _halfLength, _halfWidth - _width);
             GenerateWall(_wallTile, pos); // Bottom Left Corner
         }
 
+        // GenerateGate(Vector2.right);
+        // GenerateGate(Vector2.right);
+        // GenerateGate(Vector2.up);
+        // GenerateGate(Vector2.right);
+
+        // Debug.Log(gateEast);
+        if (gateEast){GenerateGate(Vector2.right);}
+        if (gateSouth){GenerateGate(Vector2.down);}
+        if (gateWest){GenerateGate(Vector2.left);}
+        if (gateNorth){GenerateGate(Vector2.up);}
     }
     private void GenerateWall(GameObject tile, Vector2Int vec2i){
             Instantiate(tile, _center + vec2i, 
@@ -66,34 +80,32 @@ public class WallGeneration : MonoBehaviour
         // Debug.Log("halfLength : " + halfLength);
 
         // for some reason, the length and width is 0
-        if (vec2.x == 1.0f){ 
+        if (vec2 == Vector2.right){ 
             //EAST
             for (i = 0 ; i < _width ; i++){
-                pos = new Vector2Int(_length - halfLength, halfWidth - i);
+                pos = new Vector2Int(_length - _halfLength, _halfWidth - i);
                 GenerateWall(_wallTile, pos);
             }
         }
-        else if (vec2.x == -1.0f){
+        else if (vec2 == Vector2.left){
             //WEST
             for (i = 0 ; i < _width ; i++){
-                pos = new Vector2Int(- halfLength - 1, halfWidth - i);
+                pos = new Vector2Int(- _halfLength - 1, _halfWidth - i);
                 GenerateWall(_wallTile, pos);
             }
         }
-        else if(vec2.x == 0.0f){
-            if (vec2.y == 1.0f){
+        else if(vec2 == Vector2.up){
                 //NORTH
                 for (i = 0 ; i < _length ; i++){
-                    pos = new Vector2Int(i - halfLength, halfWidth + 1);
+                    pos = new Vector2Int(i - _halfLength, _halfWidth + 1);
                     GenerateWall(_wallTile, pos);
                 }
-            }
-            else if(vec2.y == -1.0f){
-                //SOUTH
-                for (i = 0 ; i < _length ; i++){
-                    pos = new Vector2Int(i - halfLength, halfWidth - _width);
-                    GenerateWall(_wallTile, pos);
-                }
+        }
+        else if(vec2 == Vector2.down){
+            //SOUTH
+            for (i = 0 ; i < _length ; i++){
+                pos = new Vector2Int(i - _halfLength, _halfWidth - _width);
+                GenerateWall(_wallTile, pos);
             }
         }
         

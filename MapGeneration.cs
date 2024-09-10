@@ -41,6 +41,10 @@ public class MapGeneration : MonoBehaviour
         transform.position = startPos[0].position;
         RenderRoom("home", 
                 Vector3.zero);
+        // RenderRoom("mob", 
+        //         Vector3.up);
+
+        // transform.position += Vector3.up * tileSize;
     }
 
     void Update(){
@@ -60,6 +64,10 @@ public class MapGeneration : MonoBehaviour
         
         _emptySpace = new Vector3[0];
         Vector3 _newPosition;
+
+        // current position at current room
+        // next code will generate the next room, followed by secondary room(s)
+        // therefore, we could use adjacent information to generate walls/gate
 
         RoomUtility.getAdjacentVec3(ref _emptySpace, transform.position, _roomPos, tileSize);
 
@@ -87,6 +95,8 @@ public class MapGeneration : MonoBehaviour
             return;
         }
         
+        RoomUtility.Vec3RandomErase(ref _emptySpace);
+
         if (_roomPos.Length > 222 && _extraRooms.Length != 0){
 
             string room;
@@ -94,12 +104,10 @@ public class MapGeneration : MonoBehaviour
 
                 if (_extraRooms.Length == 0){break;}
 
-                if (Random.Range(0, 2) == 0){
-                    room = _extraRooms[Random.Range(0, _extraRooms.Length)];
-                    ArrayUtility.Remove(ref _extraRooms, room);
-                    RenderRoom(room,
-                            vec3);
-                }
+                room = _extraRooms[Random.Range(0, _extraRooms.Length)];
+                ArrayUtility.Remove(ref _extraRooms, room);
+                RenderRoom(room,
+                        vec3);
             }
         }
 
@@ -130,10 +138,23 @@ public class MapGeneration : MonoBehaviour
         if(roomName == "mob"){
             GameObject room = FindRoom(roomName);
             // WallGeneration wall = room.GetComponent<WallGeneration>();
-            RoomGeneration roomGeneration = room.GetComponent<RoomGeneration>();
+            // RoomGeneration roomGeneration = room.GetComponent<RoomGeneration>();
             // Debug.Log(roomGeneration.length);
             // wall.GenerateGate(directionPos);
             // Debug.Log("directionPos : " + directionPos);
+
+            WallGeneration wall = room.GetComponent<WallGeneration>();
+            // wall.gateEast = true;
+            // wall.gateSouth = true;
+            // Debug.Log("East gate exist? " + wall.gateEast);
+
+            // Debug.Log(Vector3.up * -1);
+
+            // wall.gateNorth = (directionPos * -1.0f) != Vector3.up ? true : false;
+            // wall.gateEast = (directionPos * -1.0f) != Vector3.right ? true : false;
+            // wall.gateSouth = (directionPos * -1.0f) != Vector3.down ? true : false;
+            // wall.gateWest = (directionPos * -1.0f) != Vector3.left ? true : false;
+
             Instantiate(
                 room,
                 transform.position + directionPos * tileSize,
@@ -142,8 +163,17 @@ public class MapGeneration : MonoBehaviour
 
         }
         else {
+            GameObject room = FindRoom(roomName);
+
+            // WallGeneration wall = room.GetComponent<WallGeneration>();
+
+            // wall.gateNorth = (directionPos * -1.0f) != Vector3.up ? true : false;
+            // wall.gateEast = (directionPos * -1.0f) != Vector3.right ? true : false;
+            // wall.gateSouth = (directionPos * -1.0f) != Vector3.down ? true : false;
+            // wall.gateWest = (directionPos * -1.0f) != Vector3.left ? true : false;
+
             Instantiate(
-                FindRoom(roomName),
+                room,
                 transform.position + directionPos * tileSize,
                 Quaternion.identity
             );
@@ -155,12 +185,12 @@ public class MapGeneration : MonoBehaviour
             // ArrayUtility.Add(ref _worldPoints, _worldPoint + (Vector2)directionPos);
         // }
         if (_roomPos.Length >=2){
-            Instantiate(
-                FindRoom("path"),
-                transform.position + directionPos * tileSize * 0.5f,
-                // Quaternion.FromToRotation(Vector3.right, directionPos)
-                Quaternion.identity
-            );
+            // Instantiate(
+            //     FindRoom("path"),
+            //     transform.position + directionPos * tileSize * 0.5f,
+            //     // Quaternion.FromToRotation(Vector3.right, directionPos)
+            //     Quaternion.identity
+            // );
         }
 
     }
@@ -201,5 +231,21 @@ public static class RoomUtility {
             }
         }
     }
+    public static void Vec3RandomErase(ref Vector3[] arr){
+        Vector3[] temp = arr;
+        foreach(Vector3 vec3 in temp){
+            if (Random.Range(0, 2) == 0){
+                ArrayUtility.Remove(ref arr, vec3);
+            }
+            if(arr.Length == 1){break;}
+        }
+    }
 
 }
+
+/*
+mob room
+generate random number of sides
+generate room with that number of gates
+populate all sides and leave 1 for the next room
+*/
