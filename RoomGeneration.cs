@@ -22,7 +22,6 @@ public class RoomGeneration : MonoBehaviour
     void Start()
     {
         switch(roomType){
-            case RoomType.Room : {this.name = "Room"; break;}
             case RoomType.Gate : {this.name = "Gate"; break;}
         }
 

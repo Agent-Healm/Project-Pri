@@ -41,11 +41,12 @@ public class MapGeneration : MonoBehaviour
         if (maxRooms <=1){maxRooms = 2;}
 
         transform.position = startPos[0].position;
-        RenderRoom("home", 
-                Vector3.zero);
 
         RoomUtility.getAdjacentVec3(ref _emptySpace, transform.position, _roomPos, tileSize);
         _newPosition = _emptySpace[0];
+
+        RenderRoom("home", 
+                Vector3.zero);
 
         transform.position += _newPosition * tileSize;
     }
@@ -67,10 +68,6 @@ public class MapGeneration : MonoBehaviour
         
         _emptySpace = new Vector3[0];
 
-        // current position at current room
-        // next code will generate the next room, followed by secondary room(s)
-        // therefore, we could use adjacent information to generate walls/gate
-
         RoomUtility.getAdjacentVec3(ref _emptySpace, transform.position, _roomPos, tileSize);
 
         RoomUtility.Vec3Shuffle(ref _emptySpace);
@@ -82,15 +79,6 @@ public class MapGeneration : MonoBehaviour
         else if (maxRooms == 1){
             RenderRoom("exit",
                     Vector2.zero);
-
-            // foreach(Vector2 vec2 in _roomPos){
-            //     Debug.Log("Room position at : " + vec2);
-            // }
-
-            // foreach(Vector2 vec2 in _worldPoints){
-            //     Debug.Log("Room position at : " + vec2);
-            // }
-
             return;
         }
         
@@ -137,7 +125,7 @@ public class MapGeneration : MonoBehaviour
 
     private void RenderRoom(string roomName, Vector3 directionPos){
         
-        if(roomName == "mob"){
+        if(roomName == "mob" || roomName == "home" || roomName == "exit"){
             GameObject room = FindRoom(roomName);
 
             WallGeneration wall = room.GetComponent<WallGeneration>();
@@ -166,9 +154,18 @@ public class MapGeneration : MonoBehaviour
 
             Instantiate(
                 room,
-                transform.position + directionPos * tileSize,
+                transform.position,
                 Quaternion.identity
             );
+
+            if (_roomPos.Length >=1){
+                Instantiate(
+                    FindRoom("path"),
+                    transform.position - _newPosition * tileSize * 0.5f,
+                    // Quaternion.FromToRotation(Vector3.right, _newPosition)
+                    Quaternion.identity
+                );
+            }
 
         }
         else {
@@ -179,22 +176,19 @@ public class MapGeneration : MonoBehaviour
                 transform.position + directionPos * tileSize,
                 Quaternion.identity
             );
+            
+            if (_roomPos.Length >=2){
+                Instantiate(
+                    FindRoom("path"),
+                    transform.position + directionPos * tileSize * 0.5f,
+                    Quaternion.FromToRotation(Vector3.right, directionPos)
+                    // Quaternion.identity
+                );
+            }
+            
         }
 
         ArrayUtility.Add(ref _roomPos, transform.position + directionPos * tileSize);
-        // if(roomName != "path"){
-            // ArrayUtility.Add(ref _roomPos, transform.position + directionPos * tileSize);
-            // ArrayUtility.Add(ref _worldPoints, _worldPoint + (Vector2)directionPos);
-        // }
-
-        // if (_roomPos.Length >=2){
-        //     Instantiate(
-        //         FindRoom("path"),
-        //         transform.position + directionPos * tileSize * 0.5f,
-        //         // Quaternion.FromToRotation(Vector3.right, directionPos)
-        //         Quaternion.identity
-        //     );
-        // }
 
     }
 }
@@ -227,7 +221,6 @@ public static class RoomUtility {
         /// </summary>
         // ArrayUtility.contains method is still bugged
         foreach (Vector3 vec3 in adjacentDirection()){
-            // if ((ArrayUtility.FindIndex(_roomPos, x => x == (Vector2)(currentPos + vec3 * tileSize))) == -1 
             if ((ArrayUtility.FindIndex(_roomPos, x => x == (Vector2)(currentPos + vec3 * tileSize))) == -1 
                 ){
                 ArrayUtility.Add(ref emptySpace, vec3);
