@@ -62,10 +62,15 @@ public class WallGeneration : MonoBehaviour
         // GenerateGate(Vector2.right);
 
         // Debug.Log(gateEast);
-        if (gateEast){GenerateGate(Vector2.right);}
-        if (gateSouth){GenerateGate(Vector2.down);}
-        if (gateWest){GenerateGate(Vector2.left);}
-        if (gateNorth){GenerateGate(Vector2.up);}
+        // if (gateEast){GenerateGate(Vector2.right);}
+        // if (gateSouth){GenerateGate(Vector2.down);}
+        // if (gateWest){GenerateGate(Vector2.left);}
+        // if (gateNorth){GenerateGate(Vector2.up);}
+
+        GenerateGate(Vector2.right, gateEast);
+        GenerateGate(Vector2.down, gateSouth);
+        GenerateGate(Vector2.left, gateWest);
+        GenerateGate(Vector2.up, gateNorth);
     }
     private void GenerateWall(GameObject tile, Vector2Int vec2i){
             Instantiate(tile, _center + vec2i, 
@@ -76,6 +81,7 @@ public class WallGeneration : MonoBehaviour
 
         int i;
         Vector2Int pos;
+        GameObject __tile = hasGate? _gateTile : _wallTile;
         // Debug.Log("Vector2 : " + vec2);
         // Debug.Log("halfLength : " + halfLength);
 
@@ -84,28 +90,28 @@ public class WallGeneration : MonoBehaviour
             //EAST
             for (i = 0 ; i < _width ; i++){
                 pos = new Vector2Int(_length - _halfLength, _halfWidth - i);
-                GenerateWall(_wallTile, pos);
+                GenerateWall(__tile, pos);
             }
         }
         else if (vec2 == Vector2.left){
             //WEST
             for (i = 0 ; i < _width ; i++){
                 pos = new Vector2Int(- _halfLength - 1, _halfWidth - i);
-                GenerateWall(_wallTile, pos);
+                GenerateWall(__tile, pos);
             }
         }
         else if(vec2 == Vector2.up){
                 //NORTH
                 for (i = 0 ; i < _length ; i++){
                     pos = new Vector2Int(i - _halfLength, _halfWidth + 1);
-                    GenerateWall(_wallTile, pos);
+                    GenerateWall(__tile, pos);
                 }
         }
         else if(vec2 == Vector2.down){
             //SOUTH
             for (i = 0 ; i < _length ; i++){
                 pos = new Vector2Int(i - _halfLength, _halfWidth - _width);
-                GenerateWall(_wallTile, pos);
+                GenerateWall(__tile, pos);
             }
         }
         

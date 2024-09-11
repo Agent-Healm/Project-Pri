@@ -19,7 +19,9 @@ public class MapGeneration : MonoBehaviour
     private Vector2[] _roomPos = new Vector2[0];
     // private Vector2[] _worldPoints = new Vector2[0];
     // private Vector2 _worldPoint = Vector2.zero;
-    private Vector3[] _emptySpace;
+    private Vector3[] _emptySpace = new Vector3[0];
+    
+    private Vector3 _newPosition;
 
     // Start is called before the first frame update
     void Start()
@@ -44,7 +46,10 @@ public class MapGeneration : MonoBehaviour
         // RenderRoom("mob", 
         //         Vector3.up);
 
-        // transform.position += Vector3.up * tileSize;
+        RoomUtility.getAdjacentVec3(ref _emptySpace, transform.position, _roomPos, tileSize);
+        _newPosition = _emptySpace[0];
+
+        transform.position += _newPosition * tileSize;
     }
 
     void Update(){
@@ -63,7 +68,6 @@ public class MapGeneration : MonoBehaviour
     private void procGenRoom(){
         
         _emptySpace = new Vector3[0];
-        Vector3 _newPosition;
 
         // current position at current room
         // next code will generate the next room, followed by secondary room(s)
@@ -73,16 +77,15 @@ public class MapGeneration : MonoBehaviour
 
         RoomUtility.Vec3Shuffle(ref _emptySpace);
 
-        _newPosition = _emptySpace[0];
-        ArrayUtility.Remove(ref _emptySpace, _newPosition);
-
         if (maxRooms > 1){
             RenderRoom("mob",
-                    _newPosition);
+                    // _newPosition);
+                    Vector2.zero);
         }
         else if (maxRooms == 1){
             RenderRoom("exit",
-                    _newPosition);
+                    // _newPosition);
+                    Vector2.zero);
 
             // foreach(Vector2 vec2 in _roomPos){
             //     Debug.Log("Room position at : " + vec2);
@@ -95,19 +98,23 @@ public class MapGeneration : MonoBehaviour
             return;
         }
         
+        _newPosition = _emptySpace[0];
+        ArrayUtility.Remove(ref _emptySpace, _newPosition);
+
         RoomUtility.Vec3RandomErase(ref _emptySpace);
 
-        if (_roomPos.Length > 222 && _extraRooms.Length != 0){
+        // if (_roomPos.Length > 222 && _extraRooms.Length != 0){
+        if (_extraRooms.Length != 0){
 
             string room;
             foreach(Vector3 vec3 in _emptySpace){
 
-                if (_extraRooms.Length == 0){break;}
-
                 room = _extraRooms[Random.Range(0, _extraRooms.Length)];
                 ArrayUtility.Remove(ref _extraRooms, room);
                 RenderRoom(room,
-                        vec3);
+                            vec3);
+
+                if (_extraRooms.Length == 0){break;}
             }
         }
 
@@ -150,10 +157,54 @@ public class MapGeneration : MonoBehaviour
 
             // Debug.Log(Vector3.up * -1);
 
+            // Debug.Log("Generating room with the number of gate(s) : " + _emptySpace.Length);
+
+            foreach ( Vector3 vec3 in _emptySpace){
+                // wall.gateNorth = (directionPos * -1.0f) != Vector3.up ? true : false;
+                // wall.gateEast  = (directionPos * -1.0f) != Vector3.right ? true : false;
+                // wall.gateSouth = (directionPos * -1.0f) != Vector3.down ? true : false;
+                // wall.gateWest  = (directionPos * -1.0f) != Vector3.left ? true : false;
+            }
+            
             // wall.gateNorth = (directionPos * -1.0f) != Vector3.up ? true : false;
-            // wall.gateEast = (directionPos * -1.0f) != Vector3.right ? true : false;
+            // wall.gateEast  = (directionPos * -1.0f) != Vector3.right ? true : false;
             // wall.gateSouth = (directionPos * -1.0f) != Vector3.down ? true : false;
-            // wall.gateWest = (directionPos * -1.0f) != Vector3.left ? true : false;
+            // wall.gateWest  = (directionPos * -1.0f) != Vector3.left ? true : false;
+
+            // wall.gateNorth = 
+            // Debug.Log("Room : " + _roomPos.Length);
+            // Debug.Log("direction to enter current room : " + _newPosition * -1);
+            // Debug.Log(Array.Find(_emptySpace, vec2 => vec2 == Vector2.up));
+            // Debug.Log(Array.Find(_emptySpace, vec2 => vec2 == Vector2.right));
+            // Debug.Log(Array.Find(_emptySpace, vec2 => vec2 == Vector2.down));
+            // Debug.Log(Array.Find(_emptySpace, vec2 => vec2 == Vector2.left));
+
+            // wall.gateNorth = Array.Find(_emptySpace, vec2 => vec2 == Vector2.up) == Vector2.zero ? true : false;
+            // wall.gateEast  = Array.Find(_emptySpace, vec2 => vec2 == Vector2.right) == Vector2.zero ? true : false;
+            // wall.gateSouth = Array.Find(_emptySpace, vec2 => vec2 == Vector2.down) == Vector2.zero ? true : false;
+            // wall.gateWest  = Array.Find(_emptySpace, vec2 => vec2 == Vector2.left) == Vector2.zero ? true : false;
+
+            wall.gateNorth = false;
+            wall.gateEast = false;
+            wall.gateSouth = false;
+            wall.gateWest = false;
+
+            if(ArrayUtility.FindIndex(_emptySpace, vec3 => vec3 == Vector3.up) != -1 || 
+                (_newPosition  * -1) == Vector3.up){
+                    wall.gateNorth = true;
+            }
+            if(ArrayUtility.FindIndex(_emptySpace, vec3 => vec3 == Vector3.right) != -1 ||
+                (_newPosition  * -1) == Vector3.right){
+                    wall.gateEast = true;
+            }
+            if(ArrayUtility.FindIndex(_emptySpace, vec3 => vec3 == Vector3.down) != -1 || 
+                (_newPosition  * -1) == Vector3.down){
+                    wall.gateSouth= true;
+            }
+            if(ArrayUtility.FindIndex(_emptySpace, vec3 => vec3 == Vector3.left) != -1 || 
+                (_newPosition  * -1) == Vector3.left){
+                    wall.gateWest = true;
+            }
 
             Instantiate(
                 room,
@@ -184,14 +235,15 @@ public class MapGeneration : MonoBehaviour
             // ArrayUtility.Add(ref _roomPos, transform.position + directionPos * tileSize);
             // ArrayUtility.Add(ref _worldPoints, _worldPoint + (Vector2)directionPos);
         // }
-        if (_roomPos.Length >=2){
-            // Instantiate(
-            //     FindRoom("path"),
-            //     transform.position + directionPos * tileSize * 0.5f,
-            //     // Quaternion.FromToRotation(Vector3.right, directionPos)
-            //     Quaternion.identity
-            // );
-        }
+
+        // if (_roomPos.Length >=2){
+        //     Instantiate(
+        //         FindRoom("path"),
+        //         transform.position + directionPos * tileSize * 0.5f,
+        //         // Quaternion.FromToRotation(Vector3.right, directionPos)
+        //         Quaternion.identity
+        //     );
+        // }
 
     }
 }
