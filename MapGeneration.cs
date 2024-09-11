@@ -41,13 +41,14 @@ public class MapGeneration : MonoBehaviour
         transform.position = startPos[0].position;
 
         RoomUtility.getAdjacentVec3(ref _emptySpace, transform.position, _roomPos, tileSize);
-        _newPosition = _emptySpace[0];
+        _newPosition = _emptySpace[Random.Range(0, _emptySpace.Length)];
+        ArrayUtility.Clear(ref _emptySpace);
 
-        // RenderRoom("home", 
-        //         Vector3.zero);
-        GenerateMainRoom("home");
+        // GenerateMainRoom("home");
+        GenerateSideRoom("home", _newPosition * -1);
 
-        transform.position += _newPosition * tileSize;
+        // transform.position -= _newPosition * tileSize;
+        // _newPosition *= -1;
     }
 
     void Update(){
@@ -72,13 +73,10 @@ public class MapGeneration : MonoBehaviour
         RoomUtility.Vec3Shuffle(ref _emptySpace);
 
         if (maxRooms > 1){
-            // RenderRoom("mob",
-            //         Vector2.zero);
             GenerateMainRoom("mob");
         }
         else if (maxRooms == 1){
-            // RenderRoom("exit",
-            //         Vector2.zero);
+            ArrayUtility.Clear(ref _emptySpace);
             GenerateMainRoom("exit");
             return;
         }
@@ -95,8 +93,6 @@ public class MapGeneration : MonoBehaviour
 
                 room = _extraRooms[Random.Range(0, _extraRooms.Length)];
                 ArrayUtility.Remove(ref _extraRooms, room);
-                // RenderRoom(room,
-                //             vec3);
                 GenerateSideRoom(room, 
                                 vec3);
 
@@ -114,6 +110,7 @@ public class MapGeneration : MonoBehaviour
         /// </summary>
         /// <param name="roomName"></param>
         /// <return>A room GameObject</returns>
+        
         Room room = Array.Find(rooms, x => x.name == roomName);
         if (room == null){
             Debug.Log("The room "+ roomName +" not found");
@@ -167,87 +164,40 @@ public class MapGeneration : MonoBehaviour
     private void GenerateSideRoom(string roomName, Vector3 directionPos){
         GameObject room = FindRoom(roomName);
 
+        WallGeneration wall = room.GetComponent<WallGeneration>();
+        wall.gateNorth = false;
+        wall.gateEast = false;
+        wall.gateSouth = false;
+        wall.gateWest = false;
+        if((directionPos  * -1) == Vector3.up){
+                wall.gateNorth = true;
+        }
+        if((directionPos  * -1) == Vector3.right){
+                wall.gateEast = true;
+        }
+        if((directionPos  * -1) == Vector3.down){
+                wall.gateSouth= true;
+        }
+        if((directionPos  * -1) == Vector3.left){
+                wall.gateWest = true;
+        }
+
         Instantiate(
             room,
             transform.position + directionPos * tileSize,
             Quaternion.identity
         );
-        
-        if (_roomPos.Length >=2){
+        if(_roomPos.Length >=1){
             Instantiate(
                 FindRoom("path"),
                 transform.position + directionPos * tileSize * 0.5f,
-                Quaternion.FromToRotation(Vector3.right, directionPos)
+                Quaternion.identity
+                // Quaternion.FromToRotation(Vector3.right, directionPos)
             );
         }
         ArrayUtility.Add(ref _roomPos, transform.position + directionPos * tileSize);
     }
-    private void RenderRoom(string roomName, Vector3 directionPos){
-        if(roomName == "mob" || roomName == "home" || roomName == "exit"){
-            GameObject room = FindRoom(roomName);
-
-            WallGeneration wall = room.GetComponent<WallGeneration>();
-
-            wall.gateNorth = false;
-            wall.gateEast = false;
-            wall.gateSouth = false;
-            wall.gateWest = false;
-
-            if(ArrayUtility.FindIndex(_emptySpace, vec3 => vec3 == Vector3.up) != -1 || 
-                (_newPosition  * -1) == Vector3.up){
-                    wall.gateNorth = true;
-            }
-            if(ArrayUtility.FindIndex(_emptySpace, vec3 => vec3 == Vector3.right) != -1 ||
-                (_newPosition  * -1) == Vector3.right){
-                    wall.gateEast = true;
-            }
-            if(ArrayUtility.FindIndex(_emptySpace, vec3 => vec3 == Vector3.down) != -1 || 
-                (_newPosition  * -1) == Vector3.down){
-                    wall.gateSouth= true;
-            }
-            if(ArrayUtility.FindIndex(_emptySpace, vec3 => vec3 == Vector3.left) != -1 || 
-                (_newPosition  * -1) == Vector3.left){
-                    wall.gateWest = true;
-            }
-
-            Instantiate(
-                room,
-                transform.position,
-                Quaternion.identity
-            );
-
-            if (_roomPos.Length >=1){
-                Instantiate(
-                    FindRoom("path"),
-                    transform.position - _newPosition * tileSize * 0.5f,
-                    Quaternion.identity
-                );
-            }
-
-        }
-        else {
-            GameObject room = FindRoom(roomName);
-
-            Instantiate(
-                room,
-                transform.position + directionPos * tileSize,
-                Quaternion.identity
-            );
-            
-            if (_roomPos.Length >=2){
-                Instantiate(
-                    FindRoom("path"),
-                    transform.position + directionPos * tileSize * 0.5f,
-                    Quaternion.FromToRotation(Vector3.right, directionPos)
-                    // Quaternion.identity
-                );
-            }
-            
-        }
-
-        ArrayUtility.Add(ref _roomPos, transform.position + directionPos * tileSize);
-
-    }
+    
 }
 
 public static class RoomUtility {
