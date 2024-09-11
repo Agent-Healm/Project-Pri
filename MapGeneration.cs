@@ -17,8 +17,6 @@ public class MapGeneration : MonoBehaviour
     private string[] _extraRooms = new string[0];
     private string[] _extraRoomsMax = new string[0];
     private Vector2[] _roomPos = new Vector2[0];
-    // private Vector2[] _worldPoints = new Vector2[0];
-    // private Vector2 _worldPoint = Vector2.zero;
     private Vector3[] _emptySpace = new Vector3[0];
     
     private Vector3 _newPosition;
@@ -45,8 +43,9 @@ public class MapGeneration : MonoBehaviour
         RoomUtility.getAdjacentVec3(ref _emptySpace, transform.position, _roomPos, tileSize);
         _newPosition = _emptySpace[0];
 
-        RenderRoom("home", 
-                Vector3.zero);
+        // RenderRoom("home", 
+        //         Vector3.zero);
+        GenerateMainRoom("home");
 
         transform.position += _newPosition * tileSize;
     }
@@ -73,12 +72,14 @@ public class MapGeneration : MonoBehaviour
         RoomUtility.Vec3Shuffle(ref _emptySpace);
 
         if (maxRooms > 1){
-            RenderRoom("mob",
-                    Vector2.zero);
+            // RenderRoom("mob",
+            //         Vector2.zero);
+            GenerateMainRoom("mob");
         }
         else if (maxRooms == 1){
-            RenderRoom("exit",
-                    Vector2.zero);
+            // RenderRoom("exit",
+            //         Vector2.zero);
+            GenerateMainRoom("exit");
             return;
         }
         
@@ -94,16 +95,16 @@ public class MapGeneration : MonoBehaviour
 
                 room = _extraRooms[Random.Range(0, _extraRooms.Length)];
                 ArrayUtility.Remove(ref _extraRooms, room);
-                RenderRoom(room,
-                            vec3);
+                // RenderRoom(room,
+                //             vec3);
+                GenerateSideRoom(room, 
+                                vec3);
 
                 if (_extraRooms.Length == 0){break;}
             }
         }
 
         transform.position += _newPosition * tileSize;
-
-        // _worldPoint += (Vector2)_newPosition;
 
     }
 
@@ -123,8 +124,65 @@ public class MapGeneration : MonoBehaviour
         }
     }
 
-    private void RenderRoom(string roomName, Vector3 directionPos){
+    private void GenerateMainRoom(string roomName){
+        GameObject room = FindRoom(roomName);
+
+        WallGeneration wall = room.GetComponent<WallGeneration>();
+        wall.gateNorth = false;
+        wall.gateEast = false;
+        wall.gateSouth = false;
+        wall.gateWest = false;
+        if(ArrayUtility.FindIndex(_emptySpace, vec3 => vec3 == Vector3.up) != -1 || 
+            (_newPosition  * -1) == Vector3.up){
+                wall.gateNorth = true;
+        }
+        if(ArrayUtility.FindIndex(_emptySpace, vec3 => vec3 == Vector3.right) != -1 ||
+            (_newPosition  * -1) == Vector3.right){
+                wall.gateEast = true;
+        }
+        if(ArrayUtility.FindIndex(_emptySpace, vec3 => vec3 == Vector3.down) != -1 || 
+            (_newPosition  * -1) == Vector3.down){
+                wall.gateSouth= true;
+        }
+        if(ArrayUtility.FindIndex(_emptySpace, vec3 => vec3 == Vector3.left) != -1 || 
+            (_newPosition  * -1) == Vector3.left){
+                wall.gateWest = true;
+        }
+        Instantiate(
+            room,
+            transform.position,
+            Quaternion.identity
+        );
+        if (_roomPos.Length >=1){
+            Instantiate(
+                FindRoom("path"),
+                transform.position - _newPosition * tileSize * 0.5f,
+                Quaternion.identity
+            );
+        }
         
+        ArrayUtility.Add(ref _roomPos, transform.position);
+    }
+
+    private void GenerateSideRoom(string roomName, Vector3 directionPos){
+        GameObject room = FindRoom(roomName);
+
+        Instantiate(
+            room,
+            transform.position + directionPos * tileSize,
+            Quaternion.identity
+        );
+        
+        if (_roomPos.Length >=2){
+            Instantiate(
+                FindRoom("path"),
+                transform.position + directionPos * tileSize * 0.5f,
+                Quaternion.FromToRotation(Vector3.right, directionPos)
+            );
+        }
+        ArrayUtility.Add(ref _roomPos, transform.position + directionPos * tileSize);
+    }
+    private void RenderRoom(string roomName, Vector3 directionPos){
         if(roomName == "mob" || roomName == "home" || roomName == "exit"){
             GameObject room = FindRoom(roomName);
 
@@ -162,7 +220,6 @@ public class MapGeneration : MonoBehaviour
                 Instantiate(
                     FindRoom("path"),
                     transform.position - _newPosition * tileSize * 0.5f,
-                    // Quaternion.FromToRotation(Vector3.right, _newPosition)
                     Quaternion.identity
                 );
             }
