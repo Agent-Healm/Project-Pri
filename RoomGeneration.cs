@@ -16,27 +16,66 @@ public class RoomGeneration : MonoBehaviour
     public RoomType roomType;
     public int length;
     public int width;
-
     private Vector2 _center;
+    private int _length;
+    private int _width;
+    public bool isVertical;
+
     // Start is called before the first frame update
     void Start()
     {
+
         switch(roomType){
             case RoomType.Gate : {this.name = "Gate"; break;}
         }
+        
+        if((roomType == RoomType.Room)){
+            _length = length;
+            _width = width;
+        }
+
+        else if ((roomType == RoomType.Gate)){
+            if (isVertical){
+                _length = width;
+                _width = length;
+            }
+            else if (!isVertical){
+                _length = length;
+                _width = width;
+            }
+        }
+        /*
+            need to somehow flip the length and width when the orientation is vertical
+        */
 
         _center = transform.position;
         Vector2Int pos;
-        int halfLength = (length - 1) / 2;
-        int halfWidth = (width - 1) / 2;
 
-        for (int w = 0 ; w < width ; w++){
-            for (int l = 0 ; l < length ; l++){
+        int halfLength = (_length - 1) / 2;
+        int halfWidth = (_width - 1) / 2;
+
+        for (int w = 0 ; w < _width ; w++){
+            for (int l = 0 ; l < _length ; l++){
                 pos = new Vector2Int(l - halfLength, halfWidth - w);
                 Instantiate(floorTile, _center + pos, Quaternion.identity, transform);
             }
         }
 
     }
+
+    public int getLength(){return _length;}
+    public int getWidth(){return _width;}
+    // public void setVertical(bool isVertical = false){
+    //     if ((roomType == RoomType.Gate)){
+    //         if (isVertical){
+    //             _length = width;
+    //             _width = length;
+    //         }
+    //         else if (!isVertical){
+    //             _length = length;
+    //             _width = width;
+    //         }
+    //     }
+    // }
 
 }

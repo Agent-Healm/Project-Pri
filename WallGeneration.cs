@@ -33,8 +33,9 @@ public class WallGeneration : MonoBehaviour
         Vector2Int pos;
         _roomGen = this.GetComponent<RoomGeneration>();
 
-        _length = _roomGen.length;
-        _width = _roomGen.width;
+        _length = _roomGen.getLength();
+        _width = _roomGen.getWidth();
+        
         _wallTile = _roomGen.wallTile;
         _gateTile = _roomGen.gateTile;
         _roomType = _roomGen.roomType;
@@ -42,7 +43,7 @@ public class WallGeneration : MonoBehaviour
         _halfLength = (_length - 1) / 2;
         _halfWidth = (_width - 1) / 2;
 
-        if(_roomType == RoomType.Room){
+        if (_roomType == RoomType.Room){
             pos = new Vector2Int(- 1 - _halfLength, _halfWidth + 1);
             GenerateWall(_wallTile, pos); // Top Left Corner
 
@@ -54,23 +55,28 @@ public class WallGeneration : MonoBehaviour
                         
             pos = new Vector2Int(- 1 - _halfLength, _halfWidth - _width);
             GenerateWall(_wallTile, pos); // Bottom Left Corner
+
         }
-
-        // GenerateGate(Vector2.right);
-        // GenerateGate(Vector2.right);
-        // GenerateGate(Vector2.up);
-        // GenerateGate(Vector2.right);
-
-        // Debug.Log(gateEast);
-        // if (gateEast){GenerateGate(Vector2.right);}
-        // if (gateSouth){GenerateGate(Vector2.down);}
-        // if (gateWest){GenerateGate(Vector2.left);}
-        // if (gateNorth){GenerateGate(Vector2.up);}
-
-        GenerateGate(Vector2.right, gateEast);
-        GenerateGate(Vector2.down, gateSouth);
-        GenerateGate(Vector2.left, gateWest);
-        GenerateGate(Vector2.up, gateNorth);
+        
+        if (_roomType == RoomType.Room){
+            GenerateGate(Vector2.right, gateEast);
+            GenerateGate(Vector2.left, gateWest);
+            GenerateGate(Vector2.down, gateSouth);
+            GenerateGate(Vector2.up, gateNorth);
+        }
+        else if (_roomType == RoomType.Gate){
+            if(gateEast && gateWest){
+                GenerateGate(Vector2.right, gateEast);
+                GenerateGate(Vector2.left, gateWest);
+            }
+            if(gateSouth && gateNorth){
+                GenerateGate(Vector2.down, gateSouth);
+                GenerateGate(Vector2.up, gateNorth);
+            }
+            /*
+            gate needs orientation to be flipped if the direction is vertical
+            */
+        }
     }
     private void GenerateWall(GameObject tile, Vector2Int vec2i){
             Instantiate(tile, _center + vec2i, 

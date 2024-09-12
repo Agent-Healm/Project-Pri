@@ -44,11 +44,8 @@ public class MapGeneration : MonoBehaviour
         _newPosition = _emptySpace[Random.Range(0, _emptySpace.Length)];
         ArrayUtility.Clear(ref _emptySpace);
 
-        // GenerateMainRoom("home");
         GenerateSideRoom("home", _newPosition * -1);
 
-        // transform.position -= _newPosition * tileSize;
-        // _newPosition *= -1;
     }
 
     void Update(){
@@ -151,8 +148,28 @@ public class MapGeneration : MonoBehaviour
             Quaternion.identity
         );
         if (_roomPos.Length >=1){
+            GameObject gate = FindRoom("path");
+            RoomGeneration roomGen = gate.GetComponent<RoomGeneration>();
+            roomGen.isVertical = false;
+
+            WallGeneration wallGate = gate.GetComponent<WallGeneration>();
+            wallGate.gateEast = false;
+            wallGate.gateWest = false;
+            wallGate.gateSouth = false;
+            wallGate.gateNorth = false;
+            
+            if(_newPosition.x == 0.0f){
+                wallGate.gateEast = true;
+                wallGate.gateWest = true;
+            }
+            else if (_newPosition.y == 0.0f){
+                wallGate.gateSouth = true;
+                wallGate.gateNorth = true;
+                roomGen.isVertical = true;
+            }
+
             Instantiate(
-                FindRoom("path"),
+                gate,
                 transform.position - _newPosition * tileSize * 0.5f,
                 Quaternion.identity
             );
@@ -165,6 +182,7 @@ public class MapGeneration : MonoBehaviour
         GameObject room = FindRoom(roomName);
 
         WallGeneration wall = room.GetComponent<WallGeneration>();
+
         wall.gateNorth = false;
         wall.gateEast = false;
         wall.gateSouth = false;
@@ -187,12 +205,33 @@ public class MapGeneration : MonoBehaviour
             transform.position + directionPos * tileSize,
             Quaternion.identity
         );
+
         if(_roomPos.Length >=1){
+            GameObject gate = FindRoom("path");
+            
+            RoomGeneration roomGen = gate.GetComponent<RoomGeneration>();
+            roomGen.isVertical = false;
+
+            WallGeneration wallGate = gate.GetComponent<WallGeneration>();
+            wallGate.gateEast = false;
+            wallGate.gateWest = false;
+            wallGate.gateSouth = false;
+            wallGate.gateNorth = false;
+
+            if(directionPos.x == 0.0f){
+                wallGate.gateEast = true;
+                wallGate.gateWest = true;
+            }
+            else if (directionPos.y == 0.0f){
+                wallGate.gateSouth = true;
+                wallGate.gateNorth = true;
+                roomGen.isVertical = true;
+            }
+            
             Instantiate(
-                FindRoom("path"),
+                gate,
                 transform.position + directionPos * tileSize * 0.5f,
                 Quaternion.identity
-                // Quaternion.FromToRotation(Vector3.right, directionPos)
             );
         }
         ArrayUtility.Add(ref _roomPos, transform.position + directionPos * tileSize);
