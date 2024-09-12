@@ -19,7 +19,7 @@ public class RoomGeneration : MonoBehaviour
     private Vector2 _center;
     private int _length;
     private int _width;
-    public bool isVertical;
+    public bool isVertical = false;
 
     // Start is called before the first frame update
     void Start()
@@ -44,10 +44,7 @@ public class RoomGeneration : MonoBehaviour
                 _width = width;
             }
         }
-        /*
-            need to somehow flip the length and width when the orientation is vertical
-        */
-
+        
         _center = transform.position;
         Vector2Int pos;
 
@@ -65,17 +62,4 @@ public class RoomGeneration : MonoBehaviour
 
     public int getLength(){return _length;}
     public int getWidth(){return _width;}
-    // public void setVertical(bool isVertical = false){
-    //     if ((roomType == RoomType.Gate)){
-    //         if (isVertical){
-    //             _length = width;
-    //             _width = length;
-    //         }
-    //         else if (!isVertical){
-    //             _length = length;
-    //             _width = width;
-    //         }
-    //     }
-    // }
-
 }

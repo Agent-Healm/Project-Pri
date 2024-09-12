@@ -126,6 +126,7 @@ public class MapGeneration : MonoBehaviour
         wall.gateEast = false;
         wall.gateSouth = false;
         wall.gateWest = false;
+
         if(ArrayUtility.FindIndex(_emptySpace, vec3 => vec3 == Vector3.up) != -1 || 
             (_newPosition  * -1) == Vector3.up){
                 wall.gateNorth = true;
@@ -159,12 +160,12 @@ public class MapGeneration : MonoBehaviour
             wallGate.gateNorth = false;
             
             if(_newPosition.x == 0.0f){
-                wallGate.gateEast = true;
-                wallGate.gateWest = true;
-            }
-            else if (_newPosition.y == 0.0f){
                 wallGate.gateSouth = true;
                 wallGate.gateNorth = true;
+            }
+            else if (_newPosition.y == 0.0f){
+                wallGate.gateEast = true;
+                wallGate.gateWest = true;
                 roomGen.isVertical = true;
             }
 
@@ -187,6 +188,7 @@ public class MapGeneration : MonoBehaviour
         wall.gateEast = false;
         wall.gateSouth = false;
         wall.gateWest = false;
+
         if((directionPos  * -1) == Vector3.up){
                 wall.gateNorth = true;
         }
@@ -219,12 +221,12 @@ public class MapGeneration : MonoBehaviour
             wallGate.gateNorth = false;
 
             if(directionPos.x == 0.0f){
-                wallGate.gateEast = true;
-                wallGate.gateWest = true;
-            }
-            else if (directionPos.y == 0.0f){
                 wallGate.gateSouth = true;
                 wallGate.gateNorth = true;
+            }
+            else if (directionPos.y == 0.0f){
+                wallGate.gateEast = true;
+                wallGate.gateWest = true;
                 roomGen.isVertical = true;
             }
             
@@ -284,10 +286,3 @@ public static class RoomUtility {
     }
 
 }
-
-/*
-mob room
-generate random number of sides
-generate room with that number of gates
-populate all sides and leave 1 for the next room
-*/
