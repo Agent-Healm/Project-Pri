@@ -68,6 +68,7 @@ public class MapGeneration : MonoBehaviour
         RoomUtility.getAdjacentVec3(ref _emptySpace, transform.position, _roomPos, tileSize);
 
         RoomUtility.Vec3Shuffle(ref _emptySpace);
+        RoomUtility.Vec3Reduce(ref _emptySpace, (_extraRooms.Length != 0));
 
         if (maxRooms > 1){
             GenerateMainRoom("mob");
@@ -80,8 +81,6 @@ public class MapGeneration : MonoBehaviour
         
         _newPosition = _emptySpace[0];
         ArrayUtility.Remove(ref _emptySpace, _newPosition);
-
-        RoomUtility.Vec3RandomErase(ref _emptySpace);
 
         if (_extraRooms.Length != 0){
 
@@ -223,10 +222,15 @@ public static class RoomUtility {
             }
         }
     }
-    public static void Vec3RandomErase(ref Vector3[] arr){
+    public static void Vec3Reduce(ref Vector3[] arr, bool needExtra = true){
+        if (!needExtra){
+            arr = new Vector3[]{arr[0]};
+            return;
+        }
+
         Vector3[] temp = arr;
         foreach(Vector3 vec3 in temp){
-            if (Random.Range(0, 2) == 0){
+            if (Random.Range(0, 3) == 0){
                 ArrayUtility.Remove(ref arr, vec3);
             }
             if(arr.Length == 1){break;}

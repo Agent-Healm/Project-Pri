@@ -8,4 +8,5 @@ public class TextureTheme : MonoBehaviour
     public GameObject gateTile;
     public GameObject torchTile;
     public GameObject wallTile;
+    public GameObject nullTile;
 }
