@@ -8,18 +8,15 @@ public enum RoomType {
 };
 public class RoomGeneration : MonoBehaviour
 {
-
-    public GameObject floorTile;
-    public GameObject gateTile;
-    public GameObject torchTile;
-    public GameObject wallTile;
+    public GameObject roomIcon;
     public RoomType roomType;
     public int length;
     public int width;
+    public bool isVertical = false;
     private Vector2 _center;
+
     private int _length;
     private int _width;
-    public bool isVertical = false;
 
     // Start is called before the first frame update
     void Start()
@@ -45,7 +42,7 @@ public class RoomGeneration : MonoBehaviour
         for (int w = 0 ; w < _width ; w++){
             for (int l = 0 ; l < _length ; l++){
                 pos = new Vector2Int(l - halfLength, halfWidth - w);
-                Instantiate(floorTile, _center + pos, Quaternion.identity, transform);
+                Instantiate(roomIcon, _center + pos, Quaternion.identity, transform);
             }
         }
 

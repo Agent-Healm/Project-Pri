@@ -15,15 +15,17 @@ public class WallGeneration : MonoBehaviour
     public bool gateSouth;
     public bool gateWest;
     public bool gateNorth;
+
     private GameObject _wallTile;
     private GameObject _gateTile;
     private int _length;
-    private int _width;
-    private RoomGeneration _roomGen;
-    private Vector2 _center;
-    private RoomType _roomType;
     private int _halfLength;
+    private int _width;
     private int _halfWidth;
+    private RoomType _roomType;
+    private Vector2 _center;
+    private RoomGeneration _roomGen;
+    private TextureTile texture;
 
     // Start is called before the first frame update
     void Start()
@@ -32,13 +34,15 @@ public class WallGeneration : MonoBehaviour
         _center = transform.position;
         Vector2Int pos;
         _roomGen = this.GetComponent<RoomGeneration>();
-
         _length = _roomGen.getLength();
         _width = _roomGen.getWidth();
-        
-        _wallTile = _roomGen.wallTile;
-        _gateTile = _roomGen.gateTile;
         _roomType = _roomGen.roomType;
+        
+        texture = GameObject.Find("Texture").GetComponent<TextureTile>();
+        // _wallTile = _roomGen.wallTile;
+        // _gateTile = _roomGen.gateTile;
+        _wallTile = texture.wallTile;
+        _gateTile = texture.gateTile;
 
         // offset for even sized room
         _halfLength = (_length - 1) / 2;
