@@ -87,78 +87,45 @@ public class WallGeneration : MonoBehaviour
         int i;
         Vector2Int pos;
         GameObject __tile = hasGate? _gateTile : _wallTile;
-        
-        // if (vec2 == Vector2.right){ 
-        //     //EAST
-        //     for (i = 0 ; i < _width ; i++){
-        //         pos = new Vector2Int(- _halfLength - 1 + _length + 1 , _halfWidth - i);
-        //         GenerateWall(__tile, pos);
-        //     }
-        // }
-        // else if (vec2 == Vector2.left){
-        //     //WEST
-        //     for (i = 0 ; i < _width ; i++){
-        //         pos = new Vector2Int(- _halfLength - 1, _halfWidth - i);
-        //         GenerateWall(__tile, pos);
-        //     }
-        // }
-        // else 
-        // if(vec2 == Vector2.up){
-        //     //NORTH
-        //     for (i = 0 ; i < _length ; i++){
-        //         pos = new Vector2Int(i - _halfLength, _halfWidth + 1);
-        //         GenerateWall(__tile, pos);
-        //     }
-        // }
-        // else if(vec2 == Vector2.down){
-        //     //SOUTH
-        //     for (i = 0 ; i < _length ; i++){
-        //         pos = new Vector2Int(i - _halfLength, _halfWidth  + 1 - _width - 1);
-        //         GenerateWall(__tile, pos);
-        //     }
-        // }
-        
 
-        // if (vec2.y == 0.0f){
-        //     int __xPos = - _halfLength - 1;
-        //     if (vec2.x == 1.0f){
-        //         __xPos += (_length + 1);
-        //     }
-        //     // HORIZONTAL
-        //     for (i = 0 ; i < _width ; i++){
-        //         pos = new Vector2Int(__xPos, _halfWidth - i);
-        //         GenerateWall(__tile, pos);
-        //     }
+        if (vec2.y == 0.0f){
+            int __xPos = - _halfLength - 1;
+            if (vec2.x == 1.0f){
+                __xPos += (_length + 1);
+            }
+            // HORIZONTAL
+            for (i = 0 ; i < _width ; i++){
+                pos = new Vector2Int(__xPos, _halfWidth - i);
+                GenerateWall(__tile, pos);
+            }
 
-        // }
-        // else 
+        }
+        else 
         if (vec2.x == 0.0f){
             int __yPos = _halfWidth + 1;
             if (vec2.y == -1.0f){
                 __yPos -= (_width + 1);
             }
             // VERTICAL
-            // if(vec2 == Vector2.up){
-            //     //NORTH
-            //     for (i = 0 ; i < _length ; i++){
-            //         pos = new Vector2Int(i - _halfLength, _halfWidth + 1);
-            //         GenerateWall(__tile, pos);
-            //     }
-            // }
-            // else if(vec2 == Vector2.down){
-            //     //SOUTH
-            //     for (i = 0 ; i < _length ; i++){
-            //         pos = new Vector2Int(i - _halfLength, _halfWidth  + 1 - _width - 1);
-            //         GenerateWall(__tile, pos);
-            //     }
-            // }
-
             for (i = 0 ; i < _length ; i++){
                 pos = new Vector2Int(i - _halfLength, __yPos);
                 GenerateWall(__tile, pos);
             }
 
         }
+    }
+
+    public void GateReset(){
+        gateEast = false;
+        gateSouth = false;
+        gateWest = false;
+        gateNorth = false;
+    }
+    public void setGate(Vector2 vec2, bool isGate){
+        if (vec2 == Vector2.up){gateNorth = isGate; return;}
+        if (vec2 == Vector2.right){gateEast = isGate; return;}
+        if (vec2 == Vector2.down){gateSouth = isGate; return;}
+        if (vec2 == Vector2.left){gateWest = isGate; return;}
     }
 
 }

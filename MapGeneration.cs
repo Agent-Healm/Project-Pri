@@ -121,28 +121,29 @@ public class MapGeneration : MonoBehaviour
     private void GenerateMainRoom(string roomName){
         GameObject room = FindRoom(roomName);
 
-        WallGeneration wall = room.GetComponent<WallGeneration>();
-        wall.gateNorth = false;
-        wall.gateEast = false;
-        wall.gateSouth = false;
-        wall.gateWest = false;
+        WallGeneration wallRoom = room.GetComponent<WallGeneration>();
+        wallRoom.GateReset();
 
-        if(ArrayUtility.FindIndex(_emptySpace, vec3 => vec3 == Vector3.up) != -1 || 
-            (_newPosition  * -1) == Vector3.up){
-                wall.gateNorth = true;
-        }
-        if(ArrayUtility.FindIndex(_emptySpace, vec3 => vec3 == Vector3.right) != -1 ||
-            (_newPosition  * -1) == Vector3.right){
-                wall.gateEast = true;
-        }
-        if(ArrayUtility.FindIndex(_emptySpace, vec3 => vec3 == Vector3.down) != -1 || 
-            (_newPosition  * -1) == Vector3.down){
-                wall.gateSouth= true;
-        }
-        if(ArrayUtility.FindIndex(_emptySpace, vec3 => vec3 == Vector3.left) != -1 || 
-            (_newPosition  * -1) == Vector3.left){
-                wall.gateWest = true;
-        }
+        // if(ArrayUtility.FindIndex(_emptySpace, vec3 => vec3 == Vector3.up) != -1 || 
+        //     (_newPosition  * -1) == Vector3.up){
+        //         wallRoom.gateNorth = true;
+        // }
+        // if(ArrayUtility.FindIndex(_emptySpace, vec3 => vec3 == Vector3.right) != -1 ||
+        //     (_newPosition  * -1) == Vector3.right){
+        //         wallRoom.gateEast = true;
+        // }
+        // if(ArrayUtility.FindIndex(_emptySpace, vec3 => vec3 == Vector3.down) != -1 || 
+        //     (_newPosition  * -1) == Vector3.down){
+        //         wallRoom.gateSouth= true;
+        // }
+        // if(ArrayUtility.FindIndex(_emptySpace, vec3 => vec3 == Vector3.left) != -1 || 
+        //     (_newPosition  * -1) == Vector3.left){
+        //         wallRoom.gateWest = true;
+        // }
+
+        foreach(Vector2 vec2 in _emptySpace){wallRoom.setGate(vec2, true);}
+        wallRoom.setGate(_newPosition * -1, true);
+
         Instantiate(
             room,
             transform.position,
@@ -154,20 +155,21 @@ public class MapGeneration : MonoBehaviour
             roomGen.isVertical = false;
 
             WallGeneration wallGate = gate.GetComponent<WallGeneration>();
-            wallGate.gateEast = false;
-            wallGate.gateWest = false;
-            wallGate.gateSouth = false;
-            wallGate.gateNorth = false;
+            wallGate.GateReset();
             
-            if(_newPosition.x == 0.0f){
-                wallGate.gateSouth = true;
-                wallGate.gateNorth = true;
-            }
-            else if (_newPosition.y == 0.0f){
-                wallGate.gateEast = true;
-                wallGate.gateWest = true;
-                roomGen.isVertical = true;
-            }
+            // if(_newPosition.x == 0.0f){
+            //     wallGate.gateSouth = true;
+            //     wallGate.gateNorth = true;
+            // }
+            // else if (_newPosition.y == 0.0f){
+            //     wallGate.gateEast = true;
+            //     wallGate.gateWest = true;
+            //     roomGen.isVertical = true;
+            // }
+
+            wallGate.setGate(_newPosition, true);
+            wallGate.setGate(_newPosition * -1, true);
+            if(_newPosition.y == 0.0f){roomGen.isVertical = true;}
 
             Instantiate(
                 gate,
@@ -182,25 +184,24 @@ public class MapGeneration : MonoBehaviour
     private void GenerateSideRoom(string roomName, Vector3 directionPos){
         GameObject room = FindRoom(roomName);
 
-        WallGeneration wall = room.GetComponent<WallGeneration>();
+        WallGeneration wallRoom = room.GetComponent<WallGeneration>();
 
-        wall.gateNorth = false;
-        wall.gateEast = false;
-        wall.gateSouth = false;
-        wall.gateWest = false;
+        wallRoom.GateReset();
 
-        if((directionPos  * -1) == Vector3.up){
-                wall.gateNorth = true;
-        }
-        if((directionPos  * -1) == Vector3.right){
-                wall.gateEast = true;
-        }
-        if((directionPos  * -1) == Vector3.down){
-                wall.gateSouth= true;
-        }
-        if((directionPos  * -1) == Vector3.left){
-                wall.gateWest = true;
-        }
+        // if((directionPos  * -1) == Vector3.up){
+        //         wallRoom.gateNorth = true;
+        // }
+        // if((directionPos  * -1) == Vector3.right){
+        //         wallRoom.gateEast = true;
+        // }
+        // if((directionPos  * -1) == Vector3.down){
+        //         wallRoom.gateSouth= true;
+        // }
+        // if((directionPos  * -1) == Vector3.left){
+        //         wallRoom.gateWest = true;
+        // }
+
+        wallRoom.setGate(directionPos * -1, true);
 
         Instantiate(
             room,
@@ -211,25 +212,26 @@ public class MapGeneration : MonoBehaviour
         if(_roomPos.Length >=1){
             GameObject gate = FindRoom("path");
             
-            RoomGeneration roomGen = gate.GetComponent<RoomGeneration>();
-            roomGen.isVertical = false;
+            RoomGeneration roomGate = gate.GetComponent<RoomGeneration>();
+            roomGate.isVertical = false;
 
             WallGeneration wallGate = gate.GetComponent<WallGeneration>();
-            wallGate.gateEast = false;
-            wallGate.gateWest = false;
-            wallGate.gateSouth = false;
-            wallGate.gateNorth = false;
+            wallGate.GateReset();
 
-            if(directionPos.x == 0.0f){
-                wallGate.gateSouth = true;
-                wallGate.gateNorth = true;
-            }
-            else if (directionPos.y == 0.0f){
-                wallGate.gateEast = true;
-                wallGate.gateWest = true;
-                roomGen.isVertical = true;
-            }
+            // if(directionPos.x == 0.0f){
+            //     wallGate.gateSouth = true;
+            //     wallGate.gateNorth = true;
+            // }
+            // else if (directionPos.y == 0.0f){
+            //     wallGate.gateEast = true;
+            //     wallGate.gateWest = true;
+            //     roomGate.isVertical = true;
+            // }
             
+            wallGate.setGate(directionPos, true);
+            wallGate.setGate(directionPos * -1, true);
+            if(directionPos.y == 0.0f){roomGate.isVertical = true;}
+
             Instantiate(
                 gate,
                 transform.position + directionPos * tileSize * 0.5f,

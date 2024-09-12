@@ -29,22 +29,13 @@ public class RoomGeneration : MonoBehaviour
             case RoomType.Gate : {this.name = "Gate"; break;}
         }
         
-        if((roomType == RoomType.Room)){
-            _length = length;
-            _width = width;
+        _length = length;
+        _width = width;
+        if ((roomType == RoomType.Gate) && isVertical){
+            _length = width;
+            _width = length;
         }
 
-        else if ((roomType == RoomType.Gate)){
-            if (isVertical){
-                _length = width;
-                _width = length;
-            }
-            else if (!isVertical){
-                _length = length;
-                _width = width;
-            }
-        }
-        
         _center = transform.position;
         Vector2Int pos;
 
