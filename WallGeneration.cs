@@ -34,6 +34,7 @@ public class WallGeneration : MonoBehaviour
 
         _center = transform.position;
         Vector2Int pos;
+
         _roomGen = this.GetComponent<RoomGeneration>();
         _length = _roomGen.getLength();
         _width = _roomGen.getWidth();
@@ -81,11 +82,8 @@ public class WallGeneration : MonoBehaviour
             }
         }
     }
-    private void GenerateWall(GameObject tile, Vector2Int vec2i){
-        Instantiate(tile, _center + vec2i, 
-                    Quaternion.identity, transform);
-    }
 
+    
     public void GenerateGate(Vector2 vec2, bool hasGate = false){
 
         int i;
@@ -119,10 +117,13 @@ public class WallGeneration : MonoBehaviour
                 pos = new Vector2Int(i - _halfLength, __yPos);
                 GenerateWall(__tile, pos);
             }
-
         }
-    }
 
+    }
+    private void GenerateWall(GameObject tile, Vector2Int vec2i){
+        Instantiate(tile, _center + vec2i, 
+                    Quaternion.identity, transform);
+    }
     public void GateReset(){
         gateEast = false;
         gateSouth = false;

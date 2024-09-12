@@ -29,10 +29,9 @@ public class MapGeneration : MonoBehaviour
                 for (int i = 1 ; i <= room.min ; i++){
                     ArrayUtility.Add(ref _extraRooms, room.name);
                 }
-                // for (int i = 1 ; i <= room.max - room.min ; i++){
-                //     ArrayUtility.Add(ref _extraRoomsMax, room.name);
-                //     Debug.Log("The room  " + room.name + "  has (i) more rooms : " + i);
-                // }
+                for (int i = 1 ; i <= room.max - room.min ; i++){
+                    ArrayUtility.Add(ref _extraRoomsMax, room.name);
+                }
             }
         }
 
@@ -92,7 +91,13 @@ public class MapGeneration : MonoBehaviour
                 GenerateSideRoom(room, 
                                 vec3);
 
-                if (_extraRooms.Length == 0){break;}
+                if (_extraRooms.Length == 0){
+                    if(_extraRoomsMax.Length != 0){
+                        ArrayUtility.AddRange(ref _extraRooms, _extraRoomsMax);
+                        ArrayUtility.Clear(ref _extraRoomsMax);
+                    }
+                    else {break;}
+                }
             }
         }
 
@@ -134,8 +139,8 @@ public class MapGeneration : MonoBehaviour
         if (_roomPos.Length >=1){
             GameObject gate = FindRoom("path");
             RoomGeneration roomGen = gate.GetComponent<RoomGeneration>();
-            roomGen.isVertical = false;
-            if(_newPosition.y == 0.0f){roomGen.isVertical = true;}
+            roomGen.isHorizontal = false;
+            if(_newPosition.x == 0.0f){roomGen.isHorizontal = true;}
 
             WallGeneration wallGate = gate.GetComponent<WallGeneration>();
             wallGate.GateReset();
@@ -169,8 +174,8 @@ public class MapGeneration : MonoBehaviour
             GameObject gate = FindRoom("path");
             
             RoomGeneration roomGate = gate.GetComponent<RoomGeneration>();
-            roomGate.isVertical = false;
-            if(directionPos.y == 0.0f){roomGate.isVertical = true;}
+            roomGate.isHorizontal = false;
+            if(directionPos.x == 0.0f){roomGate.isHorizontal = true;}
 
             WallGeneration wallGate = gate.GetComponent<WallGeneration>();
             wallGate.GateReset();
