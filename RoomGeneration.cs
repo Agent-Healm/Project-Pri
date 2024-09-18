@@ -14,8 +14,10 @@ public class RoomGeneration : MonoBehaviour
     private Vector2 _center;
     public GameObject roomIcon;
     public RoomType roomType;
-    private int _length;
-    private int _width;
+    
+    // readonly from public view, set-able in private view
+    public int _length {get; private set;}
+    public int _width {get; private set;}
 
     // Start is called before the first frame update
     void Awake(){
@@ -50,6 +52,4 @@ public class RoomGeneration : MonoBehaviour
 
     }
 
-    public int getLength(){return _length;}
-    public int getWidth(){return _width;}
 }

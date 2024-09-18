@@ -35,8 +35,8 @@ public class WallGeneration : MonoBehaviour
         Vector2Int pos;
 
         _roomGen = this.GetComponent<RoomGeneration>();
-        _length = _roomGen.getLength();
-        _width = _roomGen.getWidth();
+        _length = _roomGen._length;
+        _width = _roomGen._width;
         _roomType = _roomGen.roomType;
         
         _center = transform.position;
