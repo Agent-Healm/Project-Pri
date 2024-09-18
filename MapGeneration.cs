@@ -127,7 +127,6 @@ public class MapGeneration : MonoBehaviour
 
         WallGeneration wallRoom = room.GetComponent<WallGeneration>();
         wallRoom.GateReset();
-
         foreach(Vector2 vec2 in _emptySpace){wallRoom.setGate(vec2, true);}
         wallRoom.setGate(_newPosition * -1, true);
 
@@ -136,6 +135,7 @@ public class MapGeneration : MonoBehaviour
             transform.position,
             Quaternion.identity
         );
+        
         if (_roomPos.Length >=1){
             GameObject gate = FindRoom("path");
             RoomGeneration roomGen = gate.GetComponent<RoomGeneration>();
@@ -230,6 +230,7 @@ public static class RoomUtility {
     public static void Vec3Reduce(ref Vector3[] arr, bool needExtra = true){
         if (!needExtra){
             arr = new Vector3[]{arr[0]};
+            // Debug.Log("returned single vec3");
             return;
         }
 
@@ -238,7 +239,7 @@ public static class RoomUtility {
             if (Random.Range(0, 3) == 0){
                 ArrayUtility.Remove(ref arr, vec3);
             }
-            if(arr.Length == 1){break;}
+            if(arr.Length == 1){return;}
         }
     }
 

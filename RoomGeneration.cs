@@ -8,20 +8,17 @@ public enum RoomType {
 };
 public class RoomGeneration : MonoBehaviour
 {
-    public GameObject roomIcon;
-    public RoomType roomType;
+    public bool isHorizontal = false;
     public int length;
     public int width;
-    public bool isHorizontal = false;
     private Vector2 _center;
-
+    public GameObject roomIcon;
+    public RoomType roomType;
     private int _length;
     private int _width;
 
     // Start is called before the first frame update
-    void Start()
-    {
-
+    void Awake(){
         switch(roomType){
             case RoomType.Gate : {this.name = "Gate"; break;}
         }
@@ -33,9 +30,14 @@ public class RoomGeneration : MonoBehaviour
             _width = length;
         }
 
+    }
+    void Start()
+    {
+
         _center = transform.position;
         Vector2Int pos;
-
+        
+        // offset for even sized room
         int halfLength = (_length - 1) / 2;
         int halfWidth = (_width - 1) / 2;
 

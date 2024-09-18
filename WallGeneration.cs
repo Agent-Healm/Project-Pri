@@ -15,7 +15,7 @@ public class WallGeneration : MonoBehaviour
     public bool gateSouth;
     public bool gateWest;
     public bool gateNorth;
-
+    
     private GameObject _wallTile;
     private GameObject _gateTile;
     private GameObject _nullTile;
@@ -26,13 +26,12 @@ public class WallGeneration : MonoBehaviour
     private RoomType _roomType;
     private Vector2 _center;
     private RoomGeneration _roomGen;
-    private TextureTheme texture;
+    // private TextureTheme instance;
 
     // Start is called before the first frame update
     void Start()
     {
 
-        _center = transform.position;
         Vector2Int pos;
 
         _roomGen = this.GetComponent<RoomGeneration>();
@@ -40,14 +39,17 @@ public class WallGeneration : MonoBehaviour
         _width = _roomGen.getWidth();
         _roomType = _roomGen.roomType;
         
-        texture = GameObject.Find("Texture").GetComponent<TextureTheme>();
-        _wallTile = texture.wallTile;
-        _gateTile = texture.gateTile;
-        _nullTile = texture.nullTile;
-
-        // offset for even sized room
+        _center = transform.position;
+        _wallTile = TextureTheme.instance.wallTile;
+        _gateTile = TextureTheme.instance.gateTile;
+        _nullTile = TextureTheme.instance.nullTile;
         _halfLength = (_length - 1) / 2;
         _halfWidth = (_width - 1) / 2;
+
+        // Debug.Log("room size is : " + _length + " X " + _width);
+        
+        // textureInstance = GameObject.Find("Texture").GetComponent<TextureTheme>();
+        // instance = TextureTheme.instance;
 
         if (_roomType == RoomType.Room){
             pos = new Vector2Int(- 1 - _halfLength, _halfWidth + 1);
@@ -82,7 +84,6 @@ public class WallGeneration : MonoBehaviour
             }
         }
     }
-
     
     public void GenerateGate(Vector2 vec2, bool hasGate = false){
 
