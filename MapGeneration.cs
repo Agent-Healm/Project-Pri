@@ -135,7 +135,7 @@ public class MapGeneration : MonoBehaviour
             transform.position,
             Quaternion.identity
         );
-        
+
         if (_roomPos.Length >=1){
             GameObject gate = FindRoom("path");
             RoomGeneration roomGen = gate.GetComponent<RoomGeneration>();
@@ -236,10 +236,10 @@ public static class RoomUtility {
 
         Vector3[] temp = arr;
         foreach(Vector3 vec3 in temp){
-            if (Random.Range(0, 3) == 0){
+            if(arr.Length == 1){return;}
+            else if (Random.Range(0, 3) == 0){
                 ArrayUtility.Remove(ref arr, vec3);
             }
-            if(arr.Length == 1){return;}
         }
     }
 
