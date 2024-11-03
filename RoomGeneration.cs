@@ -37,15 +37,15 @@ public class RoomGeneration : MonoBehaviour
     {
 
         _center = transform.position;
-        Vector2Int pos;
+        Vector2 pos;
         
         // offset for even sized room
-        int halfLength = (_length - 1) / 2;
-        int halfWidth = (_width - 1) / 2;
-
+        float halfLength = (_length - 1.0f) / 2;
+        float halfWidth = (_width - 1.0f) / 2;
+        
         for (int w = 0 ; w < _width ; w++){
             for (int l = 0 ; l < _length ; l++){
-                pos = new Vector2Int(l - halfLength, halfWidth - w);
+                pos = new Vector2(l - halfLength, halfWidth - w);
                 Instantiate(roomIcon, _center + pos, Quaternion.identity, transform);
             }
         }
