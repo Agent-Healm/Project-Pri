@@ -13,6 +13,8 @@ public class MapGeneration : MonoBehaviour
     public int maxRooms = 3;
     public float tileSize = 1.0f;
 
+    private float _tempRoomLength; 
+    private float _tempRoomWidth;
     private float _timeRoomInterval = 0.0f;
     private string[] _extraRooms = new string[0];
     private string[] _extraRoomsMax = new string[0];
@@ -88,8 +90,8 @@ public class MapGeneration : MonoBehaviour
 
                 room = _extraRooms[Random.Range(0, _extraRooms.Length)];
                 ArrayUtility.Remove(ref _extraRooms, room);
-                GenerateSideRoom(room, 
-                                vec3);
+                // GenerateSideRoom(room, 
+                //                 vec3);
 
                 if (_extraRooms.Length == 0){
                     if(_extraRoomsMax.Length != 0){
@@ -123,8 +125,13 @@ public class MapGeneration : MonoBehaviour
     }
 
     private void GenerateMainRoom(string roomName){
+        
         GameObject room = FindRoom(roomName);
 
+        RoomGeneration roomGen = room.GetComponent<RoomGeneration>();
+        
+        _tempRoomLength += roomGen.length ;
+        _tempRoomWidth  += roomGen.width ;
         WallGeneration wallRoom = room.GetComponent<WallGeneration>();
         wallRoom.GateReset();
         foreach(Vector2 vec2 in _emptySpace){wallRoom.setGate(vec2, true);}
@@ -135,12 +142,19 @@ public class MapGeneration : MonoBehaviour
             transform.position,
             Quaternion.identity
         );
-
+        
         if (_roomPos.Length >=1){
             GameObject gate = FindRoom("path");
-            RoomGeneration roomGen = gate.GetComponent<RoomGeneration>();
-            roomGen.isVertical = false;
-            if(_newPosition.x == 0.0f){roomGen.isVertical = true;}
+            RoomGeneration gateGen = gate.GetComponent<RoomGeneration>();
+            // Debug.Log(_roomPos.Length + ". room size is : " + _tempRoomLength + " x " + _tempRoomWidth);
+            if(_newPosition.x == 0.0f){
+                gateGen.isVertical = true;
+                gateGen.length = (int)(tileSize - _tempRoomWidth / 2) - 2;
+            }
+            else{
+                gateGen.isVertical = false;
+                gateGen.length = (int)(tileSize - _tempRoomLength / 2) - 2;
+            }
 
             WallGeneration wallGate = gate.GetComponent<WallGeneration>();
             wallGate.GateReset();
@@ -149,11 +163,16 @@ public class MapGeneration : MonoBehaviour
 
             Instantiate(
                 gate,
-                transform.position - _newPosition * tileSize * 0.5f,
+                // transform.position - _newPosition * tileSize * 0.5f,
+                transform.position - _newPosition * ((roomGen.length + gateGen.length) * 0.5f + 1.0f),
                 Quaternion.identity
             );
         }
         
+        
+        _tempRoomLength = roomGen.length;
+        _tempRoomWidth  = roomGen.width;
+
         ArrayUtility.Add(ref _roomPos, transform.position);
     }
 
