@@ -10,5 +10,5 @@ public class Room
     public int min;
     public int max;
     public bool isIncluded; 
-    public GameObject roomObject;
+    public GameObject[] roomObjects;
 }

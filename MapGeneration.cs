@@ -118,7 +118,7 @@ public class MapGeneration : MonoBehaviour
             return FindRoom("null"); 
         }
         else {
-            return room.roomObject;
+            return room.roomObjects [Random.Range(0, room.roomObjects.Length)];
         }
     }
 
@@ -139,8 +139,8 @@ public class MapGeneration : MonoBehaviour
         if (_roomPos.Length >=1){
             GameObject gate = FindRoom("path");
             RoomGeneration roomGen = gate.GetComponent<RoomGeneration>();
-            roomGen.isHorizontal = false;
-            if(_newPosition.x == 0.0f){roomGen.isHorizontal = true;}
+            roomGen.isVertical = false;
+            if(_newPosition.x == 0.0f){roomGen.isVertical = true;}
 
             WallGeneration wallGate = gate.GetComponent<WallGeneration>();
             wallGate.GateReset();
@@ -174,8 +174,8 @@ public class MapGeneration : MonoBehaviour
             GameObject gate = FindRoom("path");
             
             RoomGeneration roomGate = gate.GetComponent<RoomGeneration>();
-            roomGate.isHorizontal = false;
-            if(directionPos.x == 0.0f){roomGate.isHorizontal = true;}
+            roomGate.isVertical = false;
+            if(directionPos.x == 0.0f){roomGate.isVertical = true;}
 
             WallGeneration wallGate = gate.GetComponent<WallGeneration>();
             wallGate.GateReset();

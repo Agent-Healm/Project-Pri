@@ -8,7 +8,7 @@ public enum RoomType {
 };
 public class RoomGeneration : MonoBehaviour
 {
-    public bool isHorizontal = false;
+    public bool isVertical = false;
     public int length;
     public int width;
     private Vector2 _center;
@@ -27,7 +27,7 @@ public class RoomGeneration : MonoBehaviour
         
         _length = length;
         _width = width;
-        if ((roomType == RoomType.Gate) && isHorizontal){
+        if ((roomType == RoomType.Gate) && isVertical){
             _length = width;
             _width = length;
         }
