@@ -77,9 +77,7 @@ public class MapGeneration : MonoBehaviour
             ArrayUtility.Clear(ref _emptySpace);
             GenerateAllRooms(1, "exit", _newPosition);
 
-            // foreach(Vector2 vec2 in _roomPos){
-            //     Debug.Log("Vector 2 world position at : " + vec2);
-            // }
+            RoomDebug.ShowRoomWorldPositions(_roomPos, true);
             return;
         }
         
@@ -129,25 +127,53 @@ public class MapGeneration : MonoBehaviour
 
     private void GenerateAllRooms(int type, string roomName, Vector3 facingPos){
         
-        Vector3 spawnPoint = transform.position;
         GameObject room = FindRoom(roomName);
+        float evenOffsetLength = 0.5f;
+        float evenOffsetWidth = 0.5f;
+
         RoomGeneration roomGen = room.GetComponent<RoomGeneration>();
         WallGeneration wallGen = room.GetComponent<WallGeneration>();
         wallGen.GateReset();
         wallGen.setGate(facingPos * -1, true);
-        
+
+        Vector3 spawnPoint = transform.position;
+
+        if (type == 2){spawnPoint += (facingPos * tileSize);}
+
+        if(_roomPos.Length > 0){
+            if((facingPos.x == 0.0f) && ((roomGen.width + _tempRoomWidth) % 2 != 0)){
+                if (type == 1){
+                    transform.position -= facingPos * evenOffsetWidth;
+                    spawnPoint = transform.position;
+                }
+                else if (type == 2){
+                    spawnPoint -= facingPos * evenOffsetWidth;
+                }
+            }
+            else if((facingPos.y == 0.0f) && ((roomGen.length + _tempRoomLength) % 2 != 0)){
+                if (type == 1){
+                    transform.position -= facingPos * evenOffsetLength;
+                    spawnPoint = transform.position;
+                }
+                else if(type == 2){
+                    spawnPoint -= facingPos * evenOffsetLength;
+                }
+            }   
+        }
+        // spawnPoint = transform.position;
+
         if (type == 1){
             foreach(Vector2 vec2 in _emptySpace){wallGen.setGate(vec2, true);}
             ArrayUtility.Add(ref _roomPos, _currentWorldPoint);
         }
         else if (type == 2){
-            spawnPoint += facingPos * tileSize;
+            // spawnPoint += (facingPos * tileSize);
+            // spawnPoint += (facingPos * (int)(tileSize - (roomGen.length + _tempRoomLength)%2));
             ArrayUtility.Add(ref _roomPos, _currentWorldPoint + (Vector2)facingPos);
         }
 
         Instantiate(
-            room,
-            spawnPoint,
+            room, spawnPoint,
             Quaternion.identity
         );
 
@@ -175,12 +201,23 @@ public class MapGeneration : MonoBehaviour
             wallGate.setGate(facingPos * -1, true);
 
             if (type == 1){
-                spawnPoint = transform.position - facingPos * ((roomGate.length + roomGen.length) * 0.5f + 1.0f);
                 _tempRoomLength = roomGen.length;
                 _tempRoomWidth  = roomGen.width;
+
+                if(facingPos.x == 0.0f){
+                    spawnPoint = transform.position - facingPos * ((roomGate.length + roomGen.width) * 0.5f + 1.0f);
+                }
+                else {
+                    spawnPoint = transform.position - facingPos * ((roomGate.length + roomGen.length) * 0.5f + 1.0f);
+                }
             }
             else if (type == 2){
-                spawnPoint = transform.position + facingPos * ((roomGate.length + _tempRoomLength) * 0.5f + 1.0f);
+                if (facingPos.x == 0.0f){
+                    spawnPoint = transform.position + facingPos * ((roomGate.length + _tempRoomWidth) * 0.5f + 1.0f);
+                }
+                else {
+                    spawnPoint = transform.position + facingPos * ((roomGate.length + _tempRoomLength) * 0.5f + 1.0f);
+                }
             }
             Instantiate(
                 gate, spawnPoint,
@@ -240,4 +277,25 @@ public static class RoomUtility {
         }
     }
 
+}
+
+public static class RoomDebug {
+    public static void ShowRoomWorldPositions(Vector2[] roomWorldCoordinates, bool isSimplified = false){
+        Vector2[] tempArray = new Vector2[0];
+        foreach(Vector2 vec2 in roomWorldCoordinates){
+            if (!isSimplified){
+                Debug.Log("Vector 2 world position at : " + vec2);
+            }
+            if (ArrayUtility.FindIndex(tempArray, x => x == vec2) == -1){
+                ArrayUtility.Add(ref tempArray, vec2);
+            }
+            else {
+                Debug.Log("Rooms overlapping at " + vec2);
+                ArrayUtility.Clear(ref tempArray);
+                return;
+            }
+        }
+        Debug.Log("Room Generated Successfully");
+        if(!isSimplified){Debug.Log("No overlapping happened");}
+    }
 }
