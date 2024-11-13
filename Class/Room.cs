@@ -43,7 +43,7 @@ public static class RoomUtility {
             arr[i] = temp;
         }
     }
-    public static void getAdjacentVec3(ref Vector3[] emptySpace, Vector3 currentPos, Vector2[] _roomPos, float tileSize){
+    public static void getAdjacentVec3(ref Vector3[] emptySpace, Vector3 currentPos, Vector2[] _roomPos, float tileSize = 1.0f){
         
         /// <summary>
         /// scanning empty spaces adjacent to the current tile position
@@ -71,7 +71,6 @@ public static class RoomUtility {
             }
         }
     }
-
 
 }
 
@@ -118,7 +117,6 @@ public static class RoomDebug {
         
         Debug.Log(string.Format("In total, this map has {0} of rooms", arr.Length));
     }
-
     public static int Count(string[] strArr, string str){
         int i = 0;
         foreach(string s in strArr){

@@ -42,7 +42,7 @@ public class MapGeneration : MonoBehaviour
 
         transform.position = startPos[0].position;
 
-        RoomUtility.getAdjacentVec3(ref _emptySpace, _currentWorldPoint, _roomPos, 1.0f);
+        RoomUtility.getAdjacentVec3(ref _emptySpace, _currentWorldPoint, _roomPos);
         _newPosition = _emptySpace[Random.Range(0, _emptySpace.Length)];
         ArrayUtility.Clear(ref _emptySpace);
 
@@ -66,7 +66,7 @@ public class MapGeneration : MonoBehaviour
         
         _emptySpace = new Vector3[0];
 
-        RoomUtility.getAdjacentVec3(ref _emptySpace, _currentWorldPoint, _roomPos, 1.0f);
+        RoomUtility.getAdjacentVec3(ref _emptySpace, _currentWorldPoint, _roomPos);
 
         RoomUtility.Vec3Shuffle(ref _emptySpace);
         RoomUtility.Vec3Reduce(ref _emptySpace, (_extraRooms.Length != 0));

@@ -2,10 +2,6 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public enum RoomType {
-    Room = 0,
-    Gate = 1
-};
 public class RoomGeneration : MonoBehaviour
 {
     public bool isVertical = false;
@@ -13,7 +9,7 @@ public class RoomGeneration : MonoBehaviour
     public int width;
     private Vector2 _center;
     public GameObject roomIcon;
-    public RoomType roomType;
+    public RoomUtility.RoomType roomType;
     
     // readonly from public view, set-able in private view
     public int _length {get; private set;}
@@ -22,12 +18,12 @@ public class RoomGeneration : MonoBehaviour
     // Start is called before the first frame update
     void Awake(){
         switch(roomType){
-            case RoomType.Gate : {this.name = "Gate"; break;}
+            case RoomUtility.RoomType.Gate : {this.name = "Gate"; break;}
         }
         
         _length = length;
         _width = width;
-        if ((roomType == RoomType.Gate) && isVertical){
+        if ((roomType == RoomUtility.RoomType.Gate) && isVertical){
             _length = width;
             _width = length;
         }

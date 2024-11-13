@@ -11,10 +11,10 @@ using UnityEngine;
 
 public class WallGeneration : MonoBehaviour
 {
-    public bool gateEast;
-    public bool gateSouth;
-    public bool gateWest;
-    public bool gateNorth;
+    public bool gateEast = false;
+    public bool gateSouth = false;
+    public bool gateWest = false;
+    public bool gateNorth = false;
     
     private GameObject _wallTile;
     private GameObject _gateTile;
@@ -23,7 +23,7 @@ public class WallGeneration : MonoBehaviour
     private float _halfWidth;
     private int _length;
     private int _width;
-    private RoomType _roomType;
+    private RoomUtility.RoomType _roomType;
     private Vector2 _center;
     private RoomGeneration _roomGen;
     // private TextureTheme instance;
@@ -47,11 +47,8 @@ public class WallGeneration : MonoBehaviour
         _halfWidth = (_width - 1.0f) / 2;
 
         // Debug.Log("room size is : " + _length + " X " + _width);
-        
-        // textureInstance = GameObject.Find("Texture").GetComponent<TextureTheme>();
-        // instance = TextureTheme.instance;
 
-        if (_roomType == RoomType.Room){
+        if (_roomType == RoomUtility.RoomType.Room){
             pos = new Vector2(- 1 - _halfLength, _halfWidth + 1);
             GenerateWall(_wallTile, pos); // Top Left Corner
 
@@ -66,13 +63,13 @@ public class WallGeneration : MonoBehaviour
 
         }
         
-        if (_roomType == RoomType.Room){
+        if (_roomType == RoomUtility.RoomType.Room){
             GenerateGate(Vector2.right, gateEast);
             GenerateGate(Vector2.left, gateWest);
             GenerateGate(Vector2.down, gateSouth);
             GenerateGate(Vector2.up, gateNorth);
         }
-        else if (_roomType == RoomType.Gate){
+        else if (_roomType == RoomUtility.RoomType.Gate){
             // if both direction is not a gate, generate wall
             if(!gateEast && !gateWest){
                 GenerateGate(Vector2.right, gateEast);
@@ -96,24 +93,46 @@ public class WallGeneration : MonoBehaviour
         }
         
         if (vec2.y == 0.0f){
-            float __xPos = - _halfLength - 1.0f;
-            if (vec2.x == 1.0f){
-                __xPos += (_length + 1.0f);
-            }
+            // float __xPos = - _halfLength - 1.0f;
+            // if (vec2.x == 1.0f){
+            //     __xPos += (_length + 1.0f);
+            // }
             // HORIZONTAL
+            // for (i = 0 ; i < _width ; i++){
+            //     pos = new Vector2(__xPos, _halfWidth - i);
+            //     GenerateWall(__tile, pos);
+            // }
+
+            float __posX;
+            if(vec2 == Vector2.left){   
+                __posX = - _halfLength - 1.0f;
+                // for (i = 0 ; i < _width ; i++){
+                //     pos = new Vector2(__xPos, _halfWidth - i);
+                //     GenerateWall(__tile, pos);
+                // }
+            }
+            else if(vec2 == Vector2.right){
+                __posX = _length - _halfLength;
+            }
             for (i = 0 ; i < _width ; i++){
                 pos = new Vector2(__xPos, _halfWidth - i);
                 GenerateWall(__tile, pos);
             }
-
         }
-        else 
-        if (vec2.x == 0.0f){
-            float __yPos = _halfWidth + 1.0f;
-            if (vec2.y == -1.0f){
-                __yPos -= (_width + 1.0f);
-            }
+        else if (vec2.x == 0.0f){
             // VERTICAL
+
+            float __posY;
+            if(vec2 == Vector2.up){
+                __posY = _halfWidth + 1.0f;
+                // for (i = 0 ; i < _length ; i++){
+                //     pos = new Vector2(i - _halfLength, __yPos);
+                //     GenerateWall(__tile, pos);
+                // }
+            }
+            else if (vec2 == Vector2.down){
+                __posY = _halfWidth - _width;
+            }
             for (i = 0 ; i < _length ; i++){
                 pos = new Vector2(i - _halfLength, __yPos);
                 GenerateWall(__tile, pos);
