@@ -9,7 +9,6 @@ using Random = UnityEngine.Random;
 public class MapGeneration : MonoBehaviour
 {
     public Transform[] startPos;
-    public Room[] rooms;
     public int maxRooms = 3;
     public float tileSize = 1.0f;
 
@@ -19,15 +18,19 @@ public class MapGeneration : MonoBehaviour
     private string[] _createdRooms = new string[0];
     private string[] _extraRooms = new string[0];
     private string[] _extraRoomsMax = new string[0];
+    private Room[] _rooms;
     private Vector2[] _roomPos = new Vector2[0];
     private Vector2 _currentWorldPoint = Vector2.zero;
     private Vector3[] _emptySpace = new Vector3[0];
     private Vector3 _newPosition;
 
+    void Awake(){
+        _rooms = RoomConfig.instance.rooms;
+    }
     // Start is called before the first frame update
     void Start()
     {
-        foreach(Room room in rooms){
+        foreach(Room room in _rooms){
             if(room.isIncluded){
                 for (int i = 1 ; i <= room.min ; i++){
                     ArrayUtility.Add(ref _extraRooms, room.name);
@@ -117,7 +120,7 @@ public class MapGeneration : MonoBehaviour
         /// <param name="roomName"></param>
         /// <return>A room GameObject</returns>
         
-        Room room = Array.Find(rooms, x => x.name == roomName);
+        Room room = Array.Find(_rooms, x => x.name == roomName);
         if (room == null){
             Debug.Log("The room "+ roomName +" not found");
             return FindRoom("null"); 

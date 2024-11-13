@@ -12,7 +12,7 @@ public class Room
     public string name;
     [Header("Number of rooms able to spawn (inclusive)")]
     public int min;
-    public int max;
+    public int max = 1;
     public bool isIncluded; 
     public GameObject[] roomObjects;
 }
