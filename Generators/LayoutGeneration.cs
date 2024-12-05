@@ -13,7 +13,7 @@ public class LayoutGeneration : MonoBehaviour
     void Start()
     {
 
-        Vector2Int pos;
+        Vector2 pos;
 
         _floorGen = this.GetComponent<FloorGeneration>();
         _length = _floorGen._length;
@@ -21,13 +21,13 @@ public class LayoutGeneration : MonoBehaviour
         _center = transform.position;
 
         // offset for even sized room
-        int halfLength = (_length - 1) / 2;
-        int halfWidth = (_width - 1) / 2;
+        float halfLength = (_length - 1) / 2.0f;
+        float halfWidth = (_width - 1) / 2.0f;
 
         for (int w = 0 ; w < _width ; w++){
             for (int l = 0 ; l < _length ; l++){
                 if((w + l) % 2 ==1){
-                    pos = new Vector2Int(l - halfLength, halfWidth - w);
+                    pos = new Vector2(l - halfLength, halfWidth - w);
                     Instantiate(TextureTheme.instance.wallTile, _center + pos, 
                                     Quaternion.identity, transform);
                 }
