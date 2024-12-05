@@ -24,12 +24,11 @@ public class MapGeneration : MonoBehaviour
     private Vector3[] _emptySpace = new Vector3[0];
     private Vector3 _newPosition;
 
-    void Awake(){
-        _rooms = RoomConfig.instance.rooms;
-    }
     // Start is called before the first frame update
     void Start()
     {
+        _rooms = RoomConfig.instance.rooms;
+
         foreach(Room room in _rooms){
             if(room.isIncluded){
                 for (int i = 1 ; i <= room.min ; i++){
@@ -47,7 +46,7 @@ public class MapGeneration : MonoBehaviour
 
         RoomUtility.getAdjacentVec3(ref _emptySpace, _currentWorldPoint, _roomPos);
         _newPosition = _emptySpace[Random.Range(0, _emptySpace.Length)];
-        ArrayUtility.Clear(ref _emptySpace);
+        // ArrayUtility.Clear(ref _emptySpace);
 
         GenerateAllRooms(RoomUtility.RoomType.Gate, "home", _newPosition * -1);
     }
@@ -217,4 +216,5 @@ public class MapGeneration : MonoBehaviour
             );
         }
     }
+
 }

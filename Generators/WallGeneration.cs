@@ -26,11 +26,6 @@ public class WallGeneration : MonoBehaviour
     private RoomUtility.RoomType _roomType;
     private Vector2 _center;
     private RoomGeneration _roomGen;
-    // private TextureTheme instance;
-
-    // void Awake(){
-    //     GateReset();
-    // }
     void Start()
     {
 
@@ -45,22 +40,22 @@ public class WallGeneration : MonoBehaviour
         _wallTile = TextureTheme.instance.wallTile;
         _gateTile = TextureTheme.instance.gateTile;
         _nullTile = TextureTheme.instance.nullTile;
-        _halfLength = (_length - 1.0f) / 2;
-        _halfWidth = (_width - 1.0f) / 2;
+        _halfLength = (_length + 1.0f) / 2;
+        _halfWidth = (_width + 1.0f) / 2;
 
         // Debug.Log("room size is : " + _length + " X " + _width);
 
         if (_roomType == RoomUtility.RoomType.Room){
-            pos = new Vector2(- 1 - _halfLength, _halfWidth + 1);
+            pos = new Vector2(- _halfLength, _halfWidth);
             GenerateWall(_wallTile, pos); // Top Left Corner
 
-            pos = new Vector2(_length - _halfLength, _halfWidth + 1);
+            pos = new Vector2(_halfLength, _halfWidth);
             GenerateWall(_wallTile, pos); // Top Right Corner
 
-            pos = new Vector2(_length - _halfLength, _halfWidth - _width);
+            pos = new Vector2(_halfLength, - _halfWidth);
             GenerateWall(_wallTile, pos); // Bottom Right Corner
                         
-            pos = new Vector2(- 1 - _halfLength, _halfWidth - _width);
+            pos = new Vector2(- _halfLength, - _halfWidth);
             GenerateWall(_wallTile, pos); // Bottom Left Corner
         }
         
@@ -70,6 +65,7 @@ public class WallGeneration : MonoBehaviour
             GenerateGate(Vector2.down, gateSouth);
             GenerateGate(Vector2.up, gateNorth);
         }
+        
         else if (_roomType == RoomUtility.RoomType.Gate){
             // if both direction is not a gate, generate wall
             if(!gateEast && !gateWest){
@@ -98,12 +94,12 @@ public class WallGeneration : MonoBehaviour
 
             float __posX = 0.0f;
             if(vec2 == Vector2.right){   
-                __posX = _halfLength + 1.0f;
+                __posX = _halfLength;
             }
             else if(vec2 == Vector2.left){
-                __posX = _halfLength - _length ;
+                __posX = - _halfLength;
             }
-            for (i = 0 ; i < _width ; i++){
+            for (i = 1 ; i <= _width ; i++){
                 pos = new Vector2(__posX, i - _halfWidth);
                 GenerateWall(__tile, pos);
             }
@@ -113,12 +109,12 @@ public class WallGeneration : MonoBehaviour
 
             float __posY = 0.0f;
             if(vec2 == Vector2.up){
-                __posY = _halfWidth + 1.0f;
+                __posY = _halfWidth;
             }
             else if (vec2 == Vector2.down){
-                __posY = _halfWidth - _width;
+                __posY = - _halfWidth;
             }
-            for (i = 0 ; i < _length ; i++){
+            for (i = 1 ; i <= _length ; i++){
                 pos = new Vector2(i - _halfLength, __posY);
                 GenerateWall(__tile, pos);
             }

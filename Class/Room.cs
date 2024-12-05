@@ -22,6 +22,7 @@ public static class RoomUtility {
     public enum RoomType {
         Room = 0,
         Gate = 1
+
     }
     public static IEnumerable<Vector3> adjacentDirection(){
         yield return Vector3.up;
