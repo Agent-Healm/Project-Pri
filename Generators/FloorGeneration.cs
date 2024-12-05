@@ -2,7 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class RoomGeneration : MonoBehaviour
+public class FloorGeneration : MonoBehaviour
 {
     public bool isVertical = false;
     public int length;

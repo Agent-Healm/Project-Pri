@@ -7,7 +7,7 @@ public class LayoutGeneration : MonoBehaviour
     private int _length;
     private int _width;
     private Vector2 _center;
-    private RoomGeneration _roomGen;
+    private FloorGeneration _floorGen;
 
     // Start is called before the first frame update
     void Start()
@@ -15,9 +15,9 @@ public class LayoutGeneration : MonoBehaviour
 
         Vector2Int pos;
 
-        _roomGen = this.GetComponent<RoomGeneration>();
-        _length = _roomGen._length;
-        _width = _roomGen._width;
+        _floorGen = this.GetComponent<FloorGeneration>();
+        _length = _floorGen._length;
+        _width = _floorGen._width;
         _center = transform.position;
 
         // offset for even sized room

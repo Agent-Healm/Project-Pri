@@ -136,7 +136,7 @@ public class MapGeneration : MonoBehaviour
 
         GameObject room = FindRoom(roomName);
 
-        RoomGeneration roomGen = room.GetComponent<RoomGeneration>();
+        FloorGeneration floorGen = room.GetComponent<FloorGeneration>();
         WallGeneration wallGen = room.GetComponent<WallGeneration>();
         wallGen.GateReset();
         wallGen.setGate(facingPos * -1, true);
@@ -144,10 +144,10 @@ public class MapGeneration : MonoBehaviour
         Vector3 spawnPoint = transform.position;
 
         if(_roomPos.Length > 0){
-            if((facingPos.x == 0.0f) && ((roomGen.width + _tempRoomWidth) % 2 != 0)){
+            if((facingPos.x == 0.0f) && ((floorGen.width + _tempRoomWidth) % 2 != 0)){
                 spawnPoint -= facingPos * evenOffsetWidth;
             }
-            else if((facingPos.y == 0.0f) && ((roomGen.length + _tempRoomLength) % 2 != 0)){
+            else if((facingPos.y == 0.0f) && ((floorGen.length + _tempRoomLength) % 2 != 0)){
                 spawnPoint -= facingPos * evenOffsetLength;
             }
         }
@@ -169,21 +169,21 @@ public class MapGeneration : MonoBehaviour
         RoomDebug.StoreRoom(ref _createdRooms, room.name);
 
         if (_roomPos.Length == 1){
-            _tempRoomLength = roomGen.length;
-            _tempRoomWidth  = roomGen.width;
+            _tempRoomLength = floorGen.length;
+            _tempRoomWidth  = floorGen.width;
         }
 
         else if(_roomPos.Length >=2){
             GameObject gate = FindRoom("path");
-            RoomGeneration roomGate = gate.GetComponent<RoomGeneration>();
+            FloorGeneration floorGate = gate.GetComponent<FloorGeneration>();
 
             if(facingPos.x == 0.0f){
-                roomGate.isVertical = true;
-                roomGate.length = (int)(tileSize - (_tempRoomWidth + roomGen.width) / 2) - 2;
+                floorGate.isVertical = true;
+                floorGate.length = (int)(tileSize - (_tempRoomWidth + floorGen.width) / 2) - 2;
             }
             else{
-                roomGate.isVertical = false;
-                roomGate.length = (int)(tileSize - (_tempRoomLength + roomGen.length) / 2) - 2;
+                floorGate.isVertical = false;
+                floorGate.length = (int)(tileSize - (_tempRoomLength + floorGen.length) / 2) - 2;
             }
             
             WallGeneration wallGate = gate.GetComponent<WallGeneration>();
@@ -192,22 +192,22 @@ public class MapGeneration : MonoBehaviour
             wallGate.setGate(facingPos * -1, true);
 
             if (roomType == RoomUtility.RoomType.Room){
-                _tempRoomLength = roomGen.length;
-                _tempRoomWidth  = roomGen.width;
+                _tempRoomLength = floorGen.length;
+                _tempRoomWidth  = floorGen.width;
 
                 if(facingPos.x == 0.0f){
-                    spawnPoint = transform.position - facingPos * ((roomGate.length + roomGen.width) * 0.5f + 1.0f);
+                    spawnPoint = transform.position - facingPos * ((floorGate.length + floorGen.width) * 0.5f + 1.0f);
                 }
                 else {
-                    spawnPoint = transform.position - facingPos * ((roomGate.length + roomGen.length) * 0.5f + 1.0f);
+                    spawnPoint = transform.position - facingPos * ((floorGate.length + floorGen.length) * 0.5f + 1.0f);
                 }
             }
             else if (roomType == RoomUtility.RoomType.Gate){
                 if (facingPos.x == 0.0f){
-                    spawnPoint = transform.position + facingPos * ((roomGate.length + _tempRoomWidth) * 0.5f + 1.0f);
+                    spawnPoint = transform.position + facingPos * ((floorGate.length + _tempRoomWidth) * 0.5f + 1.0f);
                 }
                 else {
-                    spawnPoint = transform.position + facingPos * ((roomGate.length + _tempRoomLength) * 0.5f + 1.0f);
+                    spawnPoint = transform.position + facingPos * ((floorGate.length + _tempRoomLength) * 0.5f + 1.0f);
                 }
             }
             Instantiate(

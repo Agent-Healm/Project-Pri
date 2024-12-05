@@ -25,16 +25,16 @@ public class WallGeneration : MonoBehaviour
     private int _width;
     private RoomUtility.RoomType _roomType;
     private Vector2 _center;
-    private RoomGeneration _roomGen;
+    private FloorGeneration _floorGen;
     void Start()
     {
 
         Vector2 pos;
 
-        _roomGen = this.GetComponent<RoomGeneration>();
-        _length = _roomGen._length;
-        _width = _roomGen._width;
-        _roomType = _roomGen.roomType;
+        _floorGen = this.GetComponent<FloorGeneration>();
+        _length = _floorGen._length;
+        _width = _floorGen._width;
+        _roomType = _floorGen.roomType;
         
         _center = transform.position;
         _wallTile = TextureTheme.instance.wallTile;
