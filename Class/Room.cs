@@ -19,10 +19,13 @@ public class Room
 
 
 public static class RoomUtility {
+    public enum LayoutType{
+        Path = 0,
+        Room = 1,
+    }
     public enum RoomType {
-        Room = 0,
-        Gate = 1
-
+        MainRoom = 0,
+        SideRoom = 1
     }
     public static IEnumerable<Vector3> adjacentDirection(){
         yield return Vector3.up;

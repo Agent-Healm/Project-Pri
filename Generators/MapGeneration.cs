@@ -48,7 +48,7 @@ public class MapGeneration : MonoBehaviour
         _newPosition = _emptySpace[Random.Range(0, _emptySpace.Length)];
         // ArrayUtility.Clear(ref _emptySpace);
 
-        GenerateAllRooms(RoomUtility.RoomType.Gate, "home", _newPosition * -1);
+        GenerateAllRooms(RoomUtility.RoomType.SideRoom, "home", _newPosition * -1);
     }
 
     void Update(){
@@ -74,11 +74,11 @@ public class MapGeneration : MonoBehaviour
         RoomUtility.Vec3Reduce(ref _emptySpace, (_extraRooms.Length != 0));
 
         if (maxRooms > 1){
-            GenerateAllRooms(RoomUtility.RoomType.Room, "mob", _newPosition);
+            GenerateAllRooms(RoomUtility.RoomType.MainRoom, "mob", _newPosition);
         }
         else if (maxRooms == 1){
             ArrayUtility.Clear(ref _emptySpace);
-            GenerateAllRooms(RoomUtility.RoomType.Room, "exit", _newPosition);
+            GenerateAllRooms(RoomUtility.RoomType.MainRoom, "exit", _newPosition);
 
             RoomDebug.ShowRoomWorldPositions(_roomPos, false);
             RoomDebug.ShowAllRooms(_createdRooms, true);
@@ -96,7 +96,7 @@ public class MapGeneration : MonoBehaviour
                 room = _extraRooms[Random.Range(0, _extraRooms.Length)];
                 ArrayUtility.Remove(ref _extraRooms, room);
 
-                GenerateAllRooms(RoomUtility.RoomType.Gate, room, vec3);
+                GenerateAllRooms(RoomUtility.RoomType.SideRoom, room, vec3);
 
                 if (_extraRooms.Length == 0){
                     if(_extraRoomsMax.Length != 0){
@@ -152,12 +152,12 @@ public class MapGeneration : MonoBehaviour
             }
         }
 
-        if (roomType == RoomUtility.RoomType.Room){
+        if (roomType == RoomUtility.RoomType.MainRoom){
             transform.position = spawnPoint;
             foreach(Vector2 vec2 in _emptySpace){wallGen.setGate(vec2, true);}
             ArrayUtility.Add(ref _roomPos, _currentWorldPoint);
         }
-        else if (roomType == RoomUtility.RoomType.Gate){
+        else if (roomType == RoomUtility.RoomType.SideRoom){
             spawnPoint += (facingPos * tileSize);
             ArrayUtility.Add(ref _roomPos, _currentWorldPoint + (Vector2)facingPos);
         }
@@ -191,7 +191,7 @@ public class MapGeneration : MonoBehaviour
             wallGate.setGate(facingPos, true);
             wallGate.setGate(facingPos * -1, true);
 
-            if (roomType == RoomUtility.RoomType.Room){
+            if (roomType == RoomUtility.RoomType.MainRoom){
                 _tempRoomLength = floorGen.length;
                 _tempRoomWidth  = floorGen.width;
 
@@ -202,7 +202,7 @@ public class MapGeneration : MonoBehaviour
                     spawnPoint = transform.position - facingPos * ((floorGate.length + floorGen.length) * 0.5f + 1.0f);
                 }
             }
-            else if (roomType == RoomUtility.RoomType.Gate){
+            else if (roomType == RoomUtility.RoomType.SideRoom){
                 if (facingPos.x == 0.0f){
                     spawnPoint = transform.position + facingPos * ((floorGate.length + _tempRoomWidth) * 0.5f + 1.0f);
                 }

@@ -23,7 +23,7 @@ public class WallGeneration : MonoBehaviour
     private float _halfWidth;
     private int _length;
     private int _width;
-    private RoomUtility.RoomType _roomType;
+    private RoomUtility.LayoutType _layoutType;
     private Vector2 _center;
     private FloorGeneration _floorGen;
     void Start()
@@ -34,7 +34,7 @@ public class WallGeneration : MonoBehaviour
         _floorGen = this.GetComponent<FloorGeneration>();
         _length = _floorGen._length;
         _width = _floorGen._width;
-        _roomType = _floorGen.roomType;
+        _layoutType = _floorGen.layoutType;
         
         _center = transform.position;
         _wallTile = TextureTheme.instance.wallTile;
@@ -45,7 +45,7 @@ public class WallGeneration : MonoBehaviour
 
         // Debug.Log("room size is : " + _length + " X " + _width);
 
-        if (_roomType == RoomUtility.RoomType.Room){
+        if (_layoutType == RoomUtility.LayoutType.Room){
             pos = new Vector2(- _halfLength, _halfWidth);
             GenerateWall(_wallTile, pos); // Top Left Corner
 
@@ -59,14 +59,14 @@ public class WallGeneration : MonoBehaviour
             GenerateWall(_wallTile, pos); // Bottom Left Corner
         }
         
-        if (_roomType == RoomUtility.RoomType.Room){
+        if (_layoutType == RoomUtility.LayoutType.Room){
             GenerateGate(Vector2.right, gateEast);
             GenerateGate(Vector2.left, gateWest);
             GenerateGate(Vector2.down, gateSouth);
             GenerateGate(Vector2.up, gateNorth);
         }
         
-        else if (_roomType == RoomUtility.RoomType.Gate){
+        else if (_layoutType == RoomUtility.LayoutType.Path){
             // if both direction is not a gate, generate wall
             if(!gateEast && !gateWest){
                 GenerateGate(Vector2.right, gateEast);

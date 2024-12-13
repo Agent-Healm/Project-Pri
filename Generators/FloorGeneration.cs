@@ -9,7 +9,7 @@ public class FloorGeneration : MonoBehaviour
     public int width;
     private Vector2 _center;
     public GameObject roomIcon;
-    public RoomUtility.RoomType roomType;
+    public RoomUtility.LayoutType layoutType;
     
     // readonly from public view, set-able in private view
     public int _length {get; private set;}
@@ -17,13 +17,17 @@ public class FloorGeneration : MonoBehaviour
 
     // Start is called before the first frame update
     void Awake(){
-        switch(roomType){
-            case RoomUtility.RoomType.Gate : {this.name = "Gate"; break;}
-        }
-        
+        // switch(layoutType){
+        //     case RoomUtility.LayoutType.Path : {this.name = "Path"; break;}
+        // }
+        this.name = layoutType switch {
+            RoomUtility.LayoutType.Path => "Path",
+            _ => this.name
+        };
+
         _length = length;
         _width = width;
-        if ((roomType == RoomUtility.RoomType.Gate) && isVertical){
+        if ((layoutType == RoomUtility.LayoutType.Path) && isVertical){
             _length = width;
             _width = length;
         }

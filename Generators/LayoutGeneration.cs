@@ -26,11 +26,12 @@ public class LayoutGeneration : MonoBehaviour
 
         for (int w = 0 ; w < _width ; w++){
             for (int l = 0 ; l < _length ; l++){
-                if((w + l) % 2 ==1){
-                    pos = new Vector2(l - halfLength, halfWidth - w);
-                    Instantiate(TextureTheme.instance.wallTile, _center + pos, 
-                                    Quaternion.identity, transform);
-                }
+                if (Mathf.Abs(w - halfWidth) <= 1){continue;}
+                if (Mathf.Abs(l - halfLength) <= 1){continue;}
+                // if((w + l) % 2 !=1){continue;}
+                pos = new Vector2(l - halfLength, halfWidth - w);
+                Instantiate(TextureTheme.instance.wallTile, _center + pos, 
+                                Quaternion.identity, transform);
                 
             }
         }
