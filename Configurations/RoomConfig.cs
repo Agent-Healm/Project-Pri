@@ -8,6 +8,9 @@ public class RoomConfig : MonoBehaviour
     public static RoomConfig instance;
     // Start is called before the first frame update
     void Awake(){
+        // set framerate limit
+        Application.targetFrameRate = 30;
+        
         if(instance == null){
             instance = this;
         }

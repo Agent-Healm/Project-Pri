@@ -17,32 +17,21 @@ public class Pathfinding : MonoBehaviour
     void Update()
     {
         distance = target.transform.position - transform.position;
-        if(distance.magnitude > 1.5){
+        if(distance.magnitude > 5.5){
             Walk();
         }
         else {
-            // Roam();
-            if (frame > 30){
+            if (frame > 10){
                 Attack();
                 frame = 0;
             }
-            // Attack();
             frame += 1;
         }
-        // if (frame >30){
-        //     // Roam(); 
-        //     Walk();
-        //     frame = 0;
-        // }
-        // frame +=1;
         
     }
 
     public void Walk(){
-        // pos = target.transform.position - transform.position;
-        // Debug.Log(pos.normalized);
-        transform.Translate(distance.normalized * 0.01f);
-        // transform.Translate(pos.normalized * 0.1f);
+        transform.Translate(distance.normalized * 0.08f);
 
     }
 
@@ -52,9 +41,11 @@ public class Pathfinding : MonoBehaviour
     }
 
     public void Attack(){
-        // Bullet bulletA = bullet;
-        // bulletA.direction = pos;
-        Instantiate(TextureTheme.instance.bulletTile, (Vector2)transform.position + distance.normalized * 0.4f, Quaternion.identity);
-        // distance.normalized * 0.1f
+        GameObject bulletA = TextureTheme.instance.bulletTile;
+        Bullet bullet = bulletA.GetComponent<Bullet>();
+        bullet.direction = distance.normalized;
+
+        Instantiate(bulletA, (Vector2)transform.position + distance.normalized * 0.5f, Quaternion.identity);        
+        
     }
 }

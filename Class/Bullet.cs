@@ -6,22 +6,22 @@ public class Bullet : MonoBehaviour
 {
     public Vector2 direction;
     public GameObject texture;
-    public float uptime = 3.0f;
+    public float uptime = 2.4f;
 
     private float _time;
 
     void Awake(){
-        // set framerate limit
-        Application.targetFrameRate = 30;
     }
     void Start(){
 
     }
     void Update(){
+        transform.Translate(direction * 0.08f);
         if ( _time >= uptime){
             Destroy(gameObject);
+            Debug.Log("despawned");
         }
-        _time += 0.03f;
+        _time += 0.04f;
     }
 
     private void OnTriggerEnter2D(Collider2D collision){
