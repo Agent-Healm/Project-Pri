@@ -4,9 +4,9 @@ using UnityEngine;
 
 public class Bullet : MonoBehaviour
 {
+    public int uptime = 60;
+    public int damage;
     public Vector2 direction;
-    public GameObject texture;
-    public float uptime = 2.4f;
 
     private float _time;
 
@@ -15,20 +15,37 @@ public class Bullet : MonoBehaviour
     void Start(){
 
     }
+    void FixedUpdate(){
+
+    }
     void Update(){
         transform.Translate(direction * 0.08f);
         if ( _time >= uptime){
             Destroy(gameObject);
             Debug.Log("despawned");
         }
-        _time += 0.04f;
+        _time += 1;
     }
 
-    private void OnTriggerEnter2D(Collider2D collision){
+    // only usable when two collider2D non trigger 
+    private void OnCollisionEnter2D(Collision2D other){
+        Debug.Log("collision triggered");
+        Debug.Log(other.gameObject.name);
+        // if (other.gameObject.CompareTag("wall")){
+        // if (other.gameObject.tag == "wall"){
+        //     Debug.Log("I hit a wall");
+        //     Destroy(gameObject);}
+    }
+
+    private void OnTriggerEnter2D(Collider2D other){
         // Debug.Log("hit");
-        if (collision.gameObject.name == "home"){
-            Hitpoint hpTarget = collision.gameObject.GetComponent<Hitpoint>();
-            hpTarget.TakeDamage(1);
+        // if (collision.collider){
+        if (other.gameObject.tag == "wall"){
+            Debug.Log("I hit a wall");
+            Destroy(gameObject);}
+        if (other.gameObject.name == "home"){
+            Hitpoint hpTarget = other.gameObject.GetComponent<Hitpoint>();
+            hpTarget.TakeDamage(damage);
 
             // Debug.Log("I hit something");
             Destroy(gameObject);

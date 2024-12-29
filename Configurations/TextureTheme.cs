@@ -9,7 +9,7 @@ public class TextureTheme : MonoBehaviour
     public GameObject torchTile;
     public GameObject wallTile;
     public GameObject nullTile;
-    public GameObject bulletTile;
+    // public GameObject bulletTile;
     public static TextureTheme instance;
 
     void Awake(){

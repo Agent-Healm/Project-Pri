@@ -5,6 +5,7 @@ using UnityEngine;
 public class Pathfinding : MonoBehaviour
 {
     public GameObject target;
+    public Bullet bullet;
     private int frame;
     private Vector2 distance;
     // Start is called before the first frame update
@@ -27,7 +28,6 @@ public class Pathfinding : MonoBehaviour
             }
             frame += 1;
         }
-        
     }
 
     public void Walk(){
@@ -41,11 +41,14 @@ public class Pathfinding : MonoBehaviour
     }
 
     public void Attack(){
-        GameObject bulletA = TextureTheme.instance.bulletTile;
-        Bullet bullet = bulletA.GetComponent<Bullet>();
+        // GameObject bulletA = TextureTheme.instance.bulletTile;
+        // Bullet bullet = bulletA.GetComponent<Bullet>();
+
         bullet.direction = distance.normalized;
 
-        Instantiate(bulletA, (Vector2)transform.position + distance.normalized * 0.5f, Quaternion.identity);        
+        Instantiate(bullet, (Vector2)transform.position + distance.normalized * 0.5f, Quaternion.identity);        
         
     }
+    
+
 }
