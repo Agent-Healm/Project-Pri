@@ -27,8 +27,12 @@ public class Bullet : MonoBehaviour
     private void OnTriggerEnter2D(Collider2D collision){
         // Debug.Log("hit");
         if (collision.gameObject.name == "home"){
-            Debug.Log("I hit something");
+            Hitpoint hpTarget = collision.gameObject.GetComponent<Hitpoint>();
+            hpTarget.TakeDamage(1);
+
+            // Debug.Log("I hit something");
             Destroy(gameObject);
+
         }
     }
 }
