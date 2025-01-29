@@ -14,58 +14,54 @@ public class MapGeneration : MonoBehaviour
 
     private float _tempRoomLength; 
     private float _tempRoomWidth;
-    private float _timeRoomInterval = 0.0f;
-    private string[] _createdRooms = new string[0];
+    private float _tempRoomInterval = 0.0f;
+    private string[] _debug_createdRooms = new string[0];
     private string[] _extraRooms = new string[0];
     private string[] _extraRoomsMax = new string[0];
     private Room[] _rooms;
     private Vector2[] _roomPos = new Vector2[0];
     private Vector2 _currentWorldPoint = Vector2.zero;
     private Vector3[] _emptySpace = new Vector3[0];
-    private Vector3 _newPosition;
+    private Vector3 _newFacing;
 
     // Start is called before the first frame update
     void Start()
     {
-        _rooms = RoomConfig.instance.rooms;
-
-        foreach(Room room in _rooms){
-            if(room.isIncluded){
-                for (int i = 1 ; i <= room.min ; i++){
-                    ArrayUtility.Add(ref _extraRooms, room.name);
-                }
-                for (int i = 1 ; i <= room.max - room.min ; i++){
-                    ArrayUtility.Add(ref _extraRoomsMax, room.name);
-                }
-            }
-        }
-
-        if (maxRooms <=1){maxRooms = 2;}
-
+        InitialRoomAssign();
         transform.position = startPos[0].position;
 
         RoomUtility.getAdjacentVec3(ref _emptySpace, _currentWorldPoint, _roomPos);
-        _newPosition = _emptySpace[Random.Range(0, _emptySpace.Length)];
+        _newFacing = _emptySpace[Random.Range(0, _emptySpace.Length)];
         // ArrayUtility.Clear(ref _emptySpace);
 
-        GenerateAllRooms(RoomUtility.RoomType.SideRoom, "home", _newPosition * -1);
+        GenerateAllRooms(RoomUtility.RoomType.SideRoom, "home", _newFacing * -1);
     }
 
     void Update(){
         if(maxRooms > 0){
-            if(_timeRoomInterval <= 0 ){
+            if(_tempRoomInterval <= 0 ){
                 procGenRoom();
-                _timeRoomInterval = 0.1f;
+                _tempRoomInterval = 0.2f;
                 maxRooms -= 1;
             }
             else {
-                _timeRoomInterval -= Time.deltaTime;
+                _tempRoomInterval -= Time.deltaTime;
             }
         }
     }
-
-    private void procGenRoom(){
+    private GameObject FindRoom(string roomName){
         
+        Room room = Array.Find(_rooms, x => x.name == roomName);
+        if (room == null){
+            Debug.Log("The room "+ roomName +" not found");
+            return FindRoom("null"); 
+        }
+        else {
+            return room.roomObjects [Random.Range(0, room.roomObjects.Length)];
+        }
+    }
+    private void procGenRoom(){
+
         _emptySpace = new Vector3[0];
 
         RoomUtility.getAdjacentVec3(ref _emptySpace, _currentWorldPoint, _roomPos);
@@ -74,27 +70,28 @@ public class MapGeneration : MonoBehaviour
         RoomUtility.Vec3Reduce(ref _emptySpace, (_extraRooms.Length != 0));
 
         if (maxRooms > 1){
-            GenerateAllRooms(RoomUtility.RoomType.MainRoom, "mob", _newPosition);
+            GenerateAllRooms(RoomUtility.RoomType.MainRoom, "mob", _newFacing);
         }
         else if (maxRooms == 1){
             ArrayUtility.Clear(ref _emptySpace);
-            GenerateAllRooms(RoomUtility.RoomType.MainRoom, "exit", _newPosition);
+            GenerateAllRooms(RoomUtility.RoomType.MainRoom, "exit", _newFacing);
 
             RoomDebug.ShowRoomWorldPositions(_roomPos, false);
-            RoomDebug.ShowAllRooms(_createdRooms, true);
+            RoomDebug.ShowAllRooms(_debug_createdRooms, true);
             return;
         }
         
-        _newPosition = _emptySpace[0];
-        ArrayUtility.Remove(ref _emptySpace, _newPosition);
+        // _newFacing = _emptySpace[0];
+        // ArrayUtility.Remove(ref _emptySpace, _newFacing);
+        // _emptySpace = _emptySpace[1..];
+        _newFacing = RoomUtility.PopArray(ref _emptySpace, -1);
 
         if (_extraRooms.Length != 0){
 
             string room;
             foreach(Vector3 vec3 in _emptySpace){
 
-                room = _extraRooms[Random.Range(0, _extraRooms.Length)];
-                ArrayUtility.Remove(ref _extraRooms, room);
+                room = RoomUtility.PopArray(ref _extraRooms, -1);
 
                 GenerateAllRooms(RoomUtility.RoomType.SideRoom, room, vec3);
 
@@ -108,27 +105,16 @@ public class MapGeneration : MonoBehaviour
             }
         }
 
-        transform.position += _newPosition * tileSize;
-        _currentWorldPoint += (Vector2)_newPosition;
+        transform.position += _newFacing * tileSize;
+        _currentWorldPoint += (Vector2)_newFacing;
     }
-
-    private GameObject FindRoom(string roomName){
-        /// <summary>
-        /// Find room based on the names defined in the unity
-        /// </summary>
-        /// <param name="roomName"></param>
-        /// <return>A room GameObject</returns>
-        
-        Room room = Array.Find(_rooms, x => x.name == roomName);
-        if (room == null){
-            Debug.Log("The room "+ roomName +" not found");
-            return FindRoom("null"); 
-        }
-        else {
-            return room.roomObjects [Random.Range(0, room.roomObjects.Length)];
-        }
-    }
-
+    
+    /// <summary>
+    /// Return the RoomObject using name
+    /// </summary>
+    /// <remarks>Find the room based on its name</remarks>
+    /// <param name="roomName">Literal string of a room name.</param>
+    /// <returns>A Room GameObject if found</returns>
     private void GenerateAllRooms(RoomUtility.RoomType roomType, string roomName, Vector3 facingPos){
         
         float evenOffsetLength = 0.5f;
@@ -166,7 +152,7 @@ public class MapGeneration : MonoBehaviour
             room, spawnPoint,
             Quaternion.identity
         );
-        RoomDebug.StoreRoom(ref _createdRooms, room.name);
+        RoomDebug.StoreRoom(ref _debug_createdRooms, room.name);
 
         if (_roomPos.Length == 1){
             _tempRoomLength = floorGen.length;
@@ -214,6 +200,24 @@ public class MapGeneration : MonoBehaviour
                 gate, spawnPoint,
                 Quaternion.identity
             );
+        }
+    }
+
+    private void InitialRoomAssign(){
+
+        if (maxRooms <=1){maxRooms = 2;}
+
+        _rooms = RoomConfig.instance.rooms;
+        
+        foreach(Room room in _rooms){
+            if(room.isIncluded){
+                for (int i = 1 ; i <= room.min ; i++){
+                    ArrayUtility.Add(ref _extraRooms, room.name);
+                }
+                for (int i = 1 ; i <= room.max - room.min ; i++){
+                    ArrayUtility.Add(ref _extraRoomsMax, room.name);
+                }
+            }
         }
     }
 

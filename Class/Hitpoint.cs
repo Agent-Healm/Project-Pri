@@ -36,6 +36,12 @@ public class Hitpoint : MonoBehaviour
         _timer +=1;
     }
 
+    /// <summary>
+    /// Regenerates the armor points of the entity by 1.
+    /// </summary>
+    /// <remarks>
+    /// This method increases the armor points and logs the current armor value.
+    /// </remarks>
     public void ArmorRegeneration(){
         _armorPoint += 1;
         Debug.Log("Armor is healing : " + _armorPoint);
