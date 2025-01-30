@@ -15,7 +15,6 @@ public class FloorGeneration : MonoBehaviour
     public int _length {get; private set;}
     public int _width {get; private set;}
 
-    // Start is called before the first frame update
     void Awake(){
         // switch(layoutType){
         //     case RoomUtility.LayoutType.Path : {this.name = "Path"; break;}

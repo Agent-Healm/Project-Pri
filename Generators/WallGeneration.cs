@@ -2,13 +2,6 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-// public enum GateOrientation {
-//     East = 0,
-//     South = 1,
-//     West = 2,
-//     North = 3
-// }
-
 public class WallGeneration : MonoBehaviour
 {
     public bool gateEast = false;
@@ -34,37 +27,33 @@ public class WallGeneration : MonoBehaviour
         _width = _floorGen._width;
         _layoutType = _floorGen.layoutType;
         
-        _center = transform.position;
         _wallTile = TextureTheme.instance.wallTile;
         _gateTile = TextureTheme.instance.gateTile;
         _nullTile = TextureTheme.instance.nullTile;
+        _center = transform.position;
         _halfLength = (_length + 1.0f) / 2;
         _halfWidth = (_width + 1.0f) / 2;
 
         if (_layoutType == RoomUtility.LayoutType.Room){
 
             _GenerateCorners();
-            GenerateGate(Vector2.right, gateEast);
-            GenerateGate(Vector2.left, gateWest);
-            GenerateGate(Vector2.down, gateSouth);
-            GenerateGate(Vector2.up, gateNorth);
+            _GenerateGate(Vector2.right, gateEast);
+            _GenerateGate(Vector2.left, gateWest);
+            _GenerateGate(Vector2.down, gateSouth);
+            _GenerateGate(Vector2.up, gateNorth);
         }
         
         else if (_layoutType == RoomUtility.LayoutType.Path){
             // if both direction is not a gate, generate wall
             if(!gateEast && !gateWest){
-                GenerateGate(Vector2.right, gateEast);
-                GenerateGate(Vector2.left, gateWest);
+                _GenerateGate(Vector2.right, gateEast);
+                _GenerateGate(Vector2.left, gateWest);
             }
             if(!gateSouth && !gateNorth){
-                GenerateGate(Vector2.down, gateSouth);
-                GenerateGate(Vector2.up, gateNorth);
+                _GenerateGate(Vector2.down, gateSouth);
+                _GenerateGate(Vector2.up, gateNorth);
             }
         }
-    }
-    private void _GenerateWall(GameObject tile, float xPos, float yPos){
-        Instantiate(tile, _center + new Vector2(xPos, yPos), 
-                    Quaternion.identity, transform);
     }
     private void _GenerateCorners(){        
         _GenerateWall(_wallTile, - _halfLength, _halfWidth); // Top Left Corner
@@ -72,12 +61,14 @@ public class WallGeneration : MonoBehaviour
         _GenerateWall(_wallTile, _halfLength, - _halfWidth); // Bottom Right Corner                        
         _GenerateWall(_wallTile, - _halfLength, - _halfWidth); // Bottom Left Corner
     }
+    private void _GenerateWall(GameObject tile, float xPos, float yPos){
+        Instantiate(tile, _center + new Vector2(xPos, yPos), 
+                    Quaternion.identity, transform);
+    }
     
-    public void GenerateGate(Vector2 vec2, bool hasGate = false){
+    private void _GenerateGate(Vector2 vec2, bool hasGate = false){
 
-        int i;
         GameObject __tile = hasGate? _gateTile : _wallTile;
-
         if (__tile == null){
             __tile = _nullTile;
         }
@@ -92,7 +83,7 @@ public class WallGeneration : MonoBehaviour
             else if(vec2 == Vector2.left){
                 __posX = - _halfLength;
             }
-            for (i = 1 ; i <= _width ; i++){
+            for (int i = 1 ; i <= _width ; i++){
                 _GenerateWall(__tile, __posX, i - _halfWidth);
             }
         }
@@ -106,7 +97,7 @@ public class WallGeneration : MonoBehaviour
             else if (vec2 == Vector2.down){
                 __posY = - _halfWidth;
             }
-            for (i = 1 ; i <= _length ; i++){
+            for (int i = 1 ; i <= _length ; i++){
                 _GenerateWall(__tile, i - _halfLength, __posY);
             }
         }
