@@ -50,7 +50,6 @@ public static class RoomUtility {
     /// <summary>
     /// Shuffles an array of Vector3
     /// </summary>
-    
     public static void Vec3Shuffle(ref Vector3[] arr){
         int rand;
         Vector3 temp;

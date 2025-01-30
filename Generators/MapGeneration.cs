@@ -49,6 +49,12 @@ public class MapGeneration : MonoBehaviour
             }
         }
     }
+    /// <summary>
+    /// Return the RoomObject using name
+    /// </summary>
+    /// <remarks>Find the room based on its name</remarks>
+    /// <param name="roomName">Literal string of a room name.</param>
+    /// <returns>A Room GameObject if found</returns>
     private GameObject FindRoom(string roomName){
         
         Room room = Array.Find(_rooms, x => x.name == roomName);
@@ -81,9 +87,6 @@ public class MapGeneration : MonoBehaviour
             return;
         }
         
-        // _newFacing = _emptySpace[0];
-        // ArrayUtility.Remove(ref _emptySpace, _newFacing);
-        // _emptySpace = _emptySpace[1..];
         _newFacing = RoomUtility.PopArray(ref _emptySpace, -1);
 
         if (_extraRooms.Length != 0){
@@ -107,16 +110,165 @@ public class MapGeneration : MonoBehaviour
 
         transform.position += _newFacing * tileSize;
         _currentWorldPoint += (Vector2)_newFacing;
-    }
-    
-    /// <summary>
-    /// Return the RoomObject using name
-    /// </summary>
-    /// <remarks>Find the room based on its name</remarks>
-    /// <param name="roomName">Literal string of a room name.</param>
-    /// <returns>A Room GameObject if found</returns>
+    } 
     private void GenerateAllRooms(RoomUtility.RoomType roomType, string roomName, Vector3 facingPos){
+
+        // GenerateRoom(roomType, roomName, facingPos);
+        // GeneratePath(roomType, facingPos);
         
+        float evenOffsetLength = 0.5f;
+        float evenOffsetWidth = 0.5f;
+
+        GameObject room = FindRoom(roomName);
+
+        FloorGeneration floorGen = room.GetComponent<FloorGeneration>();
+        WallGeneration wallGen = room.GetComponent<WallGeneration>();
+        wallGen.GateReset();
+        wallGen.setGate(facingPos * -1, true);
+
+        Vector3 spawnPoint = transform.position;
+
+        if(_roomPos.Length > 0){
+            if((facingPos.x == 0.0f) && ((floorGen.width + _tempRoomWidth) % 2 != 0)){
+                spawnPoint -= facingPos * evenOffsetWidth;
+            }
+            else if((facingPos.y == 0.0f) && ((floorGen.length + _tempRoomLength) % 2 != 0)){
+                spawnPoint -= facingPos * evenOffsetLength;
+            }
+        }
+
+        if (roomType == RoomUtility.RoomType.MainRoom){
+            // reset position for offset 
+            transform.position = spawnPoint;
+            foreach(Vector2 vec2 in _emptySpace){wallGen.setGate(vec2, true);}
+            ArrayUtility.Add(ref _roomPos, _currentWorldPoint);
+        }
+        else if (roomType == RoomUtility.RoomType.SideRoom){
+            spawnPoint += (facingPos * tileSize);
+            ArrayUtility.Add(ref _roomPos, _currentWorldPoint + (Vector2)facingPos);
+        }
+
+        Instantiate(
+            room, spawnPoint,
+            Quaternion.identity
+        );
+        RoomDebug.StoreRoom(ref _debug_createdRooms, room.name);
+
+        if (_roomPos.Length == 1){
+            _tempRoomWidth  = floorGen.width;
+            _tempRoomLength = floorGen.length;
+        }
+        // else 
+        
+        if(_roomPos.Length >=2){
+            GameObject gate = FindRoom("path");
+            FloorGeneration floorGate = gate.GetComponent<FloorGeneration>();
+
+            // dynamic length of the gate and orientation
+            if(facingPos.x == 0.0f){
+                floorGate.isVertical = true;
+                floorGate.length = (int)(tileSize - (_tempRoomWidth + floorGen.width) / 2) - 2;
+            }
+            else{
+                floorGate.isVertical = false;
+                floorGate.length = (int)(tileSize - (_tempRoomLength + floorGen.length) / 2) - 2;
+            }
+            
+            WallGeneration wallGate = gate.GetComponent<WallGeneration>();
+            wallGate.GateReset();
+            wallGate.setGate(facingPos, true);
+            wallGate.setGate(facingPos * -1, true);
+
+            // if (roomType == RoomUtility.RoomType.MainRoom){
+            //     _tempRoomLength = floorGen.length;
+            //     _tempRoomWidth  = floorGen.width;
+
+            //     if(facingPos.x == 0.0f){
+            //         spawnPoint = transform.position - facingPos * ((floorGate.length + _tempRoomWidth) * 0.5f + 1.0f);
+            //     }
+            //     else {
+            //         spawnPoint = transform.position - facingPos * ((floorGate.length + _tempRoomLength) * 0.5f + 1.0f);
+            //     }
+            // }
+            // else if (roomType == RoomUtility.RoomType.SideRoom){
+            //     if (facingPos.x == 0.0f){
+            //         spawnPoint = transform.position + facingPos * ((floorGate.length + _tempRoomWidth) * 0.5f + 1.0f);
+            //     }
+            //     else {
+            //         spawnPoint = transform.position + facingPos * ((floorGate.length + _tempRoomLength) * 0.5f + 1.0f);
+            //     }
+            // }
+
+            if (roomType == RoomUtility.RoomType.MainRoom){
+                _tempRoomLength = floorGen.length;
+                _tempRoomWidth  = floorGen.width;
+                facingPos = - facingPos;
+            }
+
+            if(facingPos.x == 0.0f){
+                spawnPoint = transform.position + facingPos * ((floorGate.length + _tempRoomWidth) * 0.5f + 1.0f);
+            }
+            else {
+                spawnPoint = transform.position + facingPos * ((floorGate.length + _tempRoomLength) * 0.5f + 1.0f);
+            }
+
+            Instantiate(
+                gate, spawnPoint,
+                Quaternion.identity
+            );
+        }
+        
+    }    
+    private void GeneratePath(RoomUtility.RoomType roomType, Vector3 facingPos){
+        Vector2 spawnPoint = transform.position;
+        FloorGeneration floorGen = FindRoom("path").GetComponent<FloorGeneration>();
+
+        if(_roomPos.Length >=2){
+            GameObject gate = FindRoom("path");
+            FloorGeneration floorGate = gate.GetComponent<FloorGeneration>();
+
+            // dynamic length of the gate
+            // if(facingPos.x == 0.0f){
+            //     floorGate.isVertical = true;
+            //     floorGate.length = (int)(tileSize - (_tempRoomWidth + floorGen.width) / 2) - 2;
+            // }
+            // else{
+            //     floorGate.isVertical = false;
+            //     floorGate.length = (int)(tileSize - (_tempRoomLength + floorGen.length) / 2) - 2;
+            // }
+            
+            WallGeneration wallGate = gate.GetComponent<WallGeneration>();
+            wallGate.GateReset();
+            wallGate.setGate(facingPos, true);
+            wallGate.setGate(facingPos * -1, true);
+
+            if (roomType == RoomUtility.RoomType.MainRoom){
+                _tempRoomLength = floorGen.length;
+                _tempRoomWidth  = floorGen.width;
+
+                if(facingPos.x == 0.0f){
+                    spawnPoint = transform.position - facingPos * ((floorGate.length + floorGen.width) * 0.5f + 1.0f);
+                }
+                else {
+                    spawnPoint = transform.position - facingPos * ((floorGate.length + floorGen.length) * 0.5f + 1.0f);
+                }
+            }
+            else if (roomType == RoomUtility.RoomType.SideRoom){
+                if (facingPos.x == 0.0f){
+                    spawnPoint = transform.position + facingPos * ((floorGate.length + _tempRoomWidth) * 0.5f + 1.0f);
+                }
+                else {
+                    spawnPoint = transform.position + facingPos * ((floorGate.length + _tempRoomLength) * 0.5f + 1.0f);
+                }
+            }
+            Instantiate(
+                gate, spawnPoint,
+                Quaternion.identity
+            );
+        }
+    }
+    private void GenerateRoom(RoomUtility.RoomType roomType, string roomName, Vector3 facingPos){
+
         float evenOffsetLength = 0.5f;
         float evenOffsetWidth = 0.5f;
 
@@ -158,53 +310,8 @@ public class MapGeneration : MonoBehaviour
             _tempRoomLength = floorGen.length;
             _tempRoomWidth  = floorGen.width;
         }
-
-        else if(_roomPos.Length >=2){
-            GameObject gate = FindRoom("path");
-            FloorGeneration floorGate = gate.GetComponent<FloorGeneration>();
-
-            if(facingPos.x == 0.0f){
-                floorGate.isVertical = true;
-                floorGate.length = (int)(tileSize - (_tempRoomWidth + floorGen.width) / 2) - 2;
-            }
-            else{
-                floorGate.isVertical = false;
-                floorGate.length = (int)(tileSize - (_tempRoomLength + floorGen.length) / 2) - 2;
-            }
-            
-            WallGeneration wallGate = gate.GetComponent<WallGeneration>();
-            wallGate.GateReset();
-            wallGate.setGate(facingPos, true);
-            wallGate.setGate(facingPos * -1, true);
-
-            if (roomType == RoomUtility.RoomType.MainRoom){
-                _tempRoomLength = floorGen.length;
-                _tempRoomWidth  = floorGen.width;
-
-                if(facingPos.x == 0.0f){
-                    spawnPoint = transform.position - facingPos * ((floorGate.length + floorGen.width) * 0.5f + 1.0f);
-                }
-                else {
-                    spawnPoint = transform.position - facingPos * ((floorGate.length + floorGen.length) * 0.5f + 1.0f);
-                }
-            }
-            else if (roomType == RoomUtility.RoomType.SideRoom){
-                if (facingPos.x == 0.0f){
-                    spawnPoint = transform.position + facingPos * ((floorGate.length + _tempRoomWidth) * 0.5f + 1.0f);
-                }
-                else {
-                    spawnPoint = transform.position + facingPos * ((floorGate.length + _tempRoomLength) * 0.5f + 1.0f);
-                }
-            }
-            Instantiate(
-                gate, spawnPoint,
-                Quaternion.identity
-            );
-        }
     }
-
     private void InitialRoomAssign(){
-
         if (maxRooms <=1){maxRooms = 2;}
 
         _rooms = RoomConfig.instance.rooms;
