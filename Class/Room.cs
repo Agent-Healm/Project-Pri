@@ -76,7 +76,6 @@ public static class RoomUtility {
             }
         }
     }
-
     public static T PopArray<T>(ref T[] arr, int index){
         if (index == -1){
             index = Random.Range(0, arr.Length);

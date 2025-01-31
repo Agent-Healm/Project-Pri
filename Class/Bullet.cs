@@ -7,13 +7,12 @@ public class Bullet : MonoBehaviour
     public int uptime = 60;
     public int damage;
     public Vector2 direction;
-
     private float _time;
 
     void Awake(){
     }
     void Start(){
-
+        // if (direction == Vector2.zero){Debug.Log("no direction ??");}
     }
     void FixedUpdate(){
 
@@ -28,14 +27,14 @@ public class Bullet : MonoBehaviour
     }
 
     // only usable when two collider2D non trigger 
-    private void OnCollisionEnter2D(Collision2D other){
-        Debug.Log("collision triggered");
-        Debug.Log(other.gameObject.name);
-        // if (other.gameObject.CompareTag("wall")){
-        // if (other.gameObject.tag == "wall"){
-        //     Debug.Log("I hit a wall");
-        //     Destroy(gameObject);}
-    }
+    // private void OnCollisionEnter2D(Collision2D other){
+    //     Debug.Log("collision triggered");
+    //     Debug.Log(other.gameObject.name);
+    //     // if (other.gameObject.CompareTag("wall")){
+    //     if (other.gameObject.tag == "wall"){
+    //         Debug.Log("I hit a wall");
+    //         Destroy(gameObject);}
+    // }
 
     private void OnTriggerEnter2D(Collider2D other){
         // Debug.Log("hit");
@@ -51,5 +50,9 @@ public class Bullet : MonoBehaviour
             Destroy(gameObject);
 
         }
+    }
+
+    public void setDirection(Vector2 direction){
+        this.direction = direction;
     }
 }

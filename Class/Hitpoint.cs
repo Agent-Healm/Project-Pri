@@ -28,10 +28,8 @@ public class Hitpoint : MonoBehaviour
     void Update()
     {
         if (_armorPoint >= maxArmorPoint){return;}
-
         if (_timer > armorRegenStart && _armorPoint < maxArmorPoint){
             ArmorRegeneration();
-            _timer -= armorRegenInterval;
         }
         _timer +=1;
     }
@@ -45,17 +43,17 @@ public class Hitpoint : MonoBehaviour
     public void ArmorRegeneration(){
         _armorPoint += 1;
         Debug.Log("Armor is healing : " + _armorPoint);
+        _timer -= armorRegenInterval;
     }
 
     public void TakeDamage(int damage = 1){
-        // int damage = 1;
         if (_armorPoint - damage >= 0){
             _armorPoint -= damage;
             Debug.Log("Hit, current armor : " + _armorPoint);
         }
         else if(_healthPoint + _armorPoint - damage > 0){
-            _armorPoint = 0;
             _healthPoint += (_armorPoint - damage);
+            _armorPoint = 0;
             Debug.Log("Hit, current health : " + _healthPoint);
         }
         else {
