@@ -5,11 +5,12 @@ using UnityEngine;
 public class RoomConfig : MonoBehaviour
 {
     public Room[] rooms;
+    public int targetFrameRate = 30;
     public static RoomConfig instance;
     // Start is called before the first frame update
     void Awake(){
         // set framerate limit
-        Application.targetFrameRate = 30;
+        Application.targetFrameRate = targetFrameRate;
         
         if(instance == null){
             instance = this;

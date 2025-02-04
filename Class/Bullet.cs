@@ -40,19 +40,23 @@ public class Bullet : MonoBehaviour
         // Debug.Log("hit");
         // if (collision.collider){
         if (other.gameObject.tag == "wall"){
+            // move to layer for control
             Debug.Log("I hit a wall");
-            Destroy(gameObject);}
+            DestroyBullet();}
         if (other.gameObject.name == "home"){
             Hitpoint hpTarget = other.gameObject.GetComponent<Hitpoint>();
             hpTarget.TakeDamage(damage);
-
             // Debug.Log("I hit something");
-            Destroy(gameObject);
+            DestroyBullet();
 
         }
     }
 
     public void setDirection(Vector2 direction){
         this.direction = direction;
+    }
+
+    public void DestroyBullet(){
+        Destroy(this.gameObject);
     }
 }
