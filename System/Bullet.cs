@@ -6,7 +6,7 @@ public class Bullet : MonoBehaviour
 {
     public int uptime = 60;
     public int damage;
-    public Vector2 direction;
+    [SerializeField] private Vector2 direction;
     private float _time;
 
     void Awake(){

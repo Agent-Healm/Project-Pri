@@ -36,19 +36,33 @@ public class FloorGeneration : MonoBehaviour
     {
 
         _center = transform.position;
+            
+        SpriteRenderer sr = roomIcon.GetComponent<SpriteRenderer>();
+        if (sr?.drawMode == SpriteDrawMode.Simple){
+            ManualFloorGeneration();
+        }
+        else if(sr.drawMode == SpriteDrawMode.Tiled){
+            sr.size = new Vector2(_length, _width);
+            TiledFloorGeneration();
+        }
+    }
+
+    private void ManualFloorGeneration(){
+
         Vector2 pos;
-        
         // offset for even sized room
         float halfLength = (_length - 1.0f) / 2;
         float halfWidth = (_width - 1.0f) / 2;
-        
+
         for (int w = 0 ; w < _width ; w++){
             for (int l = 0 ; l < _length ; l++){
                 pos = new Vector2(l - halfLength, halfWidth - w);
                 Instantiate(roomIcon, _center + pos, Quaternion.identity, transform);
             }
         }
-
     }
 
+    private void TiledFloorGeneration(){
+        Instantiate(roomIcon, _center , Quaternion.identity, transform);
+    }
 }
