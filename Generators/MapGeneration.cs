@@ -62,7 +62,7 @@ public class MapGeneration : MonoBehaviour
             return FindRoom("null"); 
         }
         else {
-            return room.roomObjects [Random.Range(0, room.roomObjects.Length)];
+            return room.roomVariance [Random.Range(0, room.roomVariance.Length)];
         }
     }
     private void GenerateAllRooms(RoomUtility.RoomType roomType, string roomName, Vector3 facingPos){

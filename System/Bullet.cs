@@ -43,7 +43,7 @@ public class Bullet : MonoBehaviour
             // move to layer for control
             Debug.Log("I hit a wall");
             DestroyBullet();}
-        if (other.gameObject.name == "home"){
+        if (other.gameObject.name == "player"){
             Hitpoint hpTarget = other.gameObject.GetComponent<Hitpoint>();
             hpTarget.TakeDamage(damage);
             // Debug.Log("I hit something");
