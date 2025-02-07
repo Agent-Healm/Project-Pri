@@ -2,7 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class Hitpoint : MonoBehaviour
+public class EnemyHitpoint : MonoBehaviour, IHealth, IArmor, IDamageAble
 {
     public int armorRegenStart = 90;
     public int armorRegenInterval = 30;
@@ -59,9 +59,15 @@ public class Hitpoint : MonoBehaviour
         else {
             _armorPoint = 0;
             _healthPoint = 0;
-            Debug.Log("Target is Dead");
+            this.HealthAtZero();
+            // Destroy(this.gameObject);
         }
         _timer = 0;
 
+    }
+
+    public void HealthAtZero(){
+        Debug.Log("Health is zero");
+        // Debug.Log("Target is Dead");
     }
 }

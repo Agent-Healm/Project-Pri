@@ -4,7 +4,7 @@ using UnityEngine;
 
 public class AttackPattern : MonoBehaviour
 {
-    public Bullet bullet;
+    public EnemyBullet bullet;
     public float range = -1.0f;
     // Start is called before the first frame update
     void Start()
