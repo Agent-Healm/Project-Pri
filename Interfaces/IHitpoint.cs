@@ -10,12 +10,17 @@ public interface IHealth
 
 public interface IArmor
 {
+    // int armorRegenStart { get; set; }
+    // int armorRegenInterval { get; set; }
+    // int maxArmorPoint { get; set; }
     void ArmorRegeneration();
+    void ArmorAtZero();
+    
 }
 
 public interface IDamageAble
 {
-    void TakeDamage(int damage = 1);
+    void InflictDamage(int damage = 1);
     // void ArmorDamage(int damage = 1);
     // void HealthDamage(int damage = 1);
 }

@@ -4,7 +4,7 @@ using UnityEngine;
 
 public class AttackPattern : MonoBehaviour
 {
-    public EnemyBullet bullet;
+    public Bullet bullet;
     public float range = -1.0f;
     // Start is called before the first frame update
     void Start()
@@ -19,8 +19,7 @@ public class AttackPattern : MonoBehaviour
     }
     public bool Attempt(float range){
         if (range <= this.range || this.range == -1.0f){
-            Debug.Log("Attack with "+ this.name);
-            // ShootBullet();
+            // Debug.Log("Attack with "+ this.name);
             return true;
         }
         return false;

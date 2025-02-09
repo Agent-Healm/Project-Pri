@@ -2,8 +2,12 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class EnemyHitpoint : MonoBehaviour, IHealth, IArmor, IDamageAble
+public class PlayerHitpoint : MonoBehaviour, IHealth, IArmor, IDamageAble
 {
+
+    // public int armorRegenStart {get; set;}
+    // public int armorRegenInterval {get; set;}
+    // public int maxArmorPoint {get; set;}
     public int armorRegenStart = 90;
     public int armorRegenInterval = 30;
     public int maxArmorPoint = 1;
@@ -28,9 +32,7 @@ public class EnemyHitpoint : MonoBehaviour, IHealth, IArmor, IDamageAble
     void Update()
     {
         if (_armorPoint >= maxArmorPoint){return;}
-        if (_timer > armorRegenStart && _armorPoint < maxArmorPoint){
-            ArmorRegeneration();
-        }
+        ArmorRegeneration();
         _timer +=1;
     }
 
@@ -41,24 +43,36 @@ public class EnemyHitpoint : MonoBehaviour, IHealth, IArmor, IDamageAble
     /// This method increases the armor points and logs the current armor value.
     /// </remarks>
     public void ArmorRegeneration(){
-        _armorPoint += 1;
-        Debug.Log("Armor is healing : " + _armorPoint);
-        _timer -= armorRegenInterval;
+        if (_timer > armorRegenStart && _armorPoint < maxArmorPoint){
+            _armorPoint += 1;
+            Debug.Log("Armor is healing : " + _armorPoint);
+            _timer -= armorRegenInterval;
+        }
     }
 
-    public void TakeDamage(int damage = 1){
+    public void HealthAtZero(){
+        Debug.Log("Health is zero");
+        // Debug.Log("Target is Dead");
+        _healthPoint = 0;
+    }
+
+    public void ArmorAtZero(){
+        Debug.Log("Armor is zero");
+        _armorPoint = 0;
+    }
+
+    public void InflictDamage(int damage = 1){
         if (_armorPoint - damage >= 0){
             _armorPoint -= damage;
             Debug.Log("Hit, current armor : " + _armorPoint);
         }
         else if(_healthPoint + _armorPoint - damage > 0){
             _healthPoint += (_armorPoint - damage);
-            _armorPoint = 0;
+            this.ArmorAtZero();
             Debug.Log("Hit, current health : " + _healthPoint);
         }
         else {
-            _armorPoint = 0;
-            _healthPoint = 0;
+            this.ArmorAtZero();
             this.HealthAtZero();
             // Destroy(this.gameObject);
         }
@@ -66,8 +80,4 @@ public class EnemyHitpoint : MonoBehaviour, IHealth, IArmor, IDamageAble
 
     }
 
-    public void HealthAtZero(){
-        Debug.Log("Health is zero");
-        // Debug.Log("Target is Dead");
-    }
 }

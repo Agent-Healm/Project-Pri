@@ -18,7 +18,7 @@ public class Crate : MonoBehaviour, IHealth, IDamageAble
     {
     }
 
-    public void TakeDamage(int damage = 1){
+    public void InflictDamage(int damage = 1){
         _healthPoint -= damage;
         Debug.Log("Crate durability : " + _healthPoint);
         if (_healthPoint <= 0){
