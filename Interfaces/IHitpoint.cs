@@ -4,8 +4,7 @@ using UnityEngine;
 
 public interface IHealth
 {
-    void HealthAtZero(){
-    }
+    void HealthAtZero();
 }
 
 public interface IArmor
@@ -23,4 +22,9 @@ public interface IDamageAble
     void InflictDamage(int damage = 1);
     // void ArmorDamage(int damage = 1);
     // void HealthDamage(int damage = 1);
+}
+
+public interface ILootPool
+{
+    void LootOnDeath();
 }

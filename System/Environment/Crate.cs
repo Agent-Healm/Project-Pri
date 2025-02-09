@@ -2,7 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class Crate : MonoBehaviour, IHealth, IDamageAble
+public class Crate : MonoBehaviour, IHealth, IDamageAble, ILootPool
 {
     public int maxHealthPoint = 10;
     
@@ -19,6 +19,7 @@ public class Crate : MonoBehaviour, IHealth, IDamageAble
     }
 
     public void InflictDamage(int damage = 1){
+        if (damage < 0){return;}
         _healthPoint -= damage;
         Debug.Log("Crate durability : " + _healthPoint);
         if (_healthPoint <= 0){
@@ -29,5 +30,10 @@ public class Crate : MonoBehaviour, IHealth, IDamageAble
     public void HealthAtZero(){
         Debug.Log("Crate is destroyed");
         Destroy(this.gameObject);
+        LootOnDeath();
+    }
+
+    public void LootOnDeath(){
+        Debug.Log("Spawn a random potion on crate.");
     }
 }

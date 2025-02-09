@@ -6,8 +6,8 @@ using UnityEditor;
 public class EnemyAI : MonoBehaviour
 {
     public float range = 0.0f;
-    public GameObject target;
     public AttackPattern[] attackPattern;
+    private GameObject _target;
     private int _time;
     [SerializeField] private LayerMask layerMask = DLayer.PlayerLayer() | DLayer.EnvironmentLayer();
     [SerializeField] private LayerMask targetMask = DLayer.PlayerLayer();
@@ -25,32 +25,29 @@ public class EnemyAI : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        if (target == null){
-            foreach(Collider2D collider in SearchForTargets()){
-                // Debug.Log("Enemy looking at" + collider.gameObject.name);
-                // if (collider.gameObject.layer == 8){
-                target = collider.gameObject;
-                // }
-                break;
-            }
+        if (_target == null){
+            _target = GetTarget();
         }
         else{
-            _distance = target.transform.position - transform.position;
-            if (_distance.magnitude > range){
+            _distance = _target.transform.position - transform.position;
+            if (_distance.magnitude > range + 3f){
                 // Debug.Log("distance : " + _distance.magnitude);
-                target = null;
+                _target = null;
                 return;
             }
             else{
-                _time += 1;
                 if (LineOfSight()){
                     if (_time > 10){
                         Attack();
                         _time = 0;
                     }
                 }
+                // else {
+                //     Chase();
+                // }
             }
         }
+        _time += 1;
     }
     public bool LineOfSight(){
         RaycastHit2D raycastHit2D = Physics2D.Raycast(transform.position, _distance.normalized, range - 0.5f, layerMask);
@@ -82,7 +79,20 @@ public class EnemyAI : MonoBehaviour
         }
     }
     
-    public Collider2D[] SearchForTargets(){
+    public Collider2D[] GetSurroundingTargetAll(){
         return Physics2D.OverlapCircleAll(transform.position, range - 0.5f, targetMask);    
+    }
+    
+    public GameObject GetTarget(){
+        // foreach(Collider2D collider in GetSurroundingTargetAll()){
+        //     // Debug.Log("Enemy looking at" + collider.gameObject.name);
+        //     // if (collider.gameObject.layer == 8){
+        //     return collider.gameObject;
+        //     // }
+        //     // break;
+        // }
+        Collider2D[] collider2D = GetSurroundingTargetAll();
+        if (collider2D.Length > 0){return collider2D[0].gameObject;}
+        return null;
     }
 }

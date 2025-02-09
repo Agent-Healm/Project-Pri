@@ -54,6 +54,7 @@ public class PlayerHitpoint : MonoBehaviour, IHealth, IArmor, IDamageAble
         // Debug.Log("Health is zero");
         // Debug.Log("Target is Dead");
         _healthPoint = 0;
+            // Destroy(this.gameObject);
     }
 
     public void ArmorAtZero(){
@@ -61,20 +62,21 @@ public class PlayerHitpoint : MonoBehaviour, IHealth, IArmor, IDamageAble
         _armorPoint = 0;
     }
 
-    public void InflictDamage(int damage = 1){
+    public void InflictDamage(int damage = 0){
+        if (damage < 0){return;}
+
         if (_armorPoint - damage >= 0){
             _armorPoint -= damage;
             // Debug.Log("Hit, current armor : " + _armorPoint);
         }
         else if(_healthPoint + _armorPoint - damage > 0){
-            _healthPoint += (_armorPoint - damage);
             this.ArmorAtZero();
+            _healthPoint += (_armorPoint - damage);
             // Debug.Log("Hit, current health : " + _healthPoint);
         }
         else {
             this.ArmorAtZero();
             this.HealthAtZero();
-            // Destroy(this.gameObject);
         }
         _timer = 0;
 

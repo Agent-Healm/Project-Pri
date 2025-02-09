@@ -6,12 +6,11 @@ public class PlayerSimpleMovement : MonoBehaviour
 {
     public float speed = 10;
     [SerializeField] private LayerMask layerMask;
-    private PlayerAI playerAI;
     private Vector3 _moveDir;
     // Start is called before the first frame update
     void Start()
     {
-        // playerAI = this.GetComponent<PlayerAI>();
+
     }
 
     // Update is called once per frame
@@ -52,10 +51,7 @@ public class PlayerSimpleMovement : MonoBehaviour
                 Debug.Log("Player is stuck against " + raycastHit.collider.name);
                 // transform.position += moveDir * speed * Time.deltaTime;
             }
-            // playerAI.SetPlayerFacing(moveDir);
-
         }
-        
     }
     public Vector2 getMoveDir(){
         return _moveDir;

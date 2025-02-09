@@ -29,17 +29,17 @@ public class PlayerWeaponSlot : MonoBehaviour
     }
     private void ActionHandler(){
         if (Input.GetKeyDown(KeyCode.R)){
-            Debug.Log("Player is interacting");
+            // Debug.Log("Player is interacting");
             weapons[0].Attack(_facing, transform.position);
         }   
         else if (Input.GetKeyDown(KeyCode.T)){
-            Debug.Log("Player is interacting");
+            // Debug.Log("Player is interacting");
         }   
     }
 
     private void FacingHandler(){
-        Vector2 _distance = Camera.main.ScreenToWorldPoint(Input.mousePosition) - transform.position;
-        _facing = _distance.normalized;
+        // Vector2 _distance = Camera.main.ScreenToWorldPoint(Input.mousePosition) - transform.position;
+        // _facing = _distance.normalized;
         // Vector2 _distance = 
         // RaycastHit2D raycastHit2D = Physics2D.Raycast(transform.position, _distance.normalized, 5.5f, layerMask);
         // if (raycastHit2D.collider == null){
