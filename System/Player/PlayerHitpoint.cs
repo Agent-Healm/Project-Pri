@@ -79,7 +79,12 @@ public class PlayerHitpoint : MonoBehaviour, IHealth, IArmor, IDamageAble
             this.HealthAtZero();
         }
         _timer = 0;
-
     }
-
+    public int getPlayerStats(int index){
+        switch(index){
+            case 1 : {return _healthPoint;}
+            case 2 : {return _armorPoint;}
+        }
+        return _healthPoint;
+    }
 }
