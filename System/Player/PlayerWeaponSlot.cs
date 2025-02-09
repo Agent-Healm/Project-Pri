@@ -4,22 +4,28 @@ using UnityEngine;
 using UnityEditor;
 public class PlayerWeaponSlot : MonoBehaviour
 {
+    private PlayerAI playerAI;
+    private PlayerSimpleMovement psm;
     public Weapon[] weapons;
-
-    [SerializeField] private LayerMask layerMask;
-    private Vector2 _facing;
+    private Vector2 _facing = Vector2.up;
 
     // Start is called before the first frame update
     void Start()
     {
-        _facing = Vector2.up;
+        playerAI = this.GetComponent<PlayerAI>();
+        psm = this.GetComponent<PlayerSimpleMovement>();
     }
 
     // Update is called once per frame
     void Update()
     {
-        ActionHandler();
-        FacingHandler();
+        if (playerAI.isAiming()){
+            _facing = playerAI.getAimDir();
+        }
+        else {
+            _facing = psm.getMoveDir();
+        }
+        ActionHandler();        
     }
     private void ActionHandler(){
         if (Input.GetKeyDown(KeyCode.R)){
@@ -33,8 +39,8 @@ public class PlayerWeaponSlot : MonoBehaviour
 
     private void FacingHandler(){
         Vector2 _distance = Camera.main.ScreenToWorldPoint(Input.mousePosition) - transform.position;
-        // Vector2 _distance = 
         _facing = _distance.normalized;
+        // Vector2 _distance = 
         // RaycastHit2D raycastHit2D = Physics2D.Raycast(transform.position, _distance.normalized, 5.5f, layerMask);
         // if (raycastHit2D.collider == null){
         //     Debug.Log("nothing in sight");

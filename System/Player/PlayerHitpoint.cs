@@ -45,31 +45,31 @@ public class PlayerHitpoint : MonoBehaviour, IHealth, IArmor, IDamageAble
     public void ArmorRegeneration(){
         if (_timer > armorRegenStart && _armorPoint < maxArmorPoint){
             _armorPoint += 1;
-            Debug.Log("Armor is healing : " + _armorPoint);
+            // Debug.Log("Armor is healing : " + _armorPoint);
             _timer -= armorRegenInterval;
         }
     }
 
     public void HealthAtZero(){
-        Debug.Log("Health is zero");
+        // Debug.Log("Health is zero");
         // Debug.Log("Target is Dead");
         _healthPoint = 0;
     }
 
     public void ArmorAtZero(){
-        Debug.Log("Armor is zero");
+        // Debug.Log("Armor is zero");
         _armorPoint = 0;
     }
 
     public void InflictDamage(int damage = 1){
         if (_armorPoint - damage >= 0){
             _armorPoint -= damage;
-            Debug.Log("Hit, current armor : " + _armorPoint);
+            // Debug.Log("Hit, current armor : " + _armorPoint);
         }
         else if(_healthPoint + _armorPoint - damage > 0){
             _healthPoint += (_armorPoint - damage);
             this.ArmorAtZero();
-            Debug.Log("Hit, current health : " + _healthPoint);
+            // Debug.Log("Hit, current health : " + _healthPoint);
         }
         else {
             this.ArmorAtZero();

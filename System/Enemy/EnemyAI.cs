@@ -9,8 +9,8 @@ public class EnemyAI : MonoBehaviour
     public GameObject target;
     public AttackPattern[] attackPattern;
     private int _time;
-    [SerializeField] private LayerMask layerMask = ~(1 << 6 | 1 << 7 | 1 << 9 << 1 << 10 | 1 << 11);
-    [SerializeField] private LayerMask targetMask = 1 << 8;
+    [SerializeField] private LayerMask layerMask = DLayer.PlayerLayer() | DLayer.EnvironmentLayer();
+    [SerializeField] private LayerMask targetMask = DLayer.PlayerLayer();
     private Vector2 _distance;
 
     // void Awake(){

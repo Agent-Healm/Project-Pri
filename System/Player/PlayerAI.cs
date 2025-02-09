@@ -4,11 +4,16 @@ using UnityEngine;
 
 public class PlayerAI : MonoBehaviour
 {
-    [SerializeField] private LayerMask layerMask = ~(1 << 8 | 1 << 7 | 1 << 9 << 1 << 10 | 1 << 11);
-    [SerializeField] private LayerMask targetMask = 1 << 6;
+    public Vector2 _facingDir {get; private set;}
 
+    [SerializeField] private LayerMask layerMask = DLayer.EnemyLayer() | DLayer.EnvironmentLayer();
+    [SerializeField] private LayerMask targetMask = DLayer.EnemyLayer();
+
+    private bool _isAimingAtTarget = false;
     private GameObject _target;
     private Vector2 _distance;
+
+    private Vector2 _autoaimDir;
     // Start is called before the first frame update
     void Start()
     {
@@ -18,23 +23,22 @@ public class PlayerAI : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        // if (_target == null){
         Collider2D[] collider2Ds = SearchForTargets();
         if (collider2Ds.Length > 0){
             foreach(Collider2D collider in collider2Ds){
-                // ??
-                // if (collider.gameObject.layer == 6){
-                    // Debug.Log(collider.gameObject.name);
-                    if(LineOfSight(collider.gameObject)){
-                        _target = collider.gameObject;
-                        Debug.Log("now targeting "  + _target.name);
-                        break;
-                    }
-                // }
+                // Debug.Log(collider.gameObject.name);
+                if(LineOfSight(collider.gameObject)){
+                    _target = collider.gameObject;
+                    Debug.Log("now targeting "  + _target.name);
+                    _isAimingAtTarget = true;
+                    _autoaimDir =  (_target.transform.position - transform.position).normalized;
+                    break;
+                }
             }
         }
         // }
         else{
+            _isAimingAtTarget = false;
             _target = null;
         }
     }
@@ -52,5 +56,17 @@ public class PlayerAI : MonoBehaviour
         //     Debug.Log("player in sight");
         // }
         return raycastHit2D.collider?.gameObject.layer == 6;
+    }
+
+    // public void SetPlayerFacing(Vector2 facingDir){
+    //     _facingDir = facingDir;
+    // }
+
+    public bool isAiming(){
+        return _isAimingAtTarget;
+    }
+
+    public Vector2 getAimDir(){
+        return _autoaimDir;
     }
 }
