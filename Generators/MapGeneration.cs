@@ -12,7 +12,7 @@ public class MapGeneration : MonoBehaviour
     public int maxRooms = 3;
     public float tileSize = 1.0f;
 
-    // private int _numberOfRooms = 0;
+    private int _numberOfRooms = 0;
     private float _prevRoomLength; 
     private float _prevRoomWidth;
     private float _tempRoomInterval = 0.0f;
@@ -38,11 +38,11 @@ public class MapGeneration : MonoBehaviour
         MoveToNextTile(_newFacing);
     }
     void Update(){
-        if(maxRooms > 0){
+        if(maxRooms > _numberOfRooms){
             if(_tempRoomInterval <= 0 ){
                 procGenRoom();
                 _tempRoomInterval = 0.2f;
-                maxRooms -= 1;
+                _numberOfRooms += 1;
             }
             else {
                 _tempRoomInterval -= Time.deltaTime;
@@ -162,7 +162,8 @@ public class MapGeneration : MonoBehaviour
         if (maxRooms <=1){maxRooms = 2;}
 
         _rooms = RoomConfig.instance.rooms;
-        
+        ArrayUtility.AddRange(ref _rooms, RoomConfig.instance.basicRooms);
+
         foreach(Room room in _rooms){
             if(room.isIncluded){
                 for (int i = 1 ; i <= room.min ; i++){
@@ -187,10 +188,12 @@ public class MapGeneration : MonoBehaviour
         RoomUtility.Vec3Shuffle(ref _emptySpace);
         RoomUtility.Vec3Reduce(ref _emptySpace, (_extraRooms.Length != 0));
 
-        if (maxRooms > 1){
+        // if (maxRooms > 1){
+        if (maxRooms > _numberOfRooms + 1){
             GenerateAllRooms(RoomUtility.RoomType.MainRoom, "mob", _newFacing);
         }
-        else if (maxRooms == 1){
+        // else if (maxRooms == 1){
+        else if (maxRooms - _numberOfRooms == 1){
             ArrayUtility.Clear(ref _emptySpace);
             GenerateAllRooms(RoomUtility.RoomType.MainRoom, "exit", _newFacing);
 
