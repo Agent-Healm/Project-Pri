@@ -9,6 +9,7 @@ public class WallGeneration : MonoBehaviour
     public bool gateWest = false;
     public bool gateNorth = false;
     
+    private int _gateWidth;
     private GameObject _wallTile;
     private GameObject _gateTile;
     private GameObject _nullTile;
@@ -19,6 +20,8 @@ public class WallGeneration : MonoBehaviour
     private RoomUtility.LayoutType _layoutType;
     private Vector2 _center;
     private FloorGeneration _floorGen;
+    private SpriteRenderer _srWall ;
+    private SpriteRenderer _srGate ;
     void Start()
     {
 
@@ -28,9 +31,17 @@ public class WallGeneration : MonoBehaviour
         _layoutType = _floorGen.layoutType;
         
         _wallTile = TextureTheme.instance.wallTile;
+        _srWall = _wallTile.GetComponent<SpriteRenderer>();
+
         _gateTile = TextureTheme.instance.gateTile;
+        _srGate = _gateTile.GetComponent<SpriteRenderer>();
+
         _nullTile = TextureTheme.instance.nullTile;
         _center = transform.position;
+        _gateWidth = RoomConfig.instance.path.roomVariance[0]
+                    .GetComponent<FloorGeneration>()
+                    .width; 
+
         _halfLength = (_length + 1.0f) / 2;
         _halfWidth = (_width + 1.0f) / 2;
 
@@ -55,7 +66,11 @@ public class WallGeneration : MonoBehaviour
             }
         }
     }
-    private void _GenerateCorners(){        
+    private void _GenerateCorners(){
+        SpriteRenderer sr = _wallTile.GetComponent<SpriteRenderer>();
+        if(sr.drawMode == SpriteDrawMode.Tiled){
+            sr.size = new Vector2(1, 1);
+        }   
         _GenerateWall(_wallTile, - _halfLength, _halfWidth); // Top Left Corner
         _GenerateWall(_wallTile, _halfLength, _halfWidth); // Top Right Corner
         _GenerateWall(_wallTile, _halfLength, - _halfWidth); // Bottom Right Corner                        
@@ -68,11 +83,8 @@ public class WallGeneration : MonoBehaviour
     
     private void _GenerateGate(Vector2 vec2, bool hasGate = false){
 
-        GameObject __tile = hasGate? _gateTile : _wallTile;
-        if (__tile == null){
-            __tile = _nullTile;
-        }
-        
+        int _thisGateWidth = _gateWidth;
+
         if (vec2.y == 0.0f){
             // HORIZONTAL
 
@@ -83,8 +95,24 @@ public class WallGeneration : MonoBehaviour
             else if(vec2 == Vector2.left){
                 __posX = - _halfLength;
             }
-            for (int i = 1 ; i <= _width ; i++){
-                _GenerateWall(__tile, __posX, i - _halfWidth);
+            // for (int i = 1 ; i <= _width ; i++){
+            //     _GenerateWall(__tile, __posX, i - _halfWidth);
+            // }
+
+            if ((_width + _thisGateWidth) % 2 != 0){
+                _thisGateWidth += 1;
+            }
+
+            if (hasGate){
+                _srWall.size = new Vector2(1, (_width - _thisGateWidth) / 2);
+                _GenerateWall(_wallTile, __posX,   (_width + _thisGateWidth) / 4f);
+                _GenerateWall(_wallTile, __posX, - (_width + _thisGateWidth) / 4f);
+                _srGate.size = new Vector2(1, _thisGateWidth);
+                _GenerateWall(_gateTile, __posX, 0);
+            }
+            else {
+                _srWall.size = new Vector2(1, _width);
+                _GenerateWall(_wallTile, __posX, 0);
             }
         }
         else if (vec2.x == 0.0f){
@@ -97,8 +125,24 @@ public class WallGeneration : MonoBehaviour
             else if (vec2 == Vector2.down){
                 __posY = - _halfWidth;
             }
-            for (int i = 1 ; i <= _length ; i++){
-                _GenerateWall(__tile, i - _halfLength, __posY);
+            // for (int i = 1 ; i <= _length ; i++){
+            //     _GenerateWall(__tile, i - _halfLength, __posY);
+            // }
+
+            if ((_length + _gateWidth) % 2 != 0){
+                _thisGateWidth += 1;
+            }
+
+            if (hasGate){
+                _srWall.size = new Vector2((_length - _thisGateWidth) / 2, 1);
+                _GenerateWall(_wallTile,   (_length + _thisGateWidth) / 4f, __posY);
+                _GenerateWall(_wallTile, - (_length + _thisGateWidth) / 4f, __posY);
+                _srGate.size = new Vector2(_thisGateWidth, 1);
+                _GenerateWall(_gateTile, 0, __posY);
+            }
+            else {
+                _srWall.size = new Vector2(_length, 1);
+                _GenerateWall(_wallTile, 0, __posY);
             }
         }
     }
@@ -114,6 +158,5 @@ public class WallGeneration : MonoBehaviour
         if (vec2 == Vector2.down){gateSouth = isGate; return;}
         if (vec2 == Vector2.left){gateWest = isGate; return;}
     }
-
 
 }

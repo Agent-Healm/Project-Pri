@@ -16,17 +16,26 @@ public class MapGeneration : MonoBehaviour
     private float _prevRoomLength; 
     private float _prevRoomWidth;
     private float _tempRoomInterval = 0.0f;
+
+    private Room[] _rooms;
     private string[] _debug_createdRooms = new string[0];
     private string[] _extraRooms = new string[0];
     private string[] _extraRoomsMax = new string[0];
-    private Room[] _rooms;
-    private Vector2[] _roomPos = new Vector2[0];
+
+    private GameObject _gate;
+    private int _gateWidth;
+
     private Vector2 _currentWorldPoint = Vector2.zero;
-    private Vector3[] _emptySpace = new Vector3[0];
+    private Vector2[] _roomPos = new Vector2[0];
     private Vector3 _newFacing;
+    private Vector3[] _emptySpace = new Vector3[0];
 
     void Start(){
         InitialRoomAssign();
+        _gate = RoomConfig.instance.path.roomVariance[0];
+        // _gateWidth = _gate.GetComponent<WallGeneration>();
+        // _gate.GetComponent<WallGeneration>().gateWidth = ;
+
         transform.position = startPos[0].position;
 
         RoomUtility.getAdjacentVec3(ref _emptySpace, _currentWorldPoint, _roomPos);
@@ -73,13 +82,12 @@ public class MapGeneration : MonoBehaviour
     }    
     private void GeneratePath(RoomUtility.RoomType roomType, Vector3 facingPos, int gateLength = 1){
 
-        // GameObject gate = FindRoom("path");
-        GameObject gate = RoomConfig.instance.path.roomVariance[0];
-        FloorGeneration floorGate = gate.GetComponent<FloorGeneration>();
+        // GameObject gate = RoomConfig.instance.path.roomVariance[0];
+        FloorGeneration floorGate = _gate.GetComponent<FloorGeneration>();
         floorGate.length = gateLength;
         floorGate.isVertical = (facingPos.x == 0.0f);
 
-        WallGeneration wallGate = gate.GetComponent<WallGeneration>();
+        WallGeneration wallGate = _gate.GetComponent<WallGeneration>();
         wallGate.GateReset();
         wallGate.setGate(facingPos, true);
         wallGate.setGate(- facingPos, true);
@@ -98,7 +106,7 @@ public class MapGeneration : MonoBehaviour
         }
 
         Instantiate(
-            gate, spawnPoint,
+            _gate, spawnPoint,
             Quaternion.identity
         );
     }

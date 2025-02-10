@@ -15,6 +15,7 @@ public class PlayerHitpoint : MonoBehaviour, IHealth, IArmor, IDamageAble
 
     private int _timer;
     private int _armorPoint;
+    // public int _armorPoint {get; set;}
     private int _healthPoint;
 
     void Awake(){
@@ -25,7 +26,7 @@ public class PlayerHitpoint : MonoBehaviour, IHealth, IArmor, IDamageAble
     // Start is called before the first frame update
     void Start()
     {
-        
+
     }
 
     // Update is called once per frame
@@ -51,14 +52,11 @@ public class PlayerHitpoint : MonoBehaviour, IHealth, IArmor, IDamageAble
     }
 
     public void HealthAtZero(){
-        // Debug.Log("Health is zero");
-        // Debug.Log("Target is Dead");
         _healthPoint = 0;
             // Destroy(this.gameObject);
     }
 
     public void ArmorAtZero(){
-        // Debug.Log("Armor is zero");
         _armorPoint = 0;
     }
 
@@ -70,8 +68,8 @@ public class PlayerHitpoint : MonoBehaviour, IHealth, IArmor, IDamageAble
             // Debug.Log("Hit, current armor : " + _armorPoint);
         }
         else if(_healthPoint + _armorPoint - damage > 0){
+            _healthPoint -= (damage - _armorPoint);
             this.ArmorAtZero();
-            _healthPoint += (_armorPoint - damage);
             // Debug.Log("Hit, current health : " + _healthPoint);
         }
         else {

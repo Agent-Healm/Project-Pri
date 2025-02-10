@@ -4,15 +4,12 @@ using UnityEngine;
 
 public class PlayerAI : MonoBehaviour
 {
-    public Vector2 _facingDir {get; private set;}
-
     [SerializeField] private LayerMask layerMask = DLayer.EnemyLayer() | DLayer.EnvironmentLayer();
     [SerializeField] private LayerMask targetMask = DLayer.EnemyLayer();
 
     private bool _isAimingAtTarget = false;
     private GameObject _target;
     private Vector2 _distance;
-
     private Vector2 _autoaimDir;
     // Start is called before the first frame update
     void Start()

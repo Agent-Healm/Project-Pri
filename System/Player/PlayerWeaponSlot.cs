@@ -4,8 +4,8 @@ using UnityEngine;
 using UnityEditor;
 public class PlayerWeaponSlot : MonoBehaviour
 {
-    private PlayerAim _playerAim;
     public Weapon[] weapons;
+    private PlayerAim _playerAim;
     private Vector2 _facing;
 
     // Start is called before the first frame update
