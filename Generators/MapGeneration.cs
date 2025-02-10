@@ -12,6 +12,7 @@ public class MapGeneration : MonoBehaviour
     public int maxRooms = 3;
     public float tileSize = 1.0f;
 
+    // private int _numberOfRooms = 0;
     private float _prevRoomLength; 
     private float _prevRoomWidth;
     private float _tempRoomInterval = 0.0f;
@@ -48,6 +49,7 @@ public class MapGeneration : MonoBehaviour
             }
         }
     }
+    
     /// <summary>
     /// Return the RoomObject using name
     /// </summary>
@@ -71,7 +73,8 @@ public class MapGeneration : MonoBehaviour
     }    
     private void GeneratePath(RoomUtility.RoomType roomType, Vector3 facingPos, int gateLength = 1){
 
-        GameObject gate = FindRoom("path");
+        // GameObject gate = FindRoom("path");
+        GameObject gate = RoomConfig.instance.path.roomVariance[0];
         FloorGeneration floorGate = gate.GetComponent<FloorGeneration>();
         floorGate.length = gateLength;
         floorGate.isVertical = (facingPos.x == 0.0f);
@@ -99,7 +102,7 @@ public class MapGeneration : MonoBehaviour
             Quaternion.identity
         );
     }
-    private int GenerateRoom(RoomUtility.RoomType roomType, string roomName, Vector3 facingPos){
+    private int  GenerateRoom(RoomUtility.RoomType roomType, string roomName, Vector3 facingPos){
         
         int gateLength;
         float evenOffsetLength = 0.5f;

@@ -4,27 +4,20 @@ using UnityEngine;
 using UnityEditor;
 public class PlayerWeaponSlot : MonoBehaviour
 {
-    private PlayerAI playerAI;
-    private PlayerSimpleMovement psm;
+    private PlayerAim _playerAim;
     public Weapon[] weapons;
-    private Vector2 _facing = Vector2.up;
+    private Vector2 _facing;
 
     // Start is called before the first frame update
     void Start()
     {
-        playerAI = this.GetComponent<PlayerAI>();
-        psm = this.GetComponent<PlayerSimpleMovement>();
+        _playerAim = this.GetComponent<PlayerAim>();
     }
 
     // Update is called once per frame
     void Update()
     {
-        if (playerAI.isAiming()){
-            _facing = playerAI.getAimDir();
-        }
-        else {
-            _facing = psm.getMoveDir();
-        }
+        _facing = _playerAim.GetCurrenetFaceDir();
         ActionHandler();        
     }
     private void ActionHandler(){

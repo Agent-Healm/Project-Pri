@@ -29,7 +29,7 @@ public class PlayerAI : MonoBehaviour
                 // Debug.Log(collider.gameObject.name);
                 if(LineOfSight(collider.gameObject)){
                     _target = collider.gameObject;
-                    Debug.Log("now targeting "  + _target.name);
+                    // Debug.Log("now targeting "  + _target.name);
                     _isAimingAtTarget = true;
                     _autoaimDir =  (_target.transform.position - transform.position).normalized;
                     break;
@@ -57,10 +57,6 @@ public class PlayerAI : MonoBehaviour
         // }
         return raycastHit2D.collider?.gameObject.layer == 6;
     }
-
-    // public void SetPlayerFacing(Vector2 facingDir){
-    //     _facingDir = facingDir;
-    // }
 
     public bool isAiming(){
         return _isAimingAtTarget;

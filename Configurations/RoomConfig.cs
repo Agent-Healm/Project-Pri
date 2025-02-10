@@ -4,6 +4,7 @@ using UnityEngine;
 
 public class RoomConfig : MonoBehaviour
 {
+    public Room path;
     public Room[] rooms;
     public int targetFrameRate = 30;
     public static RoomConfig instance;
