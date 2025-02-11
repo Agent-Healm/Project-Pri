@@ -27,7 +27,6 @@ public class Bullet : MonoBehaviour
         transform.Translate(direction * 0.08f);
         if ( _time >= uptime){
             Destroy(gameObject);
-            // Debug.Log("despawned");
         }
         _time += 1;
     }

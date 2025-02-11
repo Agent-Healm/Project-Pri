@@ -6,7 +6,7 @@ using UnityEditor;
 public class EnemyAI : MonoBehaviour
 {
     public float range = 0.0f;
-    public AttackPattern[] attackPattern;
+    public EnemyAttackPattern[] enemyAttackPattern;
     private GameObject _target;
     private int _time;
     [SerializeField] private LayerMask layerMask = DLayer.PlayerLayer() | DLayer.EnvironmentLayer();
@@ -71,9 +71,10 @@ public class EnemyAI : MonoBehaviour
     }
 
     public void Attack(){
-        foreach (AttackPattern pattern in attackPattern){
-            if (pattern.Attempt(_distance.magnitude)){
-                pattern.ShootBullet(_distance, transform.position);
+        foreach (EnemyAttackPattern enemyPattern in enemyAttackPattern){
+            if (enemyPattern.Attempt(_distance.magnitude)){
+                enemyPattern.attackPattern
+                .ShootBullet(_distance, transform.position);
                 break;
             }
         }

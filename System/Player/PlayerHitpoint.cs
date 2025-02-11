@@ -82,6 +82,7 @@ public class PlayerHitpoint : MonoBehaviour, IHealth, IArmor, IDamageAble
         switch(index){
             case 1 : {return _healthPoint;}
             case 2 : {return _armorPoint;}
+            case 3 : {return 166;}
         }
         return _healthPoint;
     }

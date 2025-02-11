@@ -18,8 +18,6 @@ public class Weapon : MonoBehaviour
     }
 
     public void Attack(Vector2 direction, Vector2 position){
-        // Debug.Log("Weapon action");
-        // attackPattern.ShootBullet(Vector2.up, transform.position);    
         attackPattern.ShootBullet(direction, position);    
     }
 }

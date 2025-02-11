@@ -7,6 +7,7 @@ public class GameManager : MonoBehaviour
 {
     public TextMeshProUGUI textHealth;
     public TextMeshProUGUI textArmor;
+    public TextMeshProUGUI textMana;
 
     public PlayerHitpoint playerHitpoint;
     // private bool _isBattleMode = false;
@@ -22,5 +23,6 @@ public class GameManager : MonoBehaviour
         // _isBattleMode = true;
         textHealth.text = "" + playerHitpoint.getPlayerStats(1);
         textArmor.text = "" + playerHitpoint.getPlayerStats(2);
+        textMana.text = "" + playerHitpoint.getPlayerStats(3);
     }
 }
