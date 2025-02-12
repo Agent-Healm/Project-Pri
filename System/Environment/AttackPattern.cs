@@ -34,3 +34,27 @@ public class EnemyAttackPattern
         return false;
     }
 }
+
+[System.Serializable]
+public class PlayerWeaponAttackPattern
+{
+    public AttackPattern attackPattern;
+    // public int damage = 0;
+    public int energyCost = 0;
+    public int critChance = 0;
+    public float roundsPerSec = 1f;
+
+    public bool AttemptAttack(int manaPoint){
+        if (manaPoint >= energyCost){
+            // pwap[0].Attack();
+            // attackPattern.ShootBullet();
+            // manaPoint -= energyCost;
+            return true;
+        }
+        return false;
+    }
+    public void Attack(Vector2 direction, Vector2 position){
+        attackPattern.ShootBullet(direction, position);
+        // return true;
+    }
+}

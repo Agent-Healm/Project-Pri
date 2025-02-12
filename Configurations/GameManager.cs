@@ -10,6 +10,7 @@ public class GameManager : MonoBehaviour
     public TextMeshProUGUI textMana;
 
     public PlayerHitpoint playerHitpoint;
+    public PlayerMana playerMana;
     // private bool _isBattleMode = false;
     // Start is called before the first frame update
     void Start()
@@ -23,6 +24,7 @@ public class GameManager : MonoBehaviour
         // _isBattleMode = true;
         textHealth.text = "" + playerHitpoint.getPlayerStats(1);
         textArmor.text = "" + playerHitpoint.getPlayerStats(2);
-        textMana.text = "" + playerHitpoint.getPlayerStats(3);
+        // textMana.text = "" + playerHitpoint.getPlayerStats(3);
+        textMana.text = "" + playerMana._energyPoint;
     }
 }

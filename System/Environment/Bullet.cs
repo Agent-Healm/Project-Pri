@@ -9,7 +9,7 @@ public class Bullet : MonoBehaviour
     [SerializeField] private Vector2 direction;
     private float _time;
     void Awake(){
-        BoxCollider2D collider = gameObject.GetComponent<BoxCollider2D>();
+        BoxCollider2D collider = this.GetComponent<BoxCollider2D>();
         if (gameObject.layer == 7){
             collider.excludeLayers = 1 << 6 | 1 << 7;
         }

@@ -17,7 +17,6 @@ public class PlayerHitpoint : MonoBehaviour, IHealth, IArmor, IDamageAble
     private int _armorPoint;
     // public int _armorPoint {get; set;}
     private int _healthPoint;
-
     void Awake(){
         _armorPoint = maxArmorPoint;
         _healthPoint = maxHealthPoint;
@@ -33,6 +32,7 @@ public class PlayerHitpoint : MonoBehaviour, IHealth, IArmor, IDamageAble
     void Update()
     {
         if (_armorPoint >= maxArmorPoint){return;}
+        if (_healthPoint <= 0){return;}
         ArmorRegeneration();
         _timer +=1;
     }
@@ -82,7 +82,6 @@ public class PlayerHitpoint : MonoBehaviour, IHealth, IArmor, IDamageAble
         switch(index){
             case 1 : {return _healthPoint;}
             case 2 : {return _armorPoint;}
-            case 3 : {return 166;}
         }
         return _healthPoint;
     }

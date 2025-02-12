@@ -25,7 +25,7 @@ public class PlayerAim : MonoBehaviour
         }
     }
 
-    public Vector2 GetCurrenetFaceDir(){
+    public Vector2 GetCurrentFaceDir(){
         return _faceDir;
     }
 }
