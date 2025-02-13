@@ -53,8 +53,15 @@ public class PlayerWeaponAttackPattern
         }
         return false;
     }
-    public void Attack(Vector2 direction, Vector2 position){
-        attackPattern.ShootBullet(direction, position);
-        // return true;
+    public void Attack(Vector2 direction, Vector2 position, int inaccuracy){
+        float deg = Vector2.SignedAngle(Vector2.right, direction);
+        deg += (Random.Range(-inaccuracy, inaccuracy + 1) / 2f);
+        float rad = deg * Mathf.Deg2Rad;
+        Vector2 new_direction = new Vector2(Mathf.Cos(rad), Mathf.Sin(rad));
+        attackPattern.ShootBullet(new_direction, position);
+
+        // deg += (Random.Range(-inaccuracy / 2f, inaccuracy / 2f) * Mathf.Deg2Rad);
+        // Vector2 new_direction = new Vector2(Mathf.Cos(deg), Mathf.Sin(deg));
+        // attackPattern.ShootBullet(new_direction, position);
     }
 }

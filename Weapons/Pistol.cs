@@ -44,6 +44,10 @@ public class Pistol : MonoBehaviour
         
     }
 
+    public int getWeaponInaccuracy(){
+        return weaponBaseAttributes.inaccuracy;
+    }
+
     // public void AttemptAttack(ref int manaPoint){
     //     if (manaPoint >= pwap[0].energyCost){
     //         // pwap[0].Attack();

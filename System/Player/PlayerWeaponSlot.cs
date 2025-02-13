@@ -23,10 +23,12 @@ public class PlayerWeaponSlot : MonoBehaviour
         ActionHandler();
     }
     private void ActionHandler(){
-        if (Input.GetKeyDown(KeyCode.R)){
+        if (Input.GetKey(KeyCode.R)){
             // Debug.Log("Player is interacting");
             if (weapons[0].pwap[0].AttemptAttack(_playerMana._energyPoint)){
-                weapons[0].pwap[0].Attack(_facing, transform.position);
+                weapons[0].pwap[0].Attack(_facing, transform.position, 
+                weapons[0].weaponBaseAttributes.inaccuracy);
+                // weapons[0].getWeaponInaccuracy();
                 _playerMana.ManaConsume(weapons[0].pwap[0].energyCost);
             }
         }

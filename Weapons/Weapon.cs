@@ -33,8 +33,9 @@ public class Weapon : MonoBehaviour
     }
 
     public void Attack(Vector2 direction, Vector2 position){
-        attackPattern.ShootBullet(direction, position);    
+        attackPattern.ShootBullet(direction, position);
     }
+
 }
 
 [System.Serializable]
@@ -76,4 +77,5 @@ public class WeaponBaseAttributes {
         None,
         Shotgun
     }
+
 }
