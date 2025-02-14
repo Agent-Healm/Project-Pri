@@ -4,7 +4,7 @@ using UnityEngine;
 
 public class EnemyHitpoint : MonoBehaviour, IHealth, IDamageAble, ILootPool
 {
-    public int maxHealthPoint = 1;
+    [field:SerializeField] public int maxHealthPoint {get; set;} = 8;
     private int _healthPoint;
     void Awake(){
         _healthPoint = maxHealthPoint;

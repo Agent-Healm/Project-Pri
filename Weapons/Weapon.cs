@@ -19,22 +19,61 @@ public class Weapon : MonoBehaviour
     public int speedModPct;
     public enum effects;
     */
-    public AttackPattern attackPattern;
-    // Start is called before the first frame update
-    void Start()
-    {
-        
+    // public AttackPattern attackPattern;
+    public WeaponType weaponType;
+    public SubTypes subtypes;
+    public WeaponRarity weaponRarity;
+    public Effects effects;
+    public int inaccuracy;
+    public int speedModPct;
+
+    public enum WeaponType {
+        Pistol,
+        Rifle,
+        Shotgun,
+        Railgun,
+        Launcher,
+        Bow,
+        Staff,
+        Melee,
+        Throwables,
+        Misc
     }
+    public enum WeaponRarity {
+        Common,
+        Uncommon,
+        Rare,
+        VeryRare,
+        Epic,
+        Legendary
+    }
+    public enum Effects {
+        None,
+        Poison,
+        Burn,
+        Freeze
+    }
+    public enum SubTypes {
+        None,
+        Shotgun
+    }
+
+
+    // Start is called before the first frame update
+    // void Start()
+    // {
+        
+    // }
 
     // Update is called once per frame
-    void Update()
-    {
+    // void Update()
+    // {
         
-    }
+    // }
 
-    public void Attack(Vector2 direction, Vector2 position){
-        attackPattern.ShootBullet(direction, position);
-    }
+    // public void Attack(Vector2 direction, Vector2 position){
+    //     attackPattern.ShootBullet(direction, position);
+    // }
 
 }
 

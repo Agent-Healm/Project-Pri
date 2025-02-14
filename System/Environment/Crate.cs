@@ -4,8 +4,7 @@ using UnityEngine;
 
 public class Crate : MonoBehaviour, IHealth, IDamageAble, ILootPool
 {
-    public int maxHealthPoint = 10;
-    
+    [field: SerializeField] public int maxHealthPoint {get; set;} = 10;
     private int _healthPoint;
     // Start is called before the first frame update
     void Start()
@@ -21,14 +20,14 @@ public class Crate : MonoBehaviour, IHealth, IDamageAble, ILootPool
     public void InflictDamage(int damage = 1){
         if (damage < 0){return;}
         _healthPoint -= damage;
-        Debug.Log("Crate durability : " + _healthPoint);
+        // Debug.Log("Crate durability : " + _healthPoint);
         if (_healthPoint <= 0){
             HealthAtZero();
         }
     }
 
     public void HealthAtZero(){
-        Debug.Log("Crate is destroyed");
+        // Debug.Log("Crate is destroyed");
         Destroy(this.gameObject);
         LootOnDeath();
     }

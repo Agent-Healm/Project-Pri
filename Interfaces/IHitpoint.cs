@@ -4,16 +4,16 @@ using UnityEngine;
 
 public interface IHealth
 {
+    int maxHealthPoint { get; set; }
     void HealthAtZero();
     // void HealthDamage(int damage = 1);
 }
 
 public interface IArmor
 {
-    // int armorRegenStart { get; set; }
-    // int armorRegenInterval { get; set; }
-    // int maxArmorPoint { get; set; }
-    // int _armorPoint { get; set;}
+    int armorRegenStart { get; set; }
+    int armorRegenInterval { get; set; }
+    int maxArmorPoint { get; set; }
     void ArmorRegeneration();
     // void ArmorDamage(int damage = 1);
     void ArmorAtZero();

@@ -4,8 +4,8 @@ using UnityEngine;
 
 public class PlayerMana : MonoBehaviour
 {
-    public int energyPoint = 166;
-    public int _energyPoint {get; private set;}
+    public int energyPoint {get; set;} = 166;
+    public int _energyPoint;
     private void Awake(){
         _energyPoint = energyPoint;
     }

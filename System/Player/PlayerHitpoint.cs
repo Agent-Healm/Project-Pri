@@ -1,21 +1,21 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-
 public class PlayerHitpoint : MonoBehaviour, IHealth, IArmor, IDamageAble
 {
 
-    // public int armorRegenStart {get; set;}
-    // public int armorRegenInterval {get; set;}
-    // public int maxArmorPoint {get; set;}
-    public int armorRegenStart = 90;
-    public int armorRegenInterval = 30;
-    public int maxArmorPoint = 1;
-    public int maxHealthPoint = 1;
+    [field:SerializeField] public int armorRegenStart {get; set;} = 90;
+    [field:SerializeField] public int armorRegenInterval {get; set;} = 30;
+    [field:SerializeField] public int maxArmorPoint {get; set;} = 1;
+    [field:SerializeField] public int maxHealthPoint {get; set;} = 1;
+    
+    // public int armorRegenStart = 90;
+    // public int armorRegenInterval = 30;
+    // public int maxArmorPoint = 1;
+    // public int maxHealthPoint = 1;
 
     private int _timer;
     private int _armorPoint;
-    // public int _armorPoint {get; set;}
     private int _healthPoint;
     void Awake(){
         _armorPoint = maxArmorPoint;

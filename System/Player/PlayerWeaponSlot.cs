@@ -5,15 +5,21 @@ using UnityEditor;
 public class PlayerWeaponSlot : MonoBehaviour
 {
     public Pistol[] weapons;
+
     private PlayerAim _playerAim;
     private PlayerMana _playerMana;
     private Vector2 _facing;
-
+    private int _currentSlot = 0;
+    private int _weaponSlotCount;
+    private Pistol _currentWeapon;
     // Start is called before the first frame update
     void Start()
     {
         _playerAim = this.GetComponent<PlayerAim>();
         _playerMana = this.GetComponent<PlayerMana>();
+
+        _weaponSlotCount = weapons.Length;
+        _currentWeapon = weapons[0];
     }
 
     // Update is called once per frame
@@ -23,14 +29,21 @@ public class PlayerWeaponSlot : MonoBehaviour
         ActionHandler();
     }
     private void ActionHandler(){
+        if (Input.GetKeyDown(KeyCode.T)){
+            Debug.Log("Player is switching weapons");
+            _currentSlot = (_currentSlot + _weaponSlotCount + 1) % _weaponSlotCount;
+            _currentWeapon = weapons[_currentSlot];
+        }
         if (Input.GetKey(KeyCode.R)){
-            // Debug.Log("Player is interacting");
-            if (weapons[0].pwap[0].AttemptAttack(_playerMana._energyPoint)){
-                weapons[0].pwap[0].Attack(_facing, transform.position, 
-                weapons[0].weaponBaseAttributes.inaccuracy);
-                // weapons[0].getWeaponInaccuracy();
-                _playerMana.ManaConsume(weapons[0].pwap[0].energyCost);
+            if (_currentWeapon.GetCurrentPwap().AttemptAttack(ref _playerMana._energyPoint)){
+                _currentWeapon.GetCurrentPwap().Attack(_facing, transform.position, 
+                _currentWeapon.GetWeaponInaccuracy());
+                // _playerMana.ManaConsume(_currentWeapon.GetCurrentPwap().energyCost);
             }
+        }
+        if (Input.GetKeyDown(KeyCode.Y)){
+            Debug.Log("Player is toggling another mode");
+            _currentWeapon.SwitchWeaponMode();
         }
     }
 

@@ -5,34 +5,21 @@ using UnityEditor;
 
 public class Pistol : MonoBehaviour
 {
-    // [SerializeField] private 
-    /* attackPattern[]
-    public int damage;
-    public int energyCost;
-    public int critChance;
-    public float roundsPerSec;
-    */
     public PlayerWeaponAttackPattern[] pwap;
-
-    /* weapon
-    public enum weaponType;
-    public enum subtypes;
-    public enum rarity;
-    public int inaccuracy;
-    public int speedMod;
-    public enum effects;
-    */
-
     public WeaponBaseAttributes weaponBaseAttributes;
 
-    private void Awake() {
+    private int _currentWeaponMode = 0;
+    private PlayerWeaponAttackPattern _currentPwap;
+
+    void Awake() {
         weaponBaseAttributes.weaponType = WeaponBaseAttributes.WeaponType.Pistol;
+        // this.weaponType = WeaponBaseAttributes.WeaponType.Pistol;
+        _currentPwap = pwap[_currentWeaponMode];
     }
     // Start is called before the first frame update
     void Start()
     {
-        // if (weaponBaseAttributes.weaponType != WeaponBaseAttributes.WeaponType.Pistol)
-        // {
+        // if (weaponBaseAttributes.weaponType != WeaponBaseAttributes.WeaponType.Pistol){
         //     weaponBaseAttributes.weaponType = WeaponBaseAttributes.WeaponType.Pistol;
         // }
 
@@ -44,8 +31,9 @@ public class Pistol : MonoBehaviour
         
     }
 
-    public int getWeaponInaccuracy(){
+    public int GetWeaponInaccuracy(){
         return weaponBaseAttributes.inaccuracy;
+        // return this.inaccuracy;
     }
 
     // public void AttemptAttack(ref int manaPoint){
@@ -58,4 +46,14 @@ public class Pistol : MonoBehaviour
     //     pwap[0].Attack(direction, position);
     // }
 
+    public void SwitchWeaponMode(){
+        if (pwap.Length == 1){return;}
+
+        _currentWeaponMode = (_currentWeaponMode + pwap.Length + 1) % pwap.Length;
+        _currentPwap = pwap[_currentWeaponMode];
+    }
+
+    public PlayerWeaponAttackPattern GetCurrentPwap(){
+        return _currentPwap;
+    }
 }

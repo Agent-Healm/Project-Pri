@@ -44,11 +44,11 @@ public class PlayerWeaponAttackPattern
     public int critChance = 0;
     public float roundsPerSec = 1f;
 
-    public bool AttemptAttack(int manaPoint){
+    public bool AttemptAttack(ref int manaPoint){
         if (manaPoint >= energyCost){
             // pwap[0].Attack();
             // attackPattern.ShootBullet();
-            // manaPoint -= energyCost;
+            manaPoint -= energyCost;
             return true;
         }
         return false;
