@@ -11,6 +11,7 @@ public class GameManager : MonoBehaviour
 
     public PlayerHitpoint playerHitpoint;
     public PlayerMana playerMana;
+
     // private bool _isBattleMode = false;
     // Start is called before the first frame update
     void Start()

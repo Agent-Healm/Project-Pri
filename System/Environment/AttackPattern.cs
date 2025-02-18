@@ -15,8 +15,9 @@ public class AttackPattern : MonoBehaviour
     // {
         
     // }
-    public void ShootBullet(Vector2 distance, Vector2 position){
+    public void ShootBullet(Vector2 distance, Vector2 position, int critChance){
         bullet.setDirection(distance.normalized);
+        bullet.setCritChance(critChance);
         Instantiate(bullet, position + distance.normalized * 0.5f, Quaternion.identity);
     }
 }
@@ -42,9 +43,15 @@ public class PlayerWeaponAttackPattern
     // public int damage = 0;
     public int energyCost = 0;
     public int critChance = 0;
-    public float roundsPerSec = 1f;
+    // public float foreswing = 1f;
+    // public float backswing = 0f;
+    // public float cooldown = 1f;
+    // public float TBA {
+    //     get => foreswing + cooldown;
+    // } 
 
-    public bool AttemptAttack(ref int manaPoint){
+    // // private 
+    public bool ap_AttemptAction(ref int manaPoint){
         if (manaPoint >= energyCost){
             // pwap[0].Attack();
             // attackPattern.ShootBullet();
@@ -53,12 +60,12 @@ public class PlayerWeaponAttackPattern
         }
         return false;
     }
-    public void Attack(Vector2 direction, Vector2 position, int inaccuracy){
+    public void ap_Attack(Vector2 direction, Vector2 position, int inaccuracy){
         float deg = Vector2.SignedAngle(Vector2.right, direction);
         deg += (Random.Range(-inaccuracy, inaccuracy + 1) / 2f);
         float rad = deg * Mathf.Deg2Rad;
         Vector2 new_direction = new Vector2(Mathf.Cos(rad), Mathf.Sin(rad));
-        attackPattern.ShootBullet(new_direction, position);
+        attackPattern.ShootBullet(new_direction, position, 0);
 
         // deg += (Random.Range(-inaccuracy / 2f, inaccuracy / 2f) * Mathf.Deg2Rad);
         // Vector2 new_direction = new Vector2(Mathf.Cos(deg), Mathf.Sin(deg));

@@ -5,8 +5,9 @@ using UnityEngine;
 public class Bullet : MonoBehaviour
 {
     public int uptime = 60;
-    public int damage;
+    public int damage {get; private set;} = 1;
     [SerializeField] private Vector2 direction;
+    public int critChance {get; private set;} = 0;
     private float _time;
     void Awake(){
         BoxCollider2D collider = this.GetComponent<BoxCollider2D>();
@@ -35,7 +36,12 @@ public class Bullet : MonoBehaviour
 
         IDamageAble damageable = other.gameObject.GetComponent<IDamageAble>();
         if (damageable != null){
-            damageable.InflictDamage(damage);
+            int finalDamage = damage;
+            if (Random.Range(0, 100) < critChance){
+                // finalDamage += critDamage;
+                finalDamage += damage;
+            }
+            damageable.InflictDamage(finalDamage);
             // Debug.Log("damageable object found");
             DestroyBullet();
         }
@@ -51,7 +57,9 @@ public class Bullet : MonoBehaviour
     public void setDirection(Vector2 direction){
         this.direction = direction;
     }
-
+    public void setCritChance(int critChance){
+        this.critChance = critChance;
+    }
     public void DestroyBullet(){
         Destroy(this.gameObject);
     }

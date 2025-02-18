@@ -16,9 +16,6 @@ public class FloorGeneration : MonoBehaviour
     public int _width {get; private set;}
 
     void Awake(){
-        // switch(layoutType){
-        //     case RoomUtility.LayoutType.Path : {this.name = "Path"; break;}
-        // }
         this.name = layoutType switch {
             RoomUtility.LayoutType.Path => "Path",
             _ => this.name

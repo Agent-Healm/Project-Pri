@@ -4,22 +4,32 @@ using UnityEngine;
 using UnityEditor;
 public class PlayerWeaponSlot : MonoBehaviour
 {
-    public Pistol[] weapons;
-
+    // [SerializeReference]
+    // public List<Weapon> weaponAhh = new List<Weapon>();
+    public Weapon[] weaponInv;
+    // public List<Weapon> weapons = new List<Weapon>();
+    public int weaponSlotCountMax = 3;
+    private bool _itemNearby;
     private PlayerAim _playerAim;
     private PlayerMana _playerMana;
     private Vector2 _facing;
-    private int _currentSlot = 0;
-    private int _weaponSlotCount;
-    private Pistol _currentWeapon;
+    private int _currentWeaponSlot = -1;
+    private Collider2D _other;
+
+
+    // [SerializeReference]
+    private Weapon _currentWeapon;
     // Start is called before the first frame update
     void Start()
     {
         _playerAim = this.GetComponent<PlayerAim>();
         _playerMana = this.GetComponent<PlayerMana>();
 
-        _weaponSlotCount = weapons.Length;
-        _currentWeapon = weapons[0];
+        // WeaponSlotCountMax = weaponInv.Length;
+        // _currentWeapon = weaponInv[0];
+        // foreach(Weapon weapon in weaponAhh){
+        //     Debug.Log(weapon.weaponType);
+        // }
     }
 
     // Update is called once per frame
@@ -30,35 +40,81 @@ public class PlayerWeaponSlot : MonoBehaviour
     }
     private void ActionHandler(){
         if (Input.GetKeyDown(KeyCode.T)){
-            Debug.Log("Player is switching weapons");
-            _currentSlot = (_currentSlot + _weaponSlotCount + 1) % _weaponSlotCount;
-            _currentWeapon = weapons[_currentSlot];
+            PlayerSwitchWeapon();
         }
         if (Input.GetKey(KeyCode.R)){
-            if (_currentWeapon.GetCurrentPwap().AttemptAttack(ref _playerMana._energyPoint)){
-                _currentWeapon.GetCurrentPwap().Attack(_facing, transform.position, 
-                _currentWeapon.GetWeaponInaccuracy());
-                // _playerMana.ManaConsume(_currentWeapon.GetCurrentPwap().energyCost);
-            }
+            PlayerAction();
         }
         if (Input.GetKeyDown(KeyCode.Y)){
             Debug.Log("Player is toggling another mode");
             _currentWeapon.SwitchWeaponMode();
         }
     }
+    private void OnTriggerEnter2D(Collider2D other){
+        if ((other.gameObject.layer == 12) || (other.gameObject.layer == 13)){
+            // Debug.Log("Weapons nearby player");
+            _itemNearby = true;
+            _other = other;
+        }
+    }
+    private void OnTriggerExit2D(Collider2D other){
+        if ((other.gameObject.layer == 12) || (other.gameObject.layer == 13)){
+            // Debug.Log("Weapons are no longer nearby player");
+            _itemNearby = false;
+            _other = null;
+        }
+    }
 
-    private void FacingHandler(){
-        // Vector2 _distance = Camera.main.ScreenToWorldPoint(Input.mousePosition) - transform.position;
-        // _facing = _distance.normalized;
-        // Vector2 _distance = 
-        // RaycastHit2D raycastHit2D = Physics2D.Raycast(transform.position, _distance.normalized, 5.5f, layerMask);
-        // if (raycastHit2D.collider == null){
-        //     Debug.Log("nothing in sight");
-        // }
-        // else if(raycastHit2D.collider.name == target.name){
-        //     Debug.Log("player in sight");
-        // }
-        // _facing = 
-        
+    private void PlayerAction(){
+        if (_itemNearby){
+            // Debug.Log("Player could pickup an item");
+            if(_other.TryGetComponent<Potion>(out Potion potion)){
+                potion.OnInteract();
+            }
+            // Weapon weapon = _other.GetComponent<Weapon>();
+            else if (_other.TryGetComponent<Weapon>(out Weapon weapon)){
+                AddToWeaponSlots(weapon);
+            }
+        }
+        else {
+            if (weaponInv.Length == 0){
+                Debug.Log("Player has no weapons");
+                return;
+            }
+
+            if (_currentWeapon.AttemptAction(ref _playerMana._energyPoint)){
+                _currentWeapon.Action(_facing, transform.position);
+            }
+        }
+
+    }
+
+    private void AddToWeaponSlots(Weapon weapon){
+        if (weaponInv.Length < weaponSlotCountMax){
+            // Debug.Log("Player picked up " + weapon.name);
+            _currentWeaponSlot += 1;
+            ArrayUtility.Insert(ref weaponInv, _currentWeaponSlot, weapon);
+        }
+        else {
+            // Debug.Log("Player has too many weapons");
+            // Debug.Log("Dropping " + weaponInv[_currentWeaponSlot].gameObject.name);
+            weaponInv[_currentWeaponSlot].gameObject.SetActive(true);
+            weaponInv[_currentWeaponSlot].transform.position = transform.position;
+            weaponInv[_currentWeaponSlot] = weapon;
+        }
+        UpdateCurrentWeapon();
+        weapon.gameObject.SetActive(false);
+        // Destroy(weapon.gameObject);
+    }
+
+    private void PlayerSwitchWeapon(){
+        Debug.Log("Player is switching weapons");
+        if (weaponInv.Length <= 1){return;}
+        _currentWeaponSlot = (_currentWeaponSlot + weaponSlotCountMax + 1) % weaponSlotCountMax;
+        UpdateCurrentWeapon();
+    }
+
+    private void UpdateCurrentWeapon(){
+        _currentWeapon = weaponInv[_currentWeaponSlot];
     }
 }

@@ -3,19 +3,23 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEditor;
 
-public class Pistol : MonoBehaviour
+// [System.Serializable]
+public class Pistol : Weapon
 {
-    public PlayerWeaponAttackPattern[] pwap;
-    public WeaponBaseAttributes weaponBaseAttributes;
+    // public PlayerWeaponAttackPattern[] pwap;
+    // public WeaponBaseAttributes weaponBaseAttributes;
 
-    private int _currentWeaponMode = 0;
-    private PlayerWeaponAttackPattern _currentPwap;
+    // private int _currentWeaponMode = 0;
+    // private PlayerWeaponAttackPattern _currentPwap;
 
-    void Awake() {
-        weaponBaseAttributes.weaponType = WeaponBaseAttributes.WeaponType.Pistol;
+    // void Awake() {
+        // weaponBaseAttributes.weaponType = WeaponBaseAttributes.WeaponType.Pistol;
         // this.weaponType = WeaponBaseAttributes.WeaponType.Pistol;
-        _currentPwap = pwap[_currentWeaponMode];
-    }
+        // _currentWeaponMode = 0;
+        // _currentPwap = pwap[_currentWeaponMode];
+        // base._currentPwap = pwap[_currentWeaponMode];
+        // base.Awake();
+    // }
     // Start is called before the first frame update
     void Start()
     {
@@ -31,10 +35,10 @@ public class Pistol : MonoBehaviour
         
     }
 
-    public int GetWeaponInaccuracy(){
-        return weaponBaseAttributes.inaccuracy;
-        // return this.inaccuracy;
-    }
+    // public int GetWeaponInaccuracy(){
+    //     return this.inaccuracy;
+        // return weaponBaseAttributes.inaccuracy
+    // }
 
     // public void AttemptAttack(ref int manaPoint){
     //     if (manaPoint >= pwap[0].energyCost){
@@ -46,14 +50,19 @@ public class Pistol : MonoBehaviour
     //     pwap[0].Attack(direction, position);
     // }
 
-    public void SwitchWeaponMode(){
-        if (pwap.Length == 1){return;}
+    // public void SwitchWeaponMode(){
+    //     if (pwap.Length == 1){return;}
 
-        _currentWeaponMode = (_currentWeaponMode + pwap.Length + 1) % pwap.Length;
-        _currentPwap = pwap[_currentWeaponMode];
-    }
+    //     _currentWeaponMode = (_currentWeaponMode + pwap.Length + 1) % pwap.Length;
+    //     _currentPwap = pwap[_currentWeaponMode];
+    // }
 
-    public PlayerWeaponAttackPattern GetCurrentPwap(){
-        return _currentPwap;
-    }
+    // public PlayerWeaponAttackPattern GetCurrentPwap(){
+    //     return _currentPwap;
+    // }
+
+    // public void Action(){
+
+    // }
+
 }
