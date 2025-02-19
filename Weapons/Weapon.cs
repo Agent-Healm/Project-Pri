@@ -98,22 +98,12 @@ public class Weapon : MonoBehaviour, IInteractAble
         this.Attack(deg, position);
     }
 
-    // public void VAttack(Vector2 direction, Vector2 position){
-    //     _currentPwap.attackPattern.ShootBullet(direction, position, _currentPwap.critChance);
-    // }
-
     public void Attack(float deg, Vector2 position){
         float rad = deg * Mathf.Deg2Rad;
         Vector2 new_direction = new Vector2(Mathf.Cos(rad), Mathf.Sin(rad));
         
         _currentPwap.attackPattern.ShootBullet(new_direction, position, _currentPwap.critChance);
     }
-    
-    // public void OnInteract(){
-    //     Debug.Log("Player picked up " + this.name);
-        
-    //     Destroy(this.gameObject);
-    // }
 
     public virtual void OnPickup(PlayerAction playerAction){
         PlayerWeaponSlot _playerWeaponSlot = playerAction.GetComponent<PlayerWeaponSlot>();

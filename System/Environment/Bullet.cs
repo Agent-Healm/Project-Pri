@@ -47,7 +47,7 @@ public class Bullet : MonoBehaviour
         }
         else {
             if (other.gameObject.layer == 10){
-                Debug.Log("I hit a wall");
+                // Debug.Log("I hit a wall");
                 DestroyBullet();}
             // Debug.Log(other.gameObject.name);
             // Debug.Log("no damageable interface found, could be a wall");
