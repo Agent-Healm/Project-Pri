@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEditor;
 
-public class Potion : MonoBehaviour
+public class Potion : MonoBehaviour, IInteractAble
 {
     public enum Effects{
         None,
@@ -25,7 +25,8 @@ public class Potion : MonoBehaviour
         
     }
 
-    public void OnInteract(){
+    public void OnPickup(PlayerAction playerAction){
+        PlayerHitpoint _playerHitpoint = playerAction.GetComponent<PlayerHitpoint>();
         foreach (PotionAttribute pa in potionAttribute){
             switch (pa.effect){
                 case Effects.None:
@@ -34,6 +35,7 @@ public class Potion : MonoBehaviour
                     break;
                 case Effects.Heal:
                     Debug.Log("Player is healing");
+                    _playerHitpoint.HealHealth(pa.effectValue);
                     break;
                 case Effects.Buff:
                     break;

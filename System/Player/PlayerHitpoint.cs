@@ -85,4 +85,14 @@ public class PlayerHitpoint : MonoBehaviour, IHealth, IArmor, IDamageAble
         }
         return _healthPoint;
     }
+
+    public void HealHealth(int heal = 0){
+        if (heal <= 0){return;}
+        if (_healthPoint + heal < maxHealthPoint){
+            _healthPoint += heal;
+        }
+        else {
+            _healthPoint = maxHealthPoint;
+        }
+    }
 }

@@ -4,7 +4,7 @@ using UnityEngine;
 using UnityEditor;
 
 // [System.Serializable]
-public class Weapon : MonoBehaviour
+public class Weapon : MonoBehaviour, IInteractAble
 {
     // [SerializeField] private 
     /* attackPattern[]
@@ -34,7 +34,6 @@ public class Weapon : MonoBehaviour
 
     protected int _currentWeaponMode = 0;
     protected PlayerWeaponAttackPattern _currentPwap;
-
     public enum WeaponType {
         Pistol,
         Rifle,
@@ -69,6 +68,10 @@ public class Weapon : MonoBehaviour
     protected void Awake(){
         // this.gameObject.AddComponent<BoxCollider2D>();
         _currentPwap = pwap[_currentWeaponMode];
+    }
+
+    void Start(){
+
     }
 
     public void SwitchWeaponMode(){
@@ -111,6 +114,13 @@ public class Weapon : MonoBehaviour
         
     //     Destroy(this.gameObject);
     // }
+
+    public virtual void OnPickup(PlayerAction playerAction){
+        PlayerWeaponSlot _playerWeaponSlot = playerAction.GetComponent<PlayerWeaponSlot>();
+        // Debug.Log("Player picked up " + this);
+        _playerWeaponSlot.AddToWeaponSlots(this);
+        this.gameObject.SetActive(false);
+    }
 }
 
 // [System.Serializable]

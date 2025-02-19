@@ -21,7 +21,7 @@ public class PlayerMana : MonoBehaviour
         
     }
 
-    public void ManaConsume(int manaCost){
-        _energyPoint -= manaCost;
-    }
+    // public void ManaConsume(int manaCost){
+    //     _energyPoint -= manaCost;
+    // }
 }
