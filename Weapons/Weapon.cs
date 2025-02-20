@@ -23,7 +23,7 @@ public class Weapon : MonoBehaviour, IInteractAble
     */
     // public AttackPattern attackPattern;
     public WeaponType weaponType;
-    public SubTypes subtypes;
+    // public SubTypes subtypes;
     public WeaponRarity weaponRarity;
     public Effects effects;
     public int inaccuracy;
@@ -60,10 +60,10 @@ public class Weapon : MonoBehaviour, IInteractAble
         Burn,
         Freeze
     }
-    public enum SubTypes {
-        None,
-        Shotgun
-    }
+    // public enum SubTypes {
+    //     None,
+    //     Shotgun
+    // }
 
     protected void Awake(){
         // this.gameObject.AddComponent<BoxCollider2D>();

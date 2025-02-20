@@ -9,6 +9,7 @@ public class FloorGeneration : MonoBehaviour
     public int width;
     private Vector2 _center;
     public GameObject roomIcon;
+    public Sprite roomIconSprite;
     public RoomUtility.LayoutType layoutType;
     
     // readonly from public view, set-able in private view
@@ -34,14 +35,22 @@ public class FloorGeneration : MonoBehaviour
 
         _center = transform.position;
             
-        SpriteRenderer sr = roomIcon.GetComponent<SpriteRenderer>();
-        if (sr?.drawMode == SpriteDrawMode.Simple){
-            ManualFloorGeneration();
-        }
-        else if(sr.drawMode == SpriteDrawMode.Tiled){
-            sr.size = new Vector2(_length, _width);
-            TiledFloorGeneration();
-        }
+        // SpriteRenderer sr = roomIcon.GetComponent<SpriteRenderer>();
+        // if (sr?.drawMode == SpriteDrawMode.Simple){
+        //     ManualFloorGeneration();
+        // }
+        // else if(sr.drawMode == SpriteDrawMode.Tiled){
+        //     sr.size = new Vector2(_length, _width);
+        //     TiledFloorGeneration();
+        // }
+
+        SpriteRenderer sr = this.GetComponent<SpriteRenderer>();
+        // sr.sprite = roomIconSprite;
+        sr.sprite = SpriteTheme.instance.floorTile;
+        sr.drawMode = SpriteDrawMode.Tiled;
+        sr.size = new Vector2(_length, _width);
+        sr.sortingLayerName = "Floor";
+        // TiledFloorGeneration();
     }
 
     private void ManualFloorGeneration(){

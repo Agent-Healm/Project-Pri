@@ -40,16 +40,25 @@ public class PlayerSimpleMovement : MonoBehaviour
             return;
         }
         else {
-            _moveDir = new Vector2(moveX, moveY).normalized;
+            _moveDir = new Vector2(moveX, moveY);
             // transform.position += moveDir * speed * Time.deltaTime;
             // 4.2f
-            RaycastHit2D raycastHit = Physics2D.Raycast(transform.position, _moveDir, 4.2f * speed * Time.deltaTime, layerMask);
+            // transform.position += _moveDir * speed * Time.deltaTime;
+            // RaycastHit2D raycastHit = Physics2D.Raycast(transform.position, _moveDir, 6.3f * speed * Time.deltaTime, layerMask);
+            RaycastHit2D raycastHit = Physics2D.Raycast(transform.position, _moveDir, _moveDir.magnitude / 2f + speed * Time.deltaTime, layerMask);
             if (raycastHit.collider == null){
-                transform.position += _moveDir * speed * Time.deltaTime;
+                transform.position += _moveDir.normalized * speed * Time.deltaTime;
             }
             else if (raycastHit.collider != null){
                 Debug.Log("Player is stuck against " + raycastHit.collider.name);
                 // transform.position += moveDir * speed * Time.deltaTime;
+                // Debug.Log("RaycastHit normal : " + raycastHit.normal);
+                if (raycastHit.normal.x == 0){
+                    transform.position += Vector3.right * moveX * speed * Time.deltaTime;
+                }
+                else if (raycastHit.normal.y == 0){
+                    transform.position += Vector3.up * moveY * speed * Time.deltaTime;
+                }
             }
         }
     }

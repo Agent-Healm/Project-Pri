@@ -40,7 +40,6 @@ public class EnemyAttackPattern
 public class PlayerWeaponAttackPattern
 {
     public AttackPattern attackPattern;
-    // public int damage = 0;
     public int energyCost = 0;
     public int critChance = 0;
     // public float foreswing = 1f;
@@ -50,7 +49,6 @@ public class PlayerWeaponAttackPattern
     //     get => foreswing + cooldown;
     // } 
 
-    // // private 
     public bool ap_AttemptAction(ref int manaPoint){
         if (manaPoint >= energyCost){
             // pwap[0].Attack();

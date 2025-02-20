@@ -58,7 +58,7 @@ public class Shotgun : Weapon
                 // deg += (Random.Range(-inaccuracy, inaccuracy + 1) / 2f);
                 this.Attack(deg + (Random.Range(-inaccuracy, inaccuracy + 1) / 2f), position);
             }
-        } 
+        }
         // else if (shotgunType == ShotgunType.Conical){
 
         // }

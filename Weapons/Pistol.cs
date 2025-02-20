@@ -21,19 +21,19 @@ public class Pistol : Weapon
         // base.Awake();
     // }
     // Start is called before the first frame update
-    void Start()
-    {
+    // void Start()
+    // {
         // if (weaponBaseAttributes.weaponType != WeaponBaseAttributes.WeaponType.Pistol){
         //     weaponBaseAttributes.weaponType = WeaponBaseAttributes.WeaponType.Pistol;
         // }
 
-    }
+    // }
 
     // Update is called once per frame
-    void Update()
-    {
+    // void Update()
+    // {
         
-    }
+    // }
 
     // public int GetWeaponInaccuracy(){
     //     return this.inaccuracy;

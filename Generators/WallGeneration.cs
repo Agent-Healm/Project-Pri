@@ -95,9 +95,6 @@ public class WallGeneration : MonoBehaviour
             else if(vec2 == Vector2.left){
                 __posX = - _halfLength;
             }
-            // for (int i = 1 ; i <= _width ; i++){
-            //     _GenerateWall(__tile, __posX, i - _halfWidth);
-            // }
 
             if ((_width + _thisGateWidth) % 2 != 0){
                 _thisGateWidth += 1;
@@ -105,8 +102,10 @@ public class WallGeneration : MonoBehaviour
 
             if (hasGate){
                 _srWall.size = new Vector2(1, (_width - _thisGateWidth) / 2);
-                _GenerateWall(_wallTile, __posX,   (_width + _thisGateWidth) / 4f);
-                _GenerateWall(_wallTile, __posX, - (_width + _thisGateWidth) / 4f);
+                if (_srWall.size.y != 0){
+                    _GenerateWall(_wallTile, __posX,   (_width + _thisGateWidth) / 4f);
+                    _GenerateWall(_wallTile, __posX, - (_width + _thisGateWidth) / 4f);
+                }
                 _srGate.size = new Vector2(1, _thisGateWidth);
                 _GenerateWall(_gateTile, __posX, 0);
             }
@@ -125,9 +124,6 @@ public class WallGeneration : MonoBehaviour
             else if (vec2 == Vector2.down){
                 __posY = - _halfWidth;
             }
-            // for (int i = 1 ; i <= _length ; i++){
-            //     _GenerateWall(__tile, i - _halfLength, __posY);
-            // }
 
             if ((_length + _gateWidth) % 2 != 0){
                 _thisGateWidth += 1;
@@ -135,8 +131,10 @@ public class WallGeneration : MonoBehaviour
 
             if (hasGate){
                 _srWall.size = new Vector2((_length - _thisGateWidth) / 2, 1);
-                _GenerateWall(_wallTile,   (_length + _thisGateWidth) / 4f, __posY);
-                _GenerateWall(_wallTile, - (_length + _thisGateWidth) / 4f, __posY);
+                if (_srWall.size.x != 0){
+                    _GenerateWall(_wallTile,   (_length + _thisGateWidth) / 4f, __posY);
+                    _GenerateWall(_wallTile, - (_length + _thisGateWidth) / 4f, __posY);
+                }
                 _srGate.size = new Vector2(_thisGateWidth, 1);
                 _GenerateWall(_gateTile, 0, __posY);
             }
