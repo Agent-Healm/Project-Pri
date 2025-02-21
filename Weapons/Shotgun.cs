@@ -30,12 +30,6 @@ public class Shotgun : Weapon
     // {
         
     // }
-
-
-    // public override void OnPickup(){
-    //     Debug.Log("Player picked up " + this);
-    //     _playerWeaponSlot.AddToWeaponSlots(this);
-    // }
     public override void Action(Vector2 direction, Vector2 position){
         if (shotgunType == ShotgunType.Wide){
             float shotgunSpread = (inaccuracy * 2f) / (shotgunCount - 1);

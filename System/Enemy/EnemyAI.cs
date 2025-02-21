@@ -57,8 +57,6 @@ public class EnemyAI : MonoBehaviour
         // else if(raycastHit2D.collider.name == target.name){
         //     Debug.Log("player in sight");
         // }
-        // Debug.Log(raycastHit2D.collider?.gameObject.name);
-        // return (raycastHit2D.collider?.name == target.name);
         return (raycastHit2D.collider?.gameObject.layer == 8);
     }
     public void Chase(){

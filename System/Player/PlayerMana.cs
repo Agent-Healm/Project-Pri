@@ -5,7 +5,7 @@ using UnityEngine;
 public class PlayerMana : MonoBehaviour
 {
     public int energyPoint {get; set;} = 166;
-    public int _energyPoint;
+    public int _energyPoint ;
     private void Awake(){
         _energyPoint = energyPoint;
     }
@@ -21,7 +21,4 @@ public class PlayerMana : MonoBehaviour
         
     }
 
-    // public void ManaConsume(int manaCost){
-    //     _energyPoint -= manaCost;
-    // }
 }

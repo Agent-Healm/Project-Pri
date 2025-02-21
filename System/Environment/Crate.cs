@@ -23,14 +23,12 @@ public class Crate : MonoBehaviour, IHealth, IDamageAble, ILootPool
     public void InflictDamage(int damage = 1){
         if (damage < 0){return;}
         _healthPoint -= damage;
-        // Debug.Log("Crate durability : " + _healthPoint);
         if (_healthPoint <= 0){
             HealthAtZero();
         }
     }
 
     public void HealthAtZero(){
-        // Debug.Log("Crate is destroyed");
         Destroy(this.gameObject);
         LootOnDeath();
     }
