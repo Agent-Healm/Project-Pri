@@ -30,6 +30,8 @@ public class MapGeneration : MonoBehaviour
     private Vector3 _newFacing;
     private Vector3[] _emptySpace = new Vector3[0];
 
+    private Coroutine _coroutineGen;
+
     void Start(){
         InitialRoomAssign();
         _gate = RoomConfig.instance.path.roomVariance[0];
@@ -45,8 +47,10 @@ public class MapGeneration : MonoBehaviour
         ArrayUtility.Clear(ref _emptySpace);
         GenerateRoom(RoomUtility.RoomType.MainRoom, "home", _newFacing);
         MoveToNextTile(_newFacing);
+
+        _coroutineGen = StartCoroutine(BeginGenerate(maxRooms));
     }
-    void Update(){
+    void xUpdate(){
         if(maxRooms > _numberOfRooms){
             if(_tempRoomInterval <= 0 ){
                 procGenRoom();
@@ -59,6 +63,15 @@ public class MapGeneration : MonoBehaviour
         }
     }
     
+    private IEnumerator BeginGenerate(int maxRooms){
+        for (int i = 1; i <= maxRooms; i++){
+            procGenRoom();
+            Debug.Log("room generated, delay for 0.2s");
+            yield return new WaitForSeconds(0.2f);
+        }
+        GenerateLastRoom();
+        Debug.Log("done");
+    }
     /// <summary>
     /// Return the RoomObject using name
     /// </summary>
@@ -197,18 +210,15 @@ public class MapGeneration : MonoBehaviour
         RoomUtility.Vec3Reduce(ref _emptySpace, (_extraRooms.Length != 0));
 
         // if (maxRooms > 1){
-        if (maxRooms > _numberOfRooms + 1){
-            GenerateAllRooms(RoomUtility.RoomType.MainRoom, "mob", _newFacing);
-        }
+        // if (maxRooms > _numberOfRooms + 1){
+        GenerateAllRooms(RoomUtility.RoomType.MainRoom, "mob", _newFacing);
+        // }
         // else if (maxRooms == 1){
-        else if (maxRooms - _numberOfRooms == 1){
-            ArrayUtility.Clear(ref _emptySpace);
-            GenerateAllRooms(RoomUtility.RoomType.MainRoom, "exit", _newFacing);
-
-            RoomDebug.ShowRoomWorldPositions(_roomPos, false);
-            RoomDebug.ShowAllRooms(_debug_createdRooms, true);
-            return;
-        }
+        // else if (maxRooms - _numberOfRooms == 1){
+            // ArrayUtility.Clear(ref _emptySpace);
+            // GenerateLastRoom();
+            // return;
+        // }
         
         _newFacing = RoomUtility.PopArray(ref _emptySpace, -1);
 
@@ -233,4 +243,9 @@ public class MapGeneration : MonoBehaviour
         MoveToNextTile(_newFacing);
     } 
     
+    private void GenerateLastRoom(){
+        GenerateAllRooms(RoomUtility.RoomType.MainRoom, "exit", _newFacing);
+        RoomDebug.ShowRoomWorldPositions(_roomPos, false);
+        RoomDebug.ShowAllRooms(_debug_createdRooms, true);
+    }
 }

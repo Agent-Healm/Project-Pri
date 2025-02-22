@@ -2,17 +2,16 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEditor;
+// using UnityEngine.Events;
 public class PlayerWeaponSlot : MonoBehaviour
 {
     // [SerializeReference]
-    // public List<Weapon> weaponAhh = new List<Weapon>();
     public Weapon[] weaponInv;
     public int weaponSlotCountMax = 3;
     private int _currentWeaponSlot = -1;
     private bool _itemNearby;
     // [SerializeReference]
     private Weapon _currentWeapon;
-
     private Vector2 _facing;
     private Collider2D _other;
     private PlayerAim _playerAim;
