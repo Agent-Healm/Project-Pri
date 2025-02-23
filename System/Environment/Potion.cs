@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEditor;
 
-public class Potion : MonoBehaviour, IInteractAble
+public class Potion : LootAbleItem, IInteractAble
 {
     public enum Effects{
         None,

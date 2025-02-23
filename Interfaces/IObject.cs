@@ -5,3 +5,6 @@ using UnityEngine;
 public interface IInteractAble {
     void OnPickup(PlayerAction playerAction);
 }
+// public interface ILootItem {
+
+// }

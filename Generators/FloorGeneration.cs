@@ -7,10 +7,10 @@ public class FloorGeneration : MonoBehaviour
     public bool isVertical = false;
     public int length;
     public int width;
-    private Vector2 _center;
     public GameObject roomIcon;
     public Sprite roomIconSprite;
     public RoomUtility.LayoutType layoutType;
+    private Vector2 _center;
     
     // readonly from public view, set-able in private view
     public int _length {get; private set;}
@@ -46,29 +46,29 @@ public class FloorGeneration : MonoBehaviour
 
         SpriteRenderer sr = this.GetComponent<SpriteRenderer>();
         // sr.sprite = roomIconSprite;
-        sr.sprite = SpriteTheme.instance.floorTile;
+        sr.sprite = SpriteTheme.Instance.floorTile;
         sr.drawMode = SpriteDrawMode.Tiled;
         sr.size = new Vector2(_length, _width);
         sr.sortingLayerName = "Floor";
         // TiledFloorGeneration();
     }
 
-    private void ManualFloorGeneration(){
+    // private void ManualFloorGeneration(){
 
-        Vector2 pos;
-        // offset for even sized room
-        float halfLength = (_length - 1.0f) / 2;
-        float halfWidth = (_width - 1.0f) / 2;
+    //     Vector2 pos;
+    //     // offset for even sized room
+    //     float halfLength = (_length - 1.0f) / 2;
+    //     float halfWidth = (_width - 1.0f) / 2;
 
-        for (int w = 0 ; w < _width ; w++){
-            for (int l = 0 ; l < _length ; l++){
-                pos = new Vector2(l - halfLength, halfWidth - w);
-                Instantiate(roomIcon, _center + pos, Quaternion.identity, transform);
-            }
-        }
-    }
+    //     for (int w = 0 ; w < _width ; w++){
+    //         for (int l = 0 ; l < _length ; l++){
+    //             pos = new Vector2(l - halfLength, halfWidth - w);
+    //             Instantiate(roomIcon, _center + pos, Quaternion.identity, transform);
+    //         }
+    //     }
+    // }
 
-    private void TiledFloorGeneration(){
-        Instantiate(roomIcon, _center , Quaternion.identity, transform);
-    }
+    // private void TiledFloorGeneration(){
+    //     Instantiate(roomIcon, _center , Quaternion.identity, transform);
+    // }
 }

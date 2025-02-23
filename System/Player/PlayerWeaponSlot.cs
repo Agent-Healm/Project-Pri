@@ -36,6 +36,10 @@ public class PlayerWeaponSlot : MonoBehaviour
             PlayerSwitchWeapon();
         }
         if (Input.GetKeyDown(KeyCode.Y)){
+            if (weaponInv.Length == 0){
+                return;
+            }
+
             _currentWeapon.SwitchWeaponMode();
         }
         if (Input.GetKeyDown(KeyCode.G)){

@@ -38,7 +38,7 @@ public class WallGeneration : MonoBehaviour
 
         _nullTile = TextureTheme.instance.nullTile;
         _center = transform.position;
-        _gateWidth = RoomConfig.instance.path.roomVariance[0]
+        _gateWidth = RoomConfig.Instance.path.roomVariance[0]
                     .GetComponent<FloorGeneration>()
                     .width; 
 
@@ -47,7 +47,7 @@ public class WallGeneration : MonoBehaviour
 
         if (_layoutType == RoomUtility.LayoutType.Room){
 
-            _GenerateCorners();
+            GenerateCorners();
             _GenerateGate(Vector2.right, gateEast);
             _GenerateGate(Vector2.left, gateWest);
             _GenerateGate(Vector2.down, gateSouth);
@@ -66,7 +66,7 @@ public class WallGeneration : MonoBehaviour
             }
         }
     }
-    private void _GenerateCorners(){
+    private void GenerateCorners(){
         SpriteRenderer sr = _wallTile.GetComponent<SpriteRenderer>();
         if(sr.drawMode == SpriteDrawMode.Tiled){
             sr.size = new Vector2(1, 1);
@@ -80,7 +80,6 @@ public class WallGeneration : MonoBehaviour
         Instantiate(tile, _center + new Vector2(xPos, yPos), 
                     Quaternion.identity, transform);
     }
-    
     private void _GenerateGate(Vector2 vec2, bool hasGate = false){
 
         int _thisGateWidth = _gateWidth;

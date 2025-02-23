@@ -4,7 +4,7 @@ using UnityEngine;
 using UnityEditor;
 
 // [System.Serializable]
-public class Weapon : MonoBehaviour, IInteractAble
+public abstract class Weapon : LootAbleItem, IInteractAble
 {
     // [SerializeField] private 
     /* attackPattern[]

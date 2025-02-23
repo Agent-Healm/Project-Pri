@@ -12,10 +12,8 @@ public class MapGeneration : MonoBehaviour
     public int maxRooms = 3;
     public float tileSize = 1.0f;
 
-    private int _numberOfRooms = 0;
     private float _prevRoomLength; 
     private float _prevRoomWidth;
-    private float _tempRoomInterval = 0.0f;
 
     private Room[] _rooms;
     private string[] _debug_createdRooms = new string[0];
@@ -34,43 +32,22 @@ public class MapGeneration : MonoBehaviour
 
     void Start(){
         InitialRoomAssign();
-        _gate = RoomConfig.instance.path.roomVariance[0];
-        // _gateWidth = _gate.GetComponent<WallGeneration>();
-        // _gate.GetComponent<WallGeneration>().gateWidth = ;
-
+        _gate = RoomConfig.Instance.path.roomVariance[0];
         transform.position = startPos[0].position;
-
-        RoomUtility.getAdjacentVec3(ref _emptySpace, _currentWorldPoint, _roomPos);
-        _newFacing = _emptySpace[Random.Range(0, _emptySpace.Length)];
-        
-        // Generate first room using main room function
-        ArrayUtility.Clear(ref _emptySpace);
-        GenerateRoom(RoomUtility.RoomType.MainRoom, "home", _newFacing);
-        MoveToNextTile(_newFacing);
 
         _coroutineGen = StartCoroutine(BeginGenerate(maxRooms));
     }
-    void xUpdate(){
-        if(maxRooms > _numberOfRooms){
-            if(_tempRoomInterval <= 0 ){
-                procGenRoom();
-                _tempRoomInterval = 0.2f;
-                _numberOfRooms += 1;
-            }
-            else {
-                _tempRoomInterval -= Time.deltaTime;
-            }
-        }
-    }
     
     private IEnumerator BeginGenerate(int maxRooms){
+        GenerateFirstRoom();
+        yield return new WaitForSeconds(0.2f);
         for (int i = 1; i <= maxRooms; i++){
             procGenRoom();
             Debug.Log("room generated, delay for 0.2s");
             yield return new WaitForSeconds(0.2f);
         }
         GenerateLastRoom();
-        Debug.Log("done");
+        print("done");
     }
     /// <summary>
     /// Return the RoomObject using name
@@ -93,6 +70,20 @@ public class MapGeneration : MonoBehaviour
         int gateLength = GenerateRoom(roomType, roomName, facingPos);
         GeneratePath(roomType, facingPos, gateLength);
     }    
+    private void GenerateFirstRoom(){
+        RoomUtility.getAdjacentVec3(ref _emptySpace, _currentWorldPoint, _roomPos);
+        _newFacing = _emptySpace[Random.Range(0, _emptySpace.Length)];
+        
+        // Generate first room using main room function
+        ArrayUtility.Clear(ref _emptySpace);
+        GenerateRoom(RoomUtility.RoomType.MainRoom, "home", _newFacing);
+        MoveToNextTile(_newFacing);
+    }
+    private void GenerateLastRoom(){
+        GenerateAllRooms(RoomUtility.RoomType.MainRoom, "exit", _newFacing);
+        RoomDebug.ShowRoomWorldPositions(_roomPos, false);
+        RoomDebug.ShowAllRooms(_debug_createdRooms, true);
+    }
     private void GeneratePath(RoomUtility.RoomType roomType, Vector3 facingPos, int gateLength = 1){
 
         // GameObject gate = RoomConfig.instance.path.roomVariance[0];
@@ -182,8 +173,8 @@ public class MapGeneration : MonoBehaviour
     private void InitialRoomAssign(){
         if (maxRooms <=1){maxRooms = 2;}
 
-        _rooms = RoomConfig.instance.rooms;
-        ArrayUtility.AddRange(ref _rooms, RoomConfig.instance.basicRooms);
+        _rooms = RoomConfig.Instance.rooms;
+        ArrayUtility.AddRange(ref _rooms, RoomConfig.Instance.basicRooms);
 
         foreach(Room room in _rooms){
             if(room.isIncluded){
@@ -243,9 +234,4 @@ public class MapGeneration : MonoBehaviour
         MoveToNextTile(_newFacing);
     } 
     
-    private void GenerateLastRoom(){
-        GenerateAllRooms(RoomUtility.RoomType.MainRoom, "exit", _newFacing);
-        RoomDebug.ShowRoomWorldPositions(_roomPos, false);
-        RoomDebug.ShowAllRooms(_debug_createdRooms, true);
-    }
 }

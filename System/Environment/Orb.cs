@@ -2,7 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class Orb : MonoBehaviour
+public class Orb : LootAbleItem
 {
     public Potion.Effects effect;
     public int effectValue;

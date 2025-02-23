@@ -9,11 +9,11 @@ public class SpriteTheme : MonoBehaviour
     public Sprite torchTile;
     public Sprite wallTile;
     public Sprite nullTile;
-    public static SpriteTheme instance;
+    public static SpriteTheme Instance;
 
     void Awake(){
-        if (instance == null){
-            instance = this;
+        if (Instance == null){
+            Instance = this;
         }
         DontDestroyOnLoad(this);
     }
