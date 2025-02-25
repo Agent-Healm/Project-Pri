@@ -29,22 +29,22 @@ public class MapGeneration : MonoBehaviour
     private Vector3[] _emptySpace = new Vector3[0];
 
     private Coroutine _coroutineGen;
-
-    void Start(){
+    private WaitForSeconds _wait = new WaitForSeconds(0.2f);
+    private void Start(){
         InitialRoomAssign();
-        _gate = RoomConfig.Instance.path.roomVariance[0];
         transform.position = startPos[0].position;
-
+        if (_coroutineGen != null){
+            StopCoroutine(_coroutineGen);
+        }
         _coroutineGen = StartCoroutine(BeginGenerate(maxRooms));
     }
-    
     private IEnumerator BeginGenerate(int maxRooms){
         GenerateFirstRoom();
-        yield return new WaitForSeconds(0.2f);
+        yield return _wait;
         for (int i = 1; i <= maxRooms; i++){
             procGenRoom();
             Debug.Log("room generated, delay for 0.2s");
-            yield return new WaitForSeconds(0.2f);
+            yield return _wait;
         }
         GenerateLastRoom();
         print("done");
@@ -172,7 +172,7 @@ public class MapGeneration : MonoBehaviour
     }
     private void InitialRoomAssign(){
         if (maxRooms <=1){maxRooms = 2;}
-
+        _gate = RoomConfig.Instance.path.roomVariance[0];
         _rooms = RoomConfig.Instance.rooms;
         ArrayUtility.AddRange(ref _rooms, RoomConfig.Instance.basicRooms);
 

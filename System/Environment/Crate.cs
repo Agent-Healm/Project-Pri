@@ -8,34 +8,47 @@ public class Crate : MonoBehaviour, IHealth, IDamageAble, ILootPool
 
     [field: SerializeField] public int maxLootCount {get; set;} = 1;
     public LootTable lootTable;
+
     private int _healthPoint;
+    private LootAbleItem[] _lootItem = {};
     // Start is called before the first frame update
     void Start()
     {
         _healthPoint = maxHealthPoint;
+        lootTable.GenerateLoot(ref _lootItem, maxLootCount);
     }
 
     // Update is called once per frame
     void Update()
     {
+
     }
 
-    public void InflictDamage(int damage = 1){
-        if (damage < 0){return;}
+    public bool InflictDamage(int damage = 1){
+        // this.enabled = false;
+        // if (damage < 0){return;}
+        if (damage < 0){return false;}
+        // if (_healthPoint <= 0){return ;}
+        if (_healthPoint <= 0){return false;}
+        // if (damage < 0 || _healthPoint <= 0){return;}
         _healthPoint -= damage;
         if (_healthPoint <= 0){
             HealthAtZero();
         }
+        // this.enabled = true;
+        return true;
     }
 
     public void HealthAtZero(){
         Destroy(this.gameObject);
-        LootOnDeath();
+        LootOnDeath();   
+        this.enabled = false;
     }
 
     public void LootOnDeath(){
         Debug.Log("Spawn a random loot on crate.");
-        // Instantiate(potion[Random.Range(0, potion.Length)], this.transform.position, Quaternion.identity);
-        lootTable.GenerateLoot(this.transform.position);
+        foreach(LootAbleItem item in _lootItem){
+            item.SpawnLoot(this.transform.position);
+        }
     }
 }

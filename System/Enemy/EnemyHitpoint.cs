@@ -20,12 +20,14 @@ public class EnemyHitpoint : MonoBehaviour, IHealth, IDamageAble, ILootPool
         
     }
 
-    public void InflictDamage(int damage = 0){
-        if (damage <0){return;}
+    public bool InflictDamage(int damage = 0){
+        if (damage <0){return false;}
         _healthPoint -= damage;
         if (_healthPoint <=0) {
             HealthAtZero();
         }
+        
+        return true;
     }
 
     public void HealthAtZero(){

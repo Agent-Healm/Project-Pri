@@ -60,8 +60,8 @@ public class PlayerHitpoint : MonoBehaviour, IHealth, IArmor, IDamageAble
         _armorPoint = 0;
     }
 
-    public void InflictDamage(int damage = 0){
-        if (damage < 0){return;}
+    public bool InflictDamage(int damage = 0){
+        if (damage < 0){return false;}
 
         if (_armorPoint - damage >= 0){
             _armorPoint -= damage;
@@ -77,6 +77,7 @@ public class PlayerHitpoint : MonoBehaviour, IHealth, IArmor, IDamageAble
             this.HealthAtZero();
         }
         _timer = 0;
+        return true;
     }
     public int getPlayerStats(int index){
         switch(index){

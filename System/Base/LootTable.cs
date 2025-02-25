@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEditor;
 
 [CreateAssetMenu(fileName="LootTable", menuName="ScriptableObjects/LootTable")]
 public class LootTable : ScriptableObject
@@ -10,21 +11,24 @@ public class LootTable : ScriptableObject
     public int totalWeight;
     public bool isCalculated = false;
 
-    public void GenerateLoot(Vector2 position){
+    public void GenerateLoot(ref LootAbleItem[] lootAbleItems, int maxLootCount){
         if (!isCalculated){
             totalWeight = GetTotalWeight();
             isCalculated = true;
         }
-        
-        // int randomValue = Random.Range(0, totalWeight);
-        int randomValue = Random.Range(0, totalWeight);
-        Debug.Log("set random value : " + randomValue);
+        int randomValue;
+        for (int i = 0; i < maxLootCount; i++){
+            if (spawnChance < Random.Range(0, 100)){break;}
+            randomValue = Random.Range(0, totalWeight);
+            DetermineLoot(randomValue, ref lootAbleItems);
+        }
+    }
+    private void DetermineLoot(int randomValue, ref LootAbleItem[] lootAbleItems){
         foreach(Loot loot in lootTable2){
             randomValue -= loot.weight;
             if (randomValue < 0){
-                Debug.Log("spawn loot : " + loot.loot.name);
-                loot.loot.SpawnLoot(position);
-                return;
+                ArrayUtility.Add(ref lootAbleItems, loot.lootItem);
+                break;
             }
         }
     }
@@ -35,11 +39,12 @@ public class LootTable : ScriptableObject
         }
         return totalWeight;
     }
+
 }
 
 [System.Serializable]
 public class Loot
 {
-    public LootAbleItem loot;
+    public LootAbleItem lootItem;
     public int weight;
 }

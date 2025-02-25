@@ -56,7 +56,7 @@ public class PlayerWeaponSlot : MonoBehaviour
             UpdateCurrentWeapon();
         }
     }
-    public void WeaponAction(){
+    public void WeaponAction(PlayerAction playerAction){
         if (weaponInv.Length == 0){
             Debug.Log("Player has no weapons");
             return;
@@ -79,8 +79,9 @@ public class PlayerWeaponSlot : MonoBehaviour
     }
 
     private void PlayerSwitchWeapon(){
+        print("Switching weapon");
         if (weaponInv.Length <= 1){return;}
-        _currentWeaponSlot = (_currentWeaponSlot + weaponSlotCountMax + 1) % weaponInv.Length;
+        _currentWeaponSlot = (_currentWeaponSlot + 1) % weaponInv.Length;
         UpdateCurrentWeapon();
     }
 

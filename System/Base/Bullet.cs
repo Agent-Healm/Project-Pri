@@ -5,7 +5,7 @@ using UnityEngine;
 public class Bullet : MonoBehaviour
 {
     public int uptime = 60;
-    public int damage {get; private set;} = 1;
+    [field:SerializeField] public int damage {get; set;} = 1;
     [SerializeField] private Vector2 direction;
     public int critChance {get; private set;} = 0;
     private float _time;
@@ -34,16 +34,19 @@ public class Bullet : MonoBehaviour
 
     private void OnTriggerEnter2D(Collider2D other){
 
-        IDamageAble damageable = other.gameObject.GetComponent<IDamageAble>();
-        if (damageable != null){
+        // IDamageAble damageable = other.gameObject.GetComponent<IDamageAble>();
+        // if (damageable != null){
+        if (other.gameObject.TryGetComponent<IDamageAble>(out IDamageAble damageable)){
             int finalDamage = damage;
             if (Random.Range(0, 100) < critChance){
                 // finalDamage += critDamage;
                 finalDamage += damage;
             }
-            damageable.InflictDamage(finalDamage);
+            // isBulletHit = damageable.InflictDamage(finalDamage);
             // Debug.Log("damageable object found");
-            DestroyBullet();
+            if (damageable.InflictDamage(finalDamage)){
+                DestroyBullet();
+            }
         }
         else {
             if (other.gameObject.layer == 10){

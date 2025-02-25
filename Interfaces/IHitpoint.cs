@@ -22,7 +22,7 @@ public interface IArmor
 
 public interface IDamageAble
 {
-    void InflictDamage(int damage = 1);
+    bool InflictDamage(int damage = 1);
 }
 
 public interface ILootPool

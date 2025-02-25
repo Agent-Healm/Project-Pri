@@ -46,7 +46,7 @@ public class PlayerSimpleMovement : MonoBehaviour
                 transform.position += _moveDir.normalized * speed * Time.deltaTime;
             }
             else if (raycastHit.collider != null){
-                Debug.Log("Player is stuck against " + raycastHit.collider.name);
+                // Debug.Log("Player is stuck against " + raycastHit.collider.name);
                 if (raycastHit.normal.x == 0){
                     // transform.position += Vector3.right * moveX * speed * Time.deltaTime;
                     transform.position += Vector3.right * _moveDir.normalized.x * speed * Time.deltaTime;
