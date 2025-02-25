@@ -3,14 +3,16 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEditor;
 
+using DefaultLayer;
 public class EnemyAI : MonoBehaviour
 {
     public float range = 0.0f;
+    [SerializeField] private LayerMask layerMask = BitLayer.PlayerLayer() | BitLayer.EnvironmentLayer();
+    [SerializeField] private LayerMask targetMask = BitLayer.PlayerLayer();
     public EnemyAttackPattern[] enemyAttackPattern;
+    
     private GameObject _target;
     private int _time;
-    [SerializeField] private LayerMask layerMask = DLayer.PlayerLayer() | DLayer.EnvironmentLayer();
-    [SerializeField] private LayerMask targetMask = DLayer.PlayerLayer();
     private Vector2 _distance;
 
     // void Awake(){

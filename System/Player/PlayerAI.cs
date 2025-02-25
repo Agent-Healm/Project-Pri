@@ -2,10 +2,11 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
+using DefaultLayer;
 public class PlayerAI : MonoBehaviour
 {
-    [SerializeField] private LayerMask layerMask = DLayer.EnemyLayer() | DLayer.EnvironmentLayer();
-    [SerializeField] private LayerMask targetMask = DLayer.EnemyLayer();
+    [SerializeField] private LayerMask layerMask = BitLayer.EnemyLayer() | BitLayer.EnvironmentLayer();
+    [SerializeField] private LayerMask targetMask = BitLayer.EnemyLayer();
 
     private bool _isAimingAtTarget = false;
     private GameObject _target;
