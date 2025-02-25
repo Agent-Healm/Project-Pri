@@ -5,7 +5,7 @@ using System;
 public class PlayerAction : MonoBehaviour
 {
 
-    private bool _itemNearby;
+    // private bool _itemNearby;
     private Collider2D _other;
 
     // private PlayerWeaponSlot _playerWeaponSlot;
@@ -30,14 +30,14 @@ public class PlayerAction : MonoBehaviour
     
     private void OnTriggerEnter2D(Collider2D other){
         if (other.gameObject.TryGetComponent<IInteractAble>(out IInteractAble interactable)){
-            _itemNearby = true;
+            // _itemNearby = true;
             _other = other;
             PlayerInteract();
         };
     }
     private void OnTriggerExit2D(Collider2D other){
         if (other.gameObject.TryGetComponent<IInteractAble>(out IInteractAble interactable)){
-            _itemNearby = false;
+            // _itemNearby = false;
             _other = null;
             PlayerDefaultAction();
         };
@@ -60,11 +60,11 @@ public class PlayerAction : MonoBehaviour
         }
     }
     private void PlayerInteract(){
-        if (_itemNearby){
-            if (_other.TryGetComponent<IInteractAble>(out IInteractAble interactable)){
-                onPlayerAction = interactable.OnPickup;
-            }
+        // if (_itemNearby){
+        if (_other.TryGetComponent<IInteractAble>(out IInteractAble interactable)){
+            onPlayerAction = interactable.OnPickup;
         }
+        // }
     }
     private void PlayerDefaultAction(){
         if (this.TryGetComponent<PlayerWeaponSlot>(out PlayerWeaponSlot playerWeaponSlot)){

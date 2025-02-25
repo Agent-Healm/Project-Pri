@@ -8,7 +8,8 @@ public class Bullet : MonoBehaviour
     [field:SerializeField] public int damage {get; set;} = 1;
     [SerializeField] private Vector2 direction;
     public int critChance {get; private set;} = 0;
-    private float _time;
+    // private float _time;
+    private Coroutine _coroutine;
     void Awake(){
         BoxCollider2D collider = this.GetComponent<BoxCollider2D>();
         if (gameObject.layer == 7){
@@ -20,30 +21,39 @@ public class Bullet : MonoBehaviour
     }
     void Start(){
         // if (direction == Vector2.zero){Debug.Log("no direction ??");}
+        // BulletMove(uptime);
+        
+        if (_coroutine != null){
+            StopCoroutine(_coroutine);
+        }
+        StartCoroutine(BulletMove(uptime));
     }
     void FixedUpdate(){
 
     }
     void Update(){
-        transform.Translate(direction * 0.08f);
-        if ( _time >= uptime){
-            Destroy(gameObject);
-        }
-        _time += 1;
+        // transform.Translate(direction * 0.08f);
+        // if ( _time >= uptime){
+        //     Destroy(gameObject);
+        // }
+        // _time += 1;
     }
+    private IEnumerator BulletMove(int uptime){
+        for (int i = 0 ; i < uptime ; i++){
+            transform.Translate(direction * 0.08f);
+            yield return null;
+        }
+        DestroyBullet();
 
+    }
     private void OnTriggerEnter2D(Collider2D other){
 
-        // IDamageAble damageable = other.gameObject.GetComponent<IDamageAble>();
-        // if (damageable != null){
         if (other.gameObject.TryGetComponent<IDamageAble>(out IDamageAble damageable)){
             int finalDamage = damage;
             if (Random.Range(0, 100) < critChance){
                 // finalDamage += critDamage;
                 finalDamage += damage;
             }
-            // isBulletHit = damageable.InflictDamage(finalDamage);
-            // Debug.Log("damageable object found");
             if (damageable.InflictDamage(finalDamage)){
                 DestroyBullet();
             }
@@ -64,6 +74,7 @@ public class Bullet : MonoBehaviour
         this.critChance = critChance;
     }
     public void DestroyBullet(){
+        // StopCoroutine(_coroutine);
         Destroy(this.gameObject);
     }
 }

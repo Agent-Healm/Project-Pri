@@ -11,11 +11,14 @@ public class LootTable : ScriptableObject
     public int totalWeight;
     public bool isCalculated = false;
 
-    public void GenerateLoot(ref LootAbleItem[] lootAbleItems, int maxLootCount){
+    private void OnEnable(){
         if (!isCalculated){
             totalWeight = GetTotalWeight();
             isCalculated = true;
         }
+    }
+
+    public void GenerateLoot(ref LootAbleItem[] lootAbleItems, int maxLootCount){
         int randomValue;
         for (int i = 0; i < maxLootCount; i++){
             if (spawnChance < Random.Range(0, 100)){break;}

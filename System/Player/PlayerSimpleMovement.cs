@@ -2,10 +2,12 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEditor;
+
+using DefaultLayer;
 public class PlayerSimpleMovement : MonoBehaviour
 {
     public float speed = 10;
-    [SerializeField] private LayerMask layerMask;
+    [SerializeField] private LayerMask layerMask = BitLayer.EnvironmentLayer();
     private Vector3 _moveDir;
     // Start is called before the first frame update
     void Start()

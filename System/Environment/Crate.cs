@@ -25,17 +25,12 @@ public class Crate : MonoBehaviour, IHealth, IDamageAble, ILootPool
     }
 
     public bool InflictDamage(int damage = 1){
-        // this.enabled = false;
-        // if (damage < 0){return;}
         if (damage < 0){return false;}
-        // if (_healthPoint <= 0){return ;}
         if (_healthPoint <= 0){return false;}
-        // if (damage < 0 || _healthPoint <= 0){return;}
         _healthPoint -= damage;
         if (_healthPoint <= 0){
             HealthAtZero();
         }
-        // this.enabled = true;
         return true;
     }
 
