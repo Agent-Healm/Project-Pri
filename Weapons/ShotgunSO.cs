@@ -3,8 +3,8 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEditor;
 
-[CreateAssetMenu(fileName = "ShotgunScriptableObject", menuName = "ScriptableObjects/Shotgun", order = 0)]
-public class ShotgunScriptableObject : WeaponScriptableObject {
+[CreateAssetMenu(fileName = "ShotgunSO", menuName = "ScriptableObjects/Shotgun", order = 0)]
+public class ShotgunSO : WeaponSO {
 
     // [Header("Weapon Base Stats")]
     // public WeaponBaseAttributes weaponBaseAttributes;

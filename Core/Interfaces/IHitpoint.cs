@@ -14,7 +14,6 @@ public interface IArmor
     float armorRegenStart { get; set; }
     float armorRegenInterval { get; set; }
     int maxArmorPoint { get; set; }
-    // void ArmorRegeneration();
     // void ArmorDamage(int damage = 1);
     void ArmorAtZero();
     

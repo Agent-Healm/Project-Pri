@@ -31,37 +31,37 @@ public abstract class Weapon : LootAbleItem, IInteractAble
 
     // public PlayerWeaponAttackPattern[] pwap;
     // public WeaponBaseAttributes weaponBaseAttributes;
-    public WeaponScriptableObject weaponSO;
+    public WeaponSO weaponSO;
 
     protected WeaponBaseAttributes _weaponAttr;
     protected int _currentWeaponMode = 0;
     protected PlayerWeaponAttackPattern _currentPwap;
-    public enum WeaponType {
-        Pistol,
-        Rifle,
-        Shotgun,
-        Railgun,
-        Launcher,
-        Bow,
-        Staff,
-        Melee,
-        Throwables,
-        Misc
-    }
-    public enum WeaponRarity {
-        Common,
-        Uncommon,
-        Rare,
-        VeryRare,
-        Epic,
-        Legendary
-    }
-    public enum Effects {
-        None,
-        Poison,
-        Burn,
-        Freeze
-    }
+    // public enum xWeaponType {
+        // Pistol,
+        // Shotgun,
+        // Rifle,
+        // Railgun,
+        // Launcher,
+        // Bow,
+        // Staff,
+        // Melee,
+        // Throwables,
+        // Misc
+    // }
+    // public enum xWeaponRarity {
+    //     Common,
+    //     Uncommon,
+    //     Rare,
+    //     VeryRare,
+    //     Epic,
+    //     Legendary
+    // }
+    // public enum xEffects {
+    //     None,
+    //     Poison,
+    //     Burn,
+    //     Freeze
+    // }
     // public enum SubTypes {
     //     None,
     //     Shotgun
@@ -73,9 +73,9 @@ public abstract class Weapon : LootAbleItem, IInteractAble
         _currentPwap = _weaponAttr.pwap[_currentWeaponMode];
     }
 
-    void Start(){
+    // void Start(){
 
-    }
+    // }
 
     public void SwitchWeaponMode(){
         if (_weaponAttr.pwap.Length == 1){return;}
@@ -100,7 +100,7 @@ public abstract class Weapon : LootAbleItem, IInteractAble
         this.Attack(deg, position);
     }
 
-    public void Attack(float deg, Vector2 position){
+    protected void Attack(float deg, Vector2 position){
         float rad = deg * Mathf.Deg2Rad;
         Vector2 new_direction = new Vector2(Mathf.Cos(rad), Mathf.Sin(rad));
         
@@ -145,13 +145,13 @@ public class WeaponBaseAttributes {
         Epic,
         Legendary
     }
-    public enum Effects {
+    public enum xEffects {
         None,
         Poison,
         Burn,
         Freeze
     }
-    public enum SubTypes {
+    public enum xSubTypes {
         None,
         Shotgun
     }

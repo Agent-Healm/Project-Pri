@@ -12,14 +12,16 @@ public class Pistol : Weapon
     // private int _currentWeaponMode = 0;
     // private PlayerWeaponAttackPattern _currentPwap;
 
-    // void Awake() {
+    protected override void Awake() {
+        base.Awake();
+        PistolSO _pistolSO = (PistolSO)base.weaponSO;
         // weaponBaseAttributes.weaponType = WeaponBaseAttributes.WeaponType.Pistol;
         // this.weaponType = WeaponBaseAttributes.WeaponType.Pistol;
         // _currentWeaponMode = 0;
         // _currentPwap = pwap[_currentWeaponMode];
         // base._currentPwap = pwap[_currentWeaponMode];
         // base.Awake();
-    // }
+    }
     // Start is called before the first frame update
     // void Start()
     // {

@@ -15,33 +15,16 @@ public class Shotgun : Weapon
         Conical
     }
     
-    // private ShotgunScriptableObject _shotgunSO;
-    // private WeaponBaseAttributes _weaponAttr;
     private int _shotgunCount;
     private ShotgunType _shotgunType;
 
     protected override void Awake(){
-        // base._currentPwap = pwap[_currentWeaponMode];
         base.Awake();
-        ShotgunScriptableObject _shotgunSO = (ShotgunScriptableObject)base.weaponSO;
-        // _shotgunSO.getShotgunCount();
-        // _weaponAttr = _shotgunSO.weaponBaseAttributes;
+        ShotgunSO _shotgunSO = (ShotgunSO)base.weaponSO;
         _shotgunCount = _shotgunSO.shotgunCount;
         _shotgunType = _shotgunSO.shotgunType;
-        // print(_shotgunSO.shotgunCount);
     }
 
-    // Start is called before the first frame update
-    // void Start()
-    // {
-
-    // }
-
-    // Update is called once per frame
-    // void Update()
-    // {
-        
-    // }
     public override void Action(Vector2 direction, Vector2 position){
         if (_shotgunType == ShotgunType.Wide){
             float shotgunSpread = (_weaponAttr.inaccuracy * 2f) / (_shotgunCount - 1);

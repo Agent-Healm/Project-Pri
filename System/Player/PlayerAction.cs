@@ -32,14 +32,14 @@ public class PlayerAction : MonoBehaviour
         if (other.gameObject.TryGetComponent<IInteractAble>(out IInteractAble interactable)){
             // _itemNearby = true;
             _other = other;
-            PlayerInteract();
+            PlayerInteractItem();
         };
     }
     private void OnTriggerExit2D(Collider2D other){
         if (other.gameObject.TryGetComponent<IInteractAble>(out IInteractAble interactable)){
             // _itemNearby = false;
             _other = null;
-            PlayerDefaultAction();
+            PlayerInteractWeapon();
         };
     }
 
@@ -59,14 +59,14 @@ public class PlayerAction : MonoBehaviour
             onPlayerAction?.Invoke(this);
         }
     }
-    private void PlayerInteract(){
+    private void PlayerInteractItem(){
         // if (_itemNearby){
         if (_other.TryGetComponent<IInteractAble>(out IInteractAble interactable)){
             onPlayerAction = interactable.OnPickup;
         }
         // }
     }
-    private void PlayerDefaultAction(){
+    private void PlayerInteractWeapon(){
         if (this.TryGetComponent<PlayerWeaponSlot>(out PlayerWeaponSlot playerWeaponSlot)){
             // playerWeaponSlot.WeaponAction();
             onPlayerAction = playerWeaponSlot.WeaponAction;

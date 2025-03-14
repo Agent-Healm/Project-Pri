@@ -8,7 +8,7 @@ public class Bullet : MonoBehaviour
     [field:SerializeField] public int damage {get; set;} = 1;
     [SerializeField] private Vector2 direction;
     public int critChance {get; private set;} = 0;
-    // private float _time;
+
     private Coroutine _coroutine;
     void Awake(){
         BoxCollider2D collider = this.GetComponent<BoxCollider2D>();
@@ -20,8 +20,6 @@ public class Bullet : MonoBehaviour
         }
     }
     void Start(){
-        // if (direction == Vector2.zero){Debug.Log("no direction ??");}
-        // BulletMove(uptime);
         
         if (_coroutine != null){
             StopCoroutine(_coroutine);
@@ -30,13 +28,6 @@ public class Bullet : MonoBehaviour
     }
     void FixedUpdate(){
 
-    }
-    void Update(){
-        // transform.Translate(direction * 0.08f);
-        // if ( _time >= uptime){
-        //     Destroy(gameObject);
-        // }
-        // _time += 1;
     }
     private IEnumerator BulletMove(int uptime){
         for (int i = 0 ; i < uptime ; i++){
@@ -61,9 +52,8 @@ public class Bullet : MonoBehaviour
         else {
             if (other.gameObject.layer == 10){
                 // Debug.Log("I hit a wall");
-                DestroyBullet();}
-            // Debug.Log(other.gameObject.name);
-            // Debug.Log("no damageable interface found, could be a wall");
+                DestroyBullet();
+            }
         }
     }
 
@@ -74,7 +64,6 @@ public class Bullet : MonoBehaviour
         this.critChance = critChance;
     }
     public void DestroyBullet(){
-        // StopCoroutine(_coroutine);
         Destroy(this.gameObject);
     }
 }
