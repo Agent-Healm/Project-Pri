@@ -1,8 +1,13 @@
 test.cs
 .vscode
 
-Packages/**
 Assets/**
+Library/**
+Logs/**
+Packages/**
+ProjectSettings/**
+Temp/**
+UserSettings/**
 
 !Assets/Scripts
 
