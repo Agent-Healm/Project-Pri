@@ -1,0 +1,26 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 0fcd877c488274b419e3f25ec9ab617f, type: 3}
+  m_Name: PistolB
+  m_EditorClassIdentifier: 
+  weaponBaseAttributes:
+    weaponType: 0
+    weaponRarity: 0
+    inaccuracy: 40
+    speedModPct: 0
+    pwap:
+    - attackPattern: {fileID: 2789056679808882591, guid: e25a7f248fd47f44689851559f930699, type: 3}
+      energyCost: 0
+      critChance: 0
+    - attackPattern: {fileID: 2789056679808882591, guid: eff292cacfe367a4d9086da3fc883ae9, type: 3}
+      energyCost: 0
+      critChance: 0

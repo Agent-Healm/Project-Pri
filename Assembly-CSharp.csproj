@@ -85,6 +85,7 @@
     <Compile Include="Assets\Scripts\Core\Class\Bullet.cs" />
     <Compile Include="Assets\Scripts\test.cs" />
     <Compile Include="Assets\Scripts\System\Player\PlayerMana.cs" />
+    <Compile Include="Assets\Scripts\Weapons\WeaponRaritySO.cs" />
     <Compile Include="Assets\Scripts\System\Environment\Room.cs" />
     <Compile Include="Assets\Scripts\Weapons\WeaponSO.cs" />
     <Compile Include="Assets\Scripts\Core\Class\LootTable.cs" />

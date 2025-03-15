@@ -1,0 +1,25 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 13c54db3af474de47aedc36a694dc8fa, type: 3}
+  m_Name: ShotgunE
+  m_EditorClassIdentifier: 
+  weaponBaseAttributes:
+    weaponType: 2
+    weaponRarity: 0
+    inaccuracy: 40
+    speedModPct: 0
+    pwap:
+    - attackPattern: {fileID: -3985300101771644260, guid: 6ee89b86dbff4724a8015e088a5153fd, type: 3}
+      energyCost: 0
+      critChance: 0
+  <shotgunCount>k__BackingField: 5
+  <shotgunType>k__BackingField: 0

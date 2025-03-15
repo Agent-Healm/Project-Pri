@@ -1,7 +1,7 @@
 test.cs
 .vscode
+*.csproj
 
-Assets/**
 Library/**
 Logs/**
 Packages/**
@@ -9,9 +9,16 @@ ProjectSettings/**
 Temp/**
 UserSettings/**
 
-!Assets/Scripts
+Assets/Images/
+Assets/Material/
+Assets/Pallete/
+Assets/Prefabs/
+Assets/Rule Tile/
+Assets/Scenes
+# Assets/Scripts
+Assets/TextMesh Pro
 
-# *.meta
+*.meta
 # *.json
 # *.txt
 # *.asset
