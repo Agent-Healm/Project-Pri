@@ -1,3 +1,4 @@
 *.meta
 test.cs
 *.asset
+*.csproj
