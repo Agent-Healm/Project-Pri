@@ -1,4 +1,16 @@
-*.meta
 test.cs
-*.asset
-*.csproj
+.vscode
+
+Packages/**
+Assets/**
+
+!Assets/Scripts
+
+# *.meta
+# *.json
+# *.txt
+# *.asset
+# *.prefab
+# *.png
+# *.unity
+# *.mat
