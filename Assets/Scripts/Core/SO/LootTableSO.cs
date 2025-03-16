@@ -3,8 +3,8 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEditor;
 
-[CreateAssetMenu(fileName="LootTable", menuName="ScriptableObjects/LootTable")]
-public class LootTable : ScriptableObject
+[CreateAssetMenu(fileName="LootTableSO", menuName="ScriptableObjects/LootTable")]
+public class LootTableSO : ScriptableObject
 {
     public Loot[] lootTable2;
     public float spawnChance;

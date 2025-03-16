@@ -65,6 +65,8 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Assets\Scripts\System\Player\PlayerWeaponSlot.cs" />
+    <Compile Include="Assets\Scripts\Core\SO\LootTableSO.cs" />
+    <Compile Include="Assets\Scripts\Core\SO\WeaponSO.cs" />
     <Compile Include="Assets\Scripts\Generators\FloorGeneration.cs" />
     <Compile Include="Assets\Scripts\Weapons\ShotgunSO.cs" />
     <Compile Include="Assets\Scripts\Generators\MapGeneration.cs" />
@@ -74,21 +76,21 @@
     <Compile Include="Assets\Scripts\Core\Namespace\DefaultLayer.cs" />
     <Compile Include="Assets\Scripts\System\Player\PlayerAI.cs" />
     <Compile Include="Assets\Scripts\Weapons\Pistol.cs" />
+    <Compile Include="Assets\Scripts\Core\SO\WeaponRaritySO.cs" />
     <Compile Include="Assets\Scripts\Core\Interfaces\IObject.cs" />
     <Compile Include="Assets\Scripts\System\Environment\Potion.cs" />
     <Compile Include="Assets\Scripts\Configurations\RoomConfig.cs" />
     <Compile Include="Assets\Scripts\System\Environment\Crate.cs" />
     <Compile Include="Assets\Scripts\Configurations\TextureTheme.cs" />
     <Compile Include="Assets\Scripts\Weapons\PistolSO.cs" />
+    <Compile Include="Assets\Scripts\Core\Class\Weapon.cs" />
     <Compile Include="Assets\Scripts\Generators\WallGeneration.cs" />
     <Compile Include="Assets\Scripts\Weapons\Shotgun.cs" />
     <Compile Include="Assets\Scripts\Core\Class\Bullet.cs" />
     <Compile Include="Assets\Scripts\test.cs" />
+    <Compile Include="Assets\Scripts\Core\SO\EffectsSO.cs" />
     <Compile Include="Assets\Scripts\System\Player\PlayerMana.cs" />
-    <Compile Include="Assets\Scripts\Weapons\WeaponRaritySO.cs" />
     <Compile Include="Assets\Scripts\System\Environment\Room.cs" />
-    <Compile Include="Assets\Scripts\Weapons\WeaponSO.cs" />
-    <Compile Include="Assets\Scripts\Core\Class\LootTable.cs" />
     <Compile Include="Assets\Scripts\System\Player\PlayerAim.cs" />
     <Compile Include="Assets\Scripts\System\Player\PlayerSimpleMovement.cs" />
     <Compile Include="Assets\Scripts\System\Player\PlayerHitpoint.cs" />
@@ -97,7 +99,6 @@
     <Compile Include="Assets\Scripts\System\Player\PlayerAction.cs" />
     <Compile Include="Assets\Scripts\Core\Interfaces\IWeapons.cs" />
     <Compile Include="Assets\Scripts\Core\Class\LootAbleItem.cs" />
-    <Compile Include="Assets\Scripts\Weapons\Weapon.cs" />
     <Compile Include="Assets\Scripts\Configurations\GameManager.cs" />
     <Compile Include="Assets\Scripts\Core\Interfaces\IHitpoint.cs" />
     <Compile Include="Assets\Scripts\System\Environment\Orb.cs" />

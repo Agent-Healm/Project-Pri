@@ -38,8 +38,8 @@ public class EnemyAI : MonoBehaviour
                 return;
             }
             else{
-                if (LineOfSight()){
-                    if (_time > 10){
+                if (_time > 10){
+                    if (LineOfSight()){
                         Attack();
                         _time = 0;
                     }
@@ -56,10 +56,10 @@ public class EnemyAI : MonoBehaviour
         // if (raycastHit2D.collider == null){
         //     Debug.Log("nothing in sight");
         // }
-        // else if(raycastHit2D.collider.name == target.name){
+        // else if(raycastHit2D.collider.name == _target.name){
         //     Debug.Log("player in sight");
         // }
-        return (raycastHit2D.collider?.gameObject.layer == 8);
+        return raycastHit2D.collider?.gameObject.layer == 8;
     }
     public void Chase(){
         transform.Translate(_distance.normalized * 0.08f);

@@ -27,12 +27,12 @@ public class PlayerHitpoint : MonoBehaviour, IHealth, IArmor, IDamageAble
     }
 
     // Update is called once per frame
-    void xUpdate()
-    {
-        if (_armorPoint >= maxArmorPoint){return;}
-        if (_healthPoint <= 0){return;}
+    // void xUpdate()
+    // {
+    //     if (_armorPoint >= maxArmorPoint){return;}
+    //     if (_healthPoint <= 0){return;}
 
-    }
+    // }
 
     private IEnumerator ArmorSystem(){
 

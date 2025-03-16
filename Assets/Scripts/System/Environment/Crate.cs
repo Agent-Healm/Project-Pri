@@ -7,7 +7,7 @@ public class Crate : MonoBehaviour, IHealth, IDamageAble, ILootPool
     [field: SerializeField] public int maxHealthPoint {get; set;} = 10;
 
     [field: SerializeField] public int maxLootCount {get; set;} = 1;
-    public LootTable lootTable;
+    public LootTableSO lootTableSO;
 
     private int _healthPoint;
     private LootAbleItem[] _lootItem = {};
@@ -15,7 +15,7 @@ public class Crate : MonoBehaviour, IHealth, IDamageAble, ILootPool
     void Start()
     {
         _healthPoint = maxHealthPoint;
-        lootTable.GenerateLoot(ref _lootItem, maxLootCount);
+        lootTableSO.GenerateLoot(ref _lootItem, maxLootCount);
     }
 
     // Update is called once per frame

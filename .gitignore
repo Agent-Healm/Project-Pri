@@ -18,6 +18,7 @@ Assets/Scenes
 # Assets/Scripts
 Assets/TextMesh Pro
 
+# *.asset
 *.meta
 # *.json
 # *.txt

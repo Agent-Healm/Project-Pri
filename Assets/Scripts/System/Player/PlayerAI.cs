@@ -30,15 +30,12 @@ public class PlayerAI : MonoBehaviour
                     // Debug.Log("now targeting "  + _target.name);
                     _isAimingAtTarget = true;
                     _autoaimDir =  (_target.transform.position - transform.position).normalized;
-                    break;
+                    return;
                 }
             }
         }
-        // }
-        else{
-            _isAimingAtTarget = false;
-            _target = null;
-        }
+        _isAimingAtTarget = false;
+        _target = null;
     }
     private Collider2D[] SearchForTargets(){
         return Physics2D.OverlapCircleAll(transform.position, 5f, targetMask);

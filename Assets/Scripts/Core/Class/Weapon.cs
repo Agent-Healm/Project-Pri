@@ -119,7 +119,8 @@ public abstract class Weapon : LootAbleItem, IInteractAble
 public class WeaponBaseAttributes {
     public WeaponType weaponType;
     // public SubTypes subtypes;
-    public WeaponRarity weaponRarity;
+    // public WeaponRarity weaponRarity;
+    public WeaponRaritySO weaponRarity;
     // public Effects effects;
     public int inaccuracy;
     public int speedModPct;
@@ -137,14 +138,14 @@ public class WeaponBaseAttributes {
         Throwables,
         Misc
     }
-    public enum WeaponRarity {
-        Common,
-        Uncommon,
-        Rare,
-        VeryRare,
-        Epic,
-        Legendary
-    }
+    // public enum xWeaponRarity {
+    //     Common,
+    //     Uncommon,
+    //     Rare,
+    //     VeryRare,
+    //     Epic,
+    //     Legendary
+    // }
     public enum xEffects {
         None,
         Poison,

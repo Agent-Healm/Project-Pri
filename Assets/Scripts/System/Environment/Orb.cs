@@ -9,6 +9,7 @@ public class Orb : LootAbleItem
 
     private Vector2 _velocity = Vector2.zero;
     private void OnTriggerStay2D(Collider2D other){
+        // print("This orb is colliding with " + other.name);
         if (other.gameObject.TryGetComponent<PlayerHitpoint>(out PlayerHitpoint playerHitpoint)){
             this.transform.position = Vector2.SmoothDamp(this.transform.position, 
                                                         other.transform.position,

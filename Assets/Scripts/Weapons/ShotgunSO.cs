@@ -2,6 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEditor;
+using UnityEngine.InputSystem.Interactions;
 
 [CreateAssetMenu(fileName = "ShotgunSO", menuName = "ScriptableObjects/Shotgun", order = 0)]
 public class ShotgunSO : WeaponSO {

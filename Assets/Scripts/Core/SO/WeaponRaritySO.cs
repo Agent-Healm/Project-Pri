@@ -2,8 +2,8 @@
 // using System.Collections.Generic;
 using UnityEngine;
 
-[CreateAssetMenu]
+[CreateAssetMenu(fileName = "WeaponRaritySO", menuName ="ScriptableObjects/Weapon Rarity")]
 public class WeaponRaritySO : ScriptableObject
 {
-    
+    public Color rarityColor = Color.white;
 }
