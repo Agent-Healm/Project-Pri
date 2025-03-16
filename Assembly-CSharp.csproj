@@ -77,6 +77,7 @@
     <Compile Include="Assets\Scripts\System\Player\PlayerAI.cs" />
     <Compile Include="Assets\Scripts\Weapons\Pistol.cs" />
     <Compile Include="Assets\Scripts\Core\SO\WeaponRaritySO.cs" />
+    <Compile Include="Assets\Scripts\Core\SO\OrbSO.cs" />
     <Compile Include="Assets\Scripts\Core\Interfaces\IObject.cs" />
     <Compile Include="Assets\Scripts\System\Environment\Potion.cs" />
     <Compile Include="Assets\Scripts\Configurations\RoomConfig.cs" />
@@ -91,6 +92,7 @@
     <Compile Include="Assets\Scripts\Core\SO\EffectsSO.cs" />
     <Compile Include="Assets\Scripts\System\Player\PlayerMana.cs" />
     <Compile Include="Assets\Scripts\System\Environment\Room.cs" />
+    <Compile Include="Assets\Scripts\Core\SO\PotionSO.cs" />
     <Compile Include="Assets\Scripts\System\Player\PlayerAim.cs" />
     <Compile Include="Assets\Scripts\System\Player\PlayerSimpleMovement.cs" />
     <Compile Include="Assets\Scripts\System\Player\PlayerHitpoint.cs" />

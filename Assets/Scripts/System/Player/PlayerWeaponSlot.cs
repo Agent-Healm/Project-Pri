@@ -5,15 +5,14 @@ using UnityEditor;
 // using UnityEngine.Events;
 public class PlayerWeaponSlot : MonoBehaviour
 {
-    // [SerializeReference]
     public Weapon[] weaponInv;
     public int weaponSlotCountMax = 3;
     private int _currentWeaponSlot = -1;
-    private bool _itemNearby;
+    // private bool _itemNearby;
     // [SerializeReference]
     private Weapon _currentWeapon;
     private Vector2 _facing;
-    private Collider2D _other;
+    // private Collider2D _other;
     private PlayerAim _playerAim;
     private PlayerMana _playerMana;
     
@@ -61,9 +60,15 @@ public class PlayerWeaponSlot : MonoBehaviour
             return;
         }
 
-        if (_currentWeapon.AttemptAction(ref _playerMana._energyPoint)){
+        // if (_currentWeapon.AttemptAction(ref _playerMana._energyPoint)){
+        // if (_currentWeapon.AttemptAction(_playerMana.ConsumeMana(1))){
+        //     _currentWeapon.Action(_facing, transform.position);
+        // }
+        // _currentWeapon.AttemptAction(_playerMana.ConsumeMana(1));
+        if(_playerMana.ConsumeMana(_currentWeapon.getManaCost())){
             _currentWeapon.Action(_facing, transform.position);
         }
+
     }
     public void AddToWeaponSlots(Weapon weapon){
         if (weaponInv.Length < weaponSlotCountMax){

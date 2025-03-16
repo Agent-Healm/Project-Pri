@@ -15,3 +15,5 @@ MonoBehaviour:
   effectAttributes:
   - effects: {fileID: 11400000, guid: 7d68c39a045055842ba1fc43940752e5, type: 2}
     effectValue: 20
+  potionSprite: {fileID: 7482667652216324306, guid: 75f5f34dc1b5347e0b8351032682f224, type: 3}
+  color: {r: 0, g: 0.8745098, b: 1, a: 0}

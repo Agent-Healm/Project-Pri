@@ -25,6 +25,6 @@ public class GameManager : MonoBehaviour
         // _isBattleMode = true;
         textHealth.text = "" + playerHitpoint.getPlayerStats(1);
         textArmor.text = "" + playerHitpoint.getPlayerStats(2);
-        textMana.text = "" + playerMana._energyPoint;
+        textMana.text = "" + playerMana.GetEnergyPoint();
     }
 }

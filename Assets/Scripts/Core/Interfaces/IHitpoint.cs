@@ -9,6 +9,11 @@ public interface IHealth
     // void HealthDamage(int damage = 1);
 }
 
+public interface IHealAble 
+{
+    void HealHealth(int heal = 1);
+}
+
 public interface IArmor
 {
     float armorRegenStart { get; set; }

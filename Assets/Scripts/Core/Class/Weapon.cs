@@ -35,7 +35,7 @@ public abstract class Weapon : LootAbleItem, IInteractAble
 
     protected WeaponBaseAttributes _weaponAttr;
     protected int _currentWeaponMode = 0;
-    protected PlayerWeaponAttackPattern _currentPwap;
+    protected PlayerWeaponAttackPattern _currentPwap ;
     // public enum xWeaponType {
         // Pistol,
         // Shotgun,
@@ -84,15 +84,6 @@ public abstract class Weapon : LootAbleItem, IInteractAble
         _currentPwap = _weaponAttr.pwap[_currentWeaponMode];
     }
 
-    public virtual bool AttemptAction(ref int manaPoint){
-        int energyCost = _currentPwap.energyCost;
-        if (manaPoint >= energyCost){
-            manaPoint -= energyCost;
-            return true;
-        }
-        return false;
-    }
-
     public virtual void Action(Vector2 direction, Vector2 position){
         
         float deg = Vector2.SignedAngle(Vector2.right, direction);
@@ -112,6 +103,10 @@ public abstract class Weapon : LootAbleItem, IInteractAble
         // Debug.Log("Player picked up " + this);
         _playerWeaponSlot.AddToWeaponSlots(this);
         this.gameObject.SetActive(false);
+    }
+
+    public int getManaCost(){
+        return _currentPwap.energyCost;
     }
 }
 
@@ -137,20 +132,6 @@ public class WeaponBaseAttributes {
         Melee,
         Throwables,
         Misc
-    }
-    // public enum xWeaponRarity {
-    //     Common,
-    //     Uncommon,
-    //     Rare,
-    //     VeryRare,
-    //     Epic,
-    //     Legendary
-    // }
-    public enum xEffects {
-        None,
-        Poison,
-        Burn,
-        Freeze
     }
     public enum xSubTypes {
         None,

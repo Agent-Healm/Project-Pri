@@ -9,11 +9,11 @@ MonoBehaviour:
   m_GameObject: {fileID: 0}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 7a44a469cdb676345a75e9f04253620b, type: 3}
-  m_Name: Health Pot
+  m_Script: {fileID: 11500000, guid: 8e4b9d0b2d2087c4799de9564086e6f7, type: 3}
+  m_Name: Red Orb
   m_EditorClassIdentifier: 
   effectAttributes:
-  - effects: {fileID: 11400000, guid: 445c0ccf6f44ea54796fa926a0c9bff0, type: 2}
+    effects: {fileID: 11400000, guid: 445c0ccf6f44ea54796fa926a0c9bff0, type: 2}
     effectValue: 1
-  potionSprite: {fileID: 7482667652216324306, guid: 75f5f34dc1b5347e0b8351032682f224, type: 3}
-  color: {r: 1, g: 0, b: 0, a: 0}
+  orbSprite: {fileID: -2413806693520163455, guid: a86470a33a6bf42c4b3595704624658b, type: 3}
+  color: {r: 1, g: 0, b: 0, a: 1}

@@ -6,7 +6,7 @@ public class PlayerAction : MonoBehaviour
 {
 
     // private bool _itemNearby;
-    private Collider2D _other;
+    private Collider2D _interactable;
 
     // private PlayerWeaponSlot _playerWeaponSlot;
 
@@ -30,45 +30,30 @@ public class PlayerAction : MonoBehaviour
     
     private void OnTriggerEnter2D(Collider2D other){
         if (other.gameObject.TryGetComponent<IInteractAble>(out IInteractAble interactable)){
-            // _itemNearby = true;
-            _other = other;
+            _interactable = other;
             PlayerInteractItem();
         };
     }
     private void OnTriggerExit2D(Collider2D other){
         if (other.gameObject.TryGetComponent<IInteractAble>(out IInteractAble interactable)){
-            // _itemNearby = false;
-            _other = null;
+            _interactable = null;
             PlayerInteractWeapon();
         };
     }
 
     private void ActionHandler(){
         if (Input.GetKeyDown(KeyCode.R)){
-            // if (_itemNearby){
-            //     if (_other.TryGetComponent<IInteractAble>(out IInteractAble interactable)){
-            //         interactable.OnPickup(this);
-            //     }
-            // }
-            // else {
-            //     if (this.TryGetComponent<PlayerWeaponSlot>(out PlayerWeaponSlot playerWeaponSlot)){}
-            //     playerWeaponSlot.WeaponAction();
-            //     // PlayerDefaultAction();
-            // }
             // OnPlayerAction.Invoke(this, EventArgs.Empty);
             onPlayerAction?.Invoke(this);
         }
     }
     private void PlayerInteractItem(){
-        // if (_itemNearby){
-        if (_other.TryGetComponent<IInteractAble>(out IInteractAble interactable)){
+        if (_interactable.TryGetComponent<IInteractAble>(out IInteractAble interactable)){
             onPlayerAction = interactable.OnPickup;
         }
-        // }
     }
     private void PlayerInteractWeapon(){
         if (this.TryGetComponent<PlayerWeaponSlot>(out PlayerWeaponSlot playerWeaponSlot)){
-            // playerWeaponSlot.WeaponAction();
             onPlayerAction = playerWeaponSlot.WeaponAction;
         }
     }

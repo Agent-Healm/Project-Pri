@@ -27,7 +27,6 @@ public class Potion : LootAbleItem, IInteractAble
     // }
 
     public void OnPickup(PlayerAction playerAction){
-        PlayerHitpoint _playerHitpoint = playerAction.GetComponent<PlayerHitpoint>();
         foreach (EffectAttribute ea in potion.effectAttributes){
             // switch (pa.effect){
             //     case Effects.None:
@@ -46,7 +45,23 @@ public class Potion : LootAbleItem, IInteractAble
             // switch (ea.effects){
                 
             // }
-            print(ea.effects.name);
+            // print(ea.effects.name);
+            switch (ea.effects.name){
+                // case EffectsSO.:
+                //     break;
+                case "Heal HP":
+                    Debug.Log("Player is healing");
+                    PlayerHitpoint _playerHitpoint = playerAction.GetComponent<PlayerHitpoint>();
+                    _playerHitpoint.HealHealth(ea.effectValue);
+                    break;
+                case "Restore Mana":
+                    print("Player is restoring mana");
+                    PlayerMana _playerMana = playerAction.GetComponent<PlayerMana>();
+                    _playerMana.RestoreMana(ea.effectValue);
+                    break;
+                // case "" :
+                //     break;
+            }
         }
         Destroy(this.gameObject);
     }

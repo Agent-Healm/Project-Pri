@@ -1,7 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-public class PlayerHitpoint : MonoBehaviour, IHealth, IArmor, IDamageAble
+public class PlayerHitpoint : MonoBehaviour, IHealth, IArmor, IDamageAble, IHealAble
 {
 
     [field:SerializeField] public float armorRegenStart {get; set;} = 3f;
@@ -25,14 +25,6 @@ public class PlayerHitpoint : MonoBehaviour, IHealth, IArmor, IDamageAble
             StopCoroutine(_coroutine);
         }
     }
-
-    // Update is called once per frame
-    // void xUpdate()
-    // {
-    //     if (_armorPoint >= maxArmorPoint){return;}
-    //     if (_healthPoint <= 0){return;}
-
-    // }
 
     private IEnumerator ArmorSystem(){
 
