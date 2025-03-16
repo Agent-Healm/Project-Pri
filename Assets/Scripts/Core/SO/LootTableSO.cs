@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEditor;
 
-[CreateAssetMenu(fileName="LootTableSO", menuName="ScriptableObjects/LootTable")]
+[CreateAssetMenu(fileName="LootTableSO", menuName="SO/LootTable")]
 public class LootTableSO : ScriptableObject
 {
     public Loot[] lootTable2;

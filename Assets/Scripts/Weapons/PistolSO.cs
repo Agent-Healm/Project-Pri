@@ -2,7 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-[CreateAssetMenu(fileName = "PistolSO", menuName = "ScriptableObjects/Pistol", order = 0)]
+[CreateAssetMenu(fileName = "PistolSO", menuName = "SO/Pistol", order = 0)]
 public class PistolSO : WeaponSO {
     // public WeaponBaseAttributes weaponAttribute;
 

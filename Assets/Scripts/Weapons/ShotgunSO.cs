@@ -4,7 +4,7 @@ using UnityEngine;
 using UnityEditor;
 using UnityEngine.InputSystem.Interactions;
 
-[CreateAssetMenu(fileName = "ShotgunSO", menuName = "ScriptableObjects/Shotgun", order = 0)]
+[CreateAssetMenu(fileName = "ShotgunSO", menuName = "SO/Shotgun", order = 0)]
 public class ShotgunSO : WeaponSO {
 
     // [Header("Weapon Base Stats")]

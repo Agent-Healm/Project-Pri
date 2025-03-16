@@ -12,43 +12,49 @@ public class Potion : LootAbleItem, IInteractAble
         Buff,
         Debuff
     }
-    public PotionAttribute[] potionAttribute;
+    public PotionSO potion;
+    // public PotionAttribute[] potionAttribute;
     // Start is called before the first frame update
-    void Start()
-    {
+    // void Start()
+    // {
         
-    }
+    // }
 
     // Update is called once per frame
-    void Update()
-    {
+    // void Update()
+    // {
         
-    }
+    // }
 
     public void OnPickup(PlayerAction playerAction){
         PlayerHitpoint _playerHitpoint = playerAction.GetComponent<PlayerHitpoint>();
-        foreach (PotionAttribute pa in potionAttribute){
-            switch (pa.effect){
-                case Effects.None:
-                    break;
-                case Effects.Poison:
-                    break;
-                case Effects.Heal:
-                    Debug.Log("Player is healing");
-                    _playerHitpoint.HealHealth(pa.effectValue);
-                    break;
-                case Effects.Buff:
-                    break;
-                case Effects.Debuff:
-                    break;
-            }
+        foreach (EffectAttribute ea in potion.effectAttributes){
+            // switch (pa.effect){
+            //     case Effects.None:
+            //         break;
+            //     case Effects.Poison:
+            //         break;
+            //     case Effects.Heal:
+            //         Debug.Log("Player is healing");
+            //         _playerHitpoint.HealHealth(pa.effectValue);
+            //         break;
+            //     case Effects.Buff:
+            //         break;
+            //     case Effects.Debuff:
+            //         break;
+            // }
+            // switch (ea.effects){
+                
+            // }
+            print(ea.effects.name);
         }
         Destroy(this.gameObject);
     }
 }
 
-[System.Serializable]
-public class PotionAttribute {
-    public Potion.Effects effect;
-    public int effectValue;
-}
+// [System.Serializable]
+// public class PotionAttribute {
+//     public Potion.Effects effect;
+//     public EffectsSO effects;
+//     public int effectValue;
+// }
