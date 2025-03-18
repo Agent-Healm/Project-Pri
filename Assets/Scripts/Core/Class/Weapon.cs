@@ -24,15 +24,10 @@ public abstract class Weapon : LootAbleItem, IInteractAble
     // public AttackPattern attackPattern;
     // public WeaponType weaponType;
     // public SubTypes subtypes;
-    // public WeaponRarity weaponRarity;
-    // public Effects effects;
-    // public int inaccuracy;
-    // public int speedModPct;
 
     // public PlayerWeaponAttackPattern[] pwap;
     // public WeaponBaseAttributes weaponBaseAttributes;
     public WeaponSO weaponSO;
-
     protected WeaponBaseAttributes _weaponAttr;
     protected int _currentWeaponMode = 0;
     protected PlayerWeaponAttackPattern _currentPwap ;
@@ -47,20 +42,6 @@ public abstract class Weapon : LootAbleItem, IInteractAble
         // Melee,
         // Throwables,
         // Misc
-    // }
-    // public enum xWeaponRarity {
-    //     Common,
-    //     Uncommon,
-    //     Rare,
-    //     VeryRare,
-    //     Epic,
-    //     Legendary
-    // }
-    // public enum xEffects {
-    //     None,
-    //     Poison,
-    //     Burn,
-    //     Freeze
     // }
     // public enum SubTypes {
     //     None,

@@ -1,0 +1,79 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!78 &1
+TagManager:
+  serializedVersion: 2
+  tags: []
+  layers:
+  - Default
+  - TransparentFX
+  - Ignore Raycast
+  - 
+  - Water
+  - UI
+  - Enemy
+  - Enemy Projectile
+  - Player
+  - Player Projectile
+  - Wall
+  - Crate
+  - Weapon
+  - Potion
+  - Orb
+  - 
+  - 
+  - 
+  - 
+  - 
+  - 
+  - 
+  - 
+  - 
+  - 
+  - 
+  - 
+  - 
+  - 
+  - 
+  - 
+  - 
+  m_SortingLayers:
+  - name: Default
+    uniqueID: 0
+    locked: 0
+  - name: Background
+    uniqueID: 2370866985
+    locked: 0
+  - name: Room Objects
+    uniqueID: 4166133081
+    locked: 0
+  - name: Floors
+    uniqueID: 1076453197
+    locked: 0
+  - name: Special Tiles
+    uniqueID: 2628452619
+    locked: 0
+  - name: Walls
+    uniqueID: 2127720139
+    locked: 0
+  - name: Weapons
+    uniqueID: 3969377565
+    locked: 0
+  - name: Objects
+    uniqueID: 4188112243
+    locked: 0
+  - name: Entities
+    uniqueID: 3327778447
+    locked: 0
+  - name: Bullets
+    uniqueID: 4108015175
+    locked: 0
+  - name: Interactable
+    uniqueID: 4081313809
+    locked: 0
+  - name: Materials
+    uniqueID: 2150789503
+    locked: 0
+  - name: Trails
+    uniqueID: 172514149
+    locked: 0

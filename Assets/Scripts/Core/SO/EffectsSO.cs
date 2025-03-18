@@ -7,3 +7,9 @@ public class EffectsSO : ScriptableObject
 {
     // public string effectName;   
 }
+
+[System.Serializable]
+public class EffectAttribute {
+    public EffectsSO effects;
+    public int effectValue;
+}

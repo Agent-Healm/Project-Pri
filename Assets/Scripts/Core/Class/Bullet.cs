@@ -26,9 +26,9 @@ public class Bullet : MonoBehaviour
         }
         StartCoroutine(BulletMove(uptime));
     }
-    void FixedUpdate(){
+    // void FixedUpdate(){
 
-    }
+    // }
     private IEnumerator BulletMove(int uptime){
         for (int i = 0 ; i < uptime ; i++){
             transform.Translate(direction * 0.08f);

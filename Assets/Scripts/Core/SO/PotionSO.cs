@@ -8,9 +8,3 @@ public class PotionSO : ScriptableObject {
     public Sprite potionSprite;
     public Color color = Color.white;
 }
-
-[System.Serializable]
-public class EffectAttribute {
-    public EffectsSO effects;
-    public int effectValue;
-}

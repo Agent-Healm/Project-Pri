@@ -101,6 +101,7 @@
     <Compile Include="Assets\Scripts\System\Player\PlayerAction.cs" />
     <Compile Include="Assets\Scripts\Core\Interfaces\IWeapons.cs" />
     <Compile Include="Assets\Scripts\Core\Class\LootAbleItem.cs" />
+    <Compile Include="Assets\Scripts\Core\SO\BulletSO.cs" />
     <Compile Include="Assets\Scripts\Configurations\GameManager.cs" />
     <Compile Include="Assets\Scripts\Core\Interfaces\IHitpoint.cs" />
     <Compile Include="Assets\Scripts\System\Environment\Orb.cs" />
