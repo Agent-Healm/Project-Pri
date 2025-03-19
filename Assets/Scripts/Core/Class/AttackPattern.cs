@@ -27,6 +27,8 @@ public class EnemyAttackPattern
 {
     public AttackPattern attackPattern;
     public int range;
+
+    // public BulletSO bullet;
     public bool Attempt(float range){
         if (range <= this.range || this.range == -1.0f){
             // Debug.Log("Attack with "+ this.name);

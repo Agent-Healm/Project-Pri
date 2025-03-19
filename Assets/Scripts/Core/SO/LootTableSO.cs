@@ -3,19 +3,15 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEditor;
 
-[CreateAssetMenu(fileName="LootTableSO", menuName="SO/LootTable")]
+[CreateAssetMenu(fileName="LootTableSO", menuName="SO/Misc/LootTable")]
 public class LootTableSO : ScriptableObject
 {
     public Loot[] lootTable2;
     public float spawnChance;
     public int totalWeight;
-    public bool isCalculated = false;
 
-    private void OnEnable(){
-        if (!isCalculated){
-            totalWeight = GetTotalWeight();
-            isCalculated = true;
-        }
+    private void OnValidate(){
+        totalWeight = GetTotalWeight();
     }
 
     public void GenerateLoot(ref LootAbleItem[] lootAbleItems, int maxLootCount){

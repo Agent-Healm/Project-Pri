@@ -66,7 +66,7 @@
   <ItemGroup>
     <Compile Include="Assets\Scripts\System\Player\PlayerWeaponSlot.cs" />
     <Compile Include="Assets\Scripts\Core\SO\LootTableSO.cs" />
-    <Compile Include="Assets\Scripts\Core\SO\WeaponSO.cs" />
+    <Compile Include="Assets\Scripts\Core\SO\WeaponStatsSO.cs" />
     <Compile Include="Assets\Scripts\Generators\FloorGeneration.cs" />
     <Compile Include="Assets\Scripts\Weapons\ShotgunSO.cs" />
     <Compile Include="Assets\Scripts\Generators\MapGeneration.cs" />
@@ -93,6 +93,7 @@
     <Compile Include="Assets\Scripts\System\Player\PlayerMana.cs" />
     <Compile Include="Assets\Scripts\System\Environment\Room.cs" />
     <Compile Include="Assets\Scripts\Core\SO\PotionSO.cs" />
+    <Compile Include="Assets\Scripts\Core\SO\WeaponTypeSO.cs" />
     <Compile Include="Assets\Scripts\System\Player\PlayerAim.cs" />
     <Compile Include="Assets\Scripts\System\Player\PlayerSimpleMovement.cs" />
     <Compile Include="Assets\Scripts\System\Player\PlayerHitpoint.cs" />

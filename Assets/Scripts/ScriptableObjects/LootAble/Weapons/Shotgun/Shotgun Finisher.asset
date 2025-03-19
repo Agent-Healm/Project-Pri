@@ -12,14 +12,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 13c54db3af474de47aedc36a694dc8fa, type: 3}
   m_Name: Shotgun Finisher
   m_EditorClassIdentifier: 
-  weaponBaseAttributes:
-    weaponType: 2
-    weaponRarity: 0
+  <weaponBaseAttributes>k__BackingField:
+    weaponType: {fileID: 11400000, guid: 915d8889de15ead41a7d573a91c0d3eb, type: 2}
+    weaponRarity: {fileID: 11400000, guid: c0018b357eccf9348bbfe09b357167e3, type: 2}
     inaccuracy: 0
     speedModPct: 0
-    pwap:
-    - attackPattern: {fileID: -3985300101771644260, guid: 120aecd397d4dce43984649765e725d0, type: 3}
-      energyCost: 0
-      critChance: 0
-  <shotgunCount>k__BackingField: 3
+    pwap: []
+  <shotgunCount>k__BackingField: 4
   <shotgunType>k__BackingField: 0

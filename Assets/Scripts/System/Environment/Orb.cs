@@ -4,8 +4,6 @@ using UnityEngine;
 
 public class Orb : LootAbleItem
 {
-    // public Potion.Effects effect;
-    // public int effectValue;
 
     public OrbSO orb;
 

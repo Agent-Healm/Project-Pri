@@ -12,9 +12,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 0fcd877c488274b419e3f25ec9ab617f, type: 3}
   m_Name: PistolA
   m_EditorClassIdentifier: 
-  weaponBaseAttributes:
-    weaponType: 0
-    weaponRarity: 0
+  <weaponBaseAttributes>k__BackingField:
+    weaponType: {fileID: 11400000, guid: 481b15a29ce4e194d98426876e2de735, type: 2}
+    weaponRarity: {fileID: 11400000, guid: c0018b357eccf9348bbfe09b357167e3, type: 2}
     inaccuracy: 20
     speedModPct: 0
-    pwap: []
+    pwap:
+    - attackPattern: {fileID: 2789056679808882591, guid: eff292cacfe367a4d9086da3fc883ae9, type: 3}
+      energyCost: 1
+      critChance: 0

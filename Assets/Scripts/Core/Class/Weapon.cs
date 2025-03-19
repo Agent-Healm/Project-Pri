@@ -27,7 +27,7 @@ public abstract class Weapon : LootAbleItem, IInteractAble
 
     // public PlayerWeaponAttackPattern[] pwap;
     // public WeaponBaseAttributes weaponBaseAttributes;
-    public WeaponSO weaponSO;
+    public WeaponStatsSO weaponSO;
     protected WeaponBaseAttributes _weaponAttr;
     protected int _currentWeaponMode = 0;
     protected PlayerWeaponAttackPattern _currentPwap ;
@@ -93,16 +93,15 @@ public abstract class Weapon : LootAbleItem, IInteractAble
 
 [System.Serializable]
 public class WeaponBaseAttributes {
-    public WeaponType weaponType;
     // public SubTypes subtypes;
-    // public WeaponRarity weaponRarity;
+    public WeaponTypeSO weaponType;
     public WeaponRaritySO weaponRarity;
     // public Effects effects;
     public int inaccuracy;
     public int speedModPct;
     public PlayerWeaponAttackPattern[] pwap;
 
-    public enum WeaponType {
+    public enum xWeaponType {
         Pistol,
         Rifle,
         Shotgun,
