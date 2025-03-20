@@ -42,7 +42,7 @@ public class PlayerAction : MonoBehaviour
     }
 
     private void ActionHandler(){
-        if (Input.GetKeyDown(KeyCode.R)){
+        if (Input.GetKey(KeyCode.R)){
             // OnPlayerAction.Invoke(this, EventArgs.Empty);
             onPlayerAction?.Invoke(this);
         }

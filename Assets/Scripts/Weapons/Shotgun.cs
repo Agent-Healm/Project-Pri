@@ -4,11 +4,6 @@ using UnityEngine;
 
 public class Shotgun : Weapon
 {
-    // public PlayerWeaponAttackPattern[] pwap;
-    // public WeaponBaseAttributes weaponBaseAttributes;
-    // [field:SerializeField] public int shotgunCount {get; set;} = 1;
-    // public int shotgunSpread {get; set;}= 1;
-    // [field:SerializeField] public ShotgunType shotgunType {get; set;} = ShotgunType.Wide;
     public enum ShotgunType {
         Wide,
         Scatter,

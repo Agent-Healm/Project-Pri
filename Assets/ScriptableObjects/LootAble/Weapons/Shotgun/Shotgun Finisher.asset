@@ -15,8 +15,11 @@ MonoBehaviour:
   <weaponBaseAttributes>k__BackingField:
     weaponType: {fileID: 11400000, guid: 915d8889de15ead41a7d573a91c0d3eb, type: 2}
     weaponRarity: {fileID: 11400000, guid: c0018b357eccf9348bbfe09b357167e3, type: 2}
-    inaccuracy: 0
+    inaccuracy: 20
     speedModPct: 0
-    pwap: []
+    pwap:
+    - attackPattern: {fileID: -3985300101771644260, guid: 120aecd397d4dce43984649765e725d0, type: 3}
+      energyCost: 5
+      critChance: 0
   <shotgunCount>k__BackingField: 4
   <shotgunType>k__BackingField: 0

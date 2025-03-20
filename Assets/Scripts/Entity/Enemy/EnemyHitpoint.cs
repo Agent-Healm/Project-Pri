@@ -33,10 +33,10 @@ public class EnemyHitpoint : MonoBehaviour, IHealth, IDamageAble, ILootPool
     public void HealthAtZero(){
         _healthPoint = 0;
         Destroy(this.gameObject);
-        LootOnDeath();
+        LootOnDestroy();
     }
 
-    public void LootOnDeath(){
+    public void LootOnDestroy(){
         Debug.Log("Spawn coins and orbs");
     }
 }

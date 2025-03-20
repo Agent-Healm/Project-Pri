@@ -24,7 +24,7 @@ public class Bullet : MonoBehaviour
         if (_coroutine != null){
             StopCoroutine(_coroutine);
         }
-        StartCoroutine(BulletMove(uptime));
+        _coroutine = StartCoroutine(BulletMove(uptime));
     }
     // void FixedUpdate(){
 

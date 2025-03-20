@@ -5,16 +5,6 @@ using UnityEngine;
 public class AttackPattern : MonoBehaviour
 {
     public Bullet bullet;
-    // public float range = -1.0f;
-    // void Start()
-    // {
-        
-    // }
-
-    // void Update()
-    // {
-        
-    // }
     public void ShootBullet(Vector2 distance, Vector2 position, int critChance){
         bullet.setDirection(distance.normalized);
         bullet.setCritChance(critChance);
