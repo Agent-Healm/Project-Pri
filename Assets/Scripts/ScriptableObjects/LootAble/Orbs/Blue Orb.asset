@@ -12,8 +12,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 8e4b9d0b2d2087c4799de9564086e6f7, type: 3}
   m_Name: Blue Orb
   m_EditorClassIdentifier: 
-  effectAttributes:
+  <effectAttributes>k__BackingField:
     effects: {fileID: 11400000, guid: 7d68c39a045055842ba1fc43940752e5, type: 2}
-    effectValue: 1
-  orbSprite: {fileID: -2413806693520163455, guid: a86470a33a6bf42c4b3595704624658b, type: 3}
-  color: {r: 0, g: 0.8745098, b: 1, a: 1}
+    effectValue: 4
+  <orbSprite>k__BackingField: {fileID: 0}
+  <color>k__BackingField: {r: 1, g: 1, b: 1, a: 1}

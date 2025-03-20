@@ -12,8 +12,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 7a44a469cdb676345a75e9f04253620b, type: 3}
   m_Name: Health Pot
   m_EditorClassIdentifier: 
-  effectAttributes:
+  <effectAttributes>k__BackingField:
   - effects: {fileID: 11400000, guid: 445c0ccf6f44ea54796fa926a0c9bff0, type: 2}
     effectValue: 1
-  potionSprite: {fileID: 7482667652216324306, guid: 75f5f34dc1b5347e0b8351032682f224, type: 3}
-  color: {r: 1, g: 0, b: 0, a: 0}
+  <potionSprite>k__BackingField: {fileID: 7482667652216324306, guid: 75f5f34dc1b5347e0b8351032682f224, type: 3}
+  <color>k__BackingField: {r: 1, g: 0, b: 0, a: 1}
