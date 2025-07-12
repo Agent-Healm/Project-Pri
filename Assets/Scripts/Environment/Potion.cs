@@ -5,11 +5,11 @@ using UnityEditor;
 
 public class Potion : LootAbleItem, IInteractAble
 {
-    public PotionSO potion;
+    [SerializeField] private PotionSO potion;
 
-    public void OnPickup(PlayerAction playerAction){
-        foreach (EffectAttribute ea in potion.effectAttributes){
-            ea.ApplyEffect(playerAction);
+    public void OnPickup(PlayerAction l_playerAction){
+        foreach (EffectAttribute ea in potion.GetEffectAttributes){
+            ea.ApplyEffect(l_playerAction);
         }
         Destroy(this.gameObject);
     }

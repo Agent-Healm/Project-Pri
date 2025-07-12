@@ -4,14 +4,15 @@ using UnityEngine;
 public class PlayerHitpoint : MonoBehaviour, IHealth, IArmor, IDamageAble, IHealAble
 {
 
-    [field:SerializeField] public float armorRegenStart {get; set;} = 3f;
-    [field:SerializeField] public float armorRegenInterval {get; set;} = 1f;
-    [field:SerializeField] public int maxArmorPoint {get; set;} = 1;
-    [field:SerializeField] public int maxHealthPoint {get; set;} = 1;
+    [SerializeField] private float armorRegenStart = 3f;
+    [SerializeField] private float armorRegenInterval = 1f;
+    [SerializeField] private int maxArmorPoint = 1;
+    public int GetCurrentArmorPoint => _armorPoint;
+    [SerializeField] private int maxHealthPoint = 1;
+    public int GetCurrentHealthPoint => _healthPoint;
     
     private int _armorPoint;
     private int _healthPoint;
-
     private Coroutine _coroutine;
     void Awake(){
         _armorPoint = maxArmorPoint;
@@ -47,19 +48,19 @@ public class PlayerHitpoint : MonoBehaviour, IHealth, IArmor, IDamageAble, IHeal
         _armorPoint = 0;
     }
 
-    public bool InflictDamage(int damage = 0){
-        if (damage < 0){return false;}
+    public bool InflictDamage(int l_damage = 0){
+        if (l_damage < 0){return false;}
 
         if (_coroutine != null){
             StopCoroutine(_coroutine);
         }
 
-        if (_armorPoint - damage >= 0){
-            _armorPoint -= damage;
+        if (_armorPoint - l_damage >= 0){
+            _armorPoint -= l_damage;
             // Debug.Log("Hit, current armor : " + _armorPoint);
         }
-        else if(_healthPoint + _armorPoint - damage > 0){
-            _healthPoint -= (damage - _armorPoint);
+        else if(_healthPoint + _armorPoint - l_damage > 0){
+            _healthPoint -= (l_damage - _armorPoint);
             this.ArmorAtZero();
             // Debug.Log("Hit, current health : " + _healthPoint);
         }
@@ -70,18 +71,11 @@ public class PlayerHitpoint : MonoBehaviour, IHealth, IArmor, IDamageAble, IHeal
         _coroutine = StartCoroutine(ArmorSystem());
         return true;
     }
-    public int getPlayerStats(int index){
-        switch(index){
-            case 1 : {return _healthPoint;}
-            case 2 : {return _armorPoint;}
-        }
-        return _healthPoint;
-    }
 
-    public void HealHealth(int heal = 0){
-        if (heal <= 0){return;}
-        if (_healthPoint + heal < maxHealthPoint){
-            _healthPoint += heal;
+    public void HealHealth(int l_heal = 0){
+        if (l_heal <= 0){return;}
+        if (_healthPoint + l_heal < maxHealthPoint){
+            _healthPoint += l_heal;
         }
         else {
             _healthPoint = maxHealthPoint;

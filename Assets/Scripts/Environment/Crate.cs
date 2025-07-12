@@ -5,10 +5,9 @@ using UnityEngine;
 
 public class Crate : MonoBehaviour, IHealth, IDamageAble, ILootPool
 {
-    [field: SerializeField] public int maxHealthPoint {get; set;} = 10;
-
-    [field: SerializeField] public int maxLootCount {get; set;} = 1;
-    public LootTableSO lootTableSO;
+    [SerializeField] private int maxHealthPoint = 10;
+    [SerializeField] private int maxLootCount = 1;
+    [SerializeField] private LootTableSO lootTableSO;
 
     private int _healthPoint;
     private LootAbleItem[] _lootItem = {};
@@ -20,10 +19,10 @@ public class Crate : MonoBehaviour, IHealth, IDamageAble, ILootPool
         lootTableSO.GenerateLoot(ref _lootItem, maxLootCount);
     }
 
-    public bool InflictDamage(int damage = 1){
-        if (damage < 0){return false;}
+    public bool InflictDamage(int l_damage = 0){
+        if (l_damage < 0){return false;}
         if (_healthPoint <= 0){return false;}
-        _healthPoint -= damage;
+        _healthPoint -= l_damage;
         if (_healthPoint <= 0){
             HealthAtZero();
         }

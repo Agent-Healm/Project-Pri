@@ -5,12 +5,12 @@ using UnityEngine;
 
 public class GameManager : MonoBehaviour
 {
-    public TextMeshProUGUI textHealth;
-    public TextMeshProUGUI textArmor;
-    public TextMeshProUGUI textMana;
+    [SerializeField] private TextMeshProUGUI textHealth;
+    [SerializeField] private TextMeshProUGUI textArmor;
+    [SerializeField] private TextMeshProUGUI textMana;
 
-    public PlayerHitpoint playerHitpoint;
-    public PlayerMana playerMana;
+    [SerializeField] private PlayerHitpoint playerHitpoint;
+    [SerializeField] private PlayerMana playerMana;
 
     // private bool _isBattleMode = false;
     // Start is called before the first frame update
@@ -23,8 +23,8 @@ public class GameManager : MonoBehaviour
     void Update()
     {
         // _isBattleMode = true;
-        textHealth.text = "" + playerHitpoint.getPlayerStats(1);
-        textArmor.text = "" + playerHitpoint.getPlayerStats(2);
+        textHealth.text = "" + playerHitpoint.GetCurrentHealthPoint;
+        textArmor.text = "" + playerHitpoint.GetCurrentArmorPoint;
         textMana.text = "" + playerMana.GetEnergyPoint();
     }
 }

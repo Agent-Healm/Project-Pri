@@ -9,12 +9,17 @@ using Random = UnityEngine.Random;
 [System.Serializable]
 public class Room
 {
-    public string name;
+    [SerializeField] private string name;
+    public string GetName { get => name; }
     [Header("Number of rooms able to spawn (inclusive)")]
-    public int min;
-    public int max = 1;
-    public bool isIncluded; 
-    public GameObject[] roomVariance;
+    [SerializeField] private int min;
+    public int GetMin { get => min; }
+    [SerializeField] private int max = 1;
+    public int GetMax { get => max; }
+    [SerializeField] private bool isIncluded;
+    public bool IsIncluded { get => isIncluded; }
+    [SerializeField] private GameObject[] roomVariance;
+    public GameObject[] GetRoomVariance { get => roomVariance; }
 }
 
 

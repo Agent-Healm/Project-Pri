@@ -29,8 +29,8 @@ public class Bullet : MonoBehaviour
     // void FixedUpdate(){
 
     // }
-    private IEnumerator BulletMove(int uptime){
-        for (int i = 0 ; i < uptime ; i++){
+    private IEnumerator BulletMove(int l_uptime){
+        for (int i = 0 ; i < l_uptime ; i++){
             transform.Translate(direction * 0.08f);
             yield return null;
         }

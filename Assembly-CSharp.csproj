@@ -59,31 +59,32 @@
     <UnityVersion>2022.3.47f1</UnityVersion>
   </PropertyGroup>
   <ItemGroup>
-    <Analyzer Include="C:\Users\kevin\.vscode\extensions\visualstudiotoolsforunity.vstuc-1.1.0\Analyzers\Microsoft.Unity.Analyzers.dll" />
+    <Analyzer Include="C:\Users\kevin\.vscode\extensions\visualstudiotoolsforunity.vstuc-1.1.2\Analyzers\Microsoft.Unity.Analyzers.dll" />
     <Analyzer Include="D:\Healm\Unity Editor\2022.3.47f1\Editor\Data\Tools\Unity.SourceGenerators\Unity.SourceGenerators.dll" />
     <Analyzer Include="D:\Healm\Unity Editor\2022.3.47f1\Editor\Data\Tools\Unity.SourceGenerators\Unity.Properties.SourceGenerator.dll" />
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Assets\Scripts\Entity\Player\PlayerAI.cs" />
-    <Compile Include="Assets\Scripts\Core\SO\LootTableSO.cs" />
-    <Compile Include="Assets\Scripts\Core\SO\WeaponsSO\WeaponTypeSO.cs" />
-    <Compile Include="Assets\Scripts\Core\SO\WeaponsSO\WeaponStatsSO.cs" />
+    <Compile Include="Assets\Scripts\ScriptableObjects\OrbSO.cs" />
     <Compile Include="Assets\Scripts\Generators\FloorGeneration.cs" />
     <Compile Include="Assets\Scripts\Weapons\ShotgunSO.cs" />
     <Compile Include="Assets\Scripts\Generators\MapGeneration.cs" />
     <Compile Include="Assets\Scripts\Core\Class\AttackPattern.cs" />
     <Compile Include="Assets\Scripts\Environment\Crate.cs" />
+    <Compile Include="Assets\Scripts\ScriptableObjects\WeaponsSO\WeaponStatsSO.cs" />
     <Compile Include="Assets\Scripts\Configurations\SpriteTheme.cs" />
     <Compile Include="Assets\Scripts\Entity\Enemy\EnemyHitpoint.cs" />
-    <Compile Include="Assets\Scripts\Core\SO\WeaponsSO\WeaponRaritySO.cs" />
+    <Compile Include="Assets\Scripts\ScriptableObjects\WeaponsSO\WeaponTypeSO.cs" />
+    <Compile Include="Assets\Scripts\ScriptableObjects\BulletSO.cs" />
     <Compile Include="Assets\Scripts\Core\Namespace\DefaultLayer.cs" />
     <Compile Include="Assets\Scripts\Entity\Enemy\EnemyAI.cs" />
     <Compile Include="Assets\Scripts\Weapons\Pistol.cs" />
-    <Compile Include="Assets\Scripts\Core\SO\OrbSO.cs" />
+    <Compile Include="Assets\Scripts\ScriptableObjects\EffectsSO.cs" />
     <Compile Include="Assets\Scripts\Core\Interfaces\IObject.cs" />
     <Compile Include="Assets\Scripts\Configurations\RoomConfig.cs" />
     <Compile Include="Assets\Scripts\Environment\Room.cs" />
     <Compile Include="Assets\Scripts\Configurations\TextureTheme.cs" />
+    <Compile Include="Assets\Scripts\ScriptableObjects\WeaponsSO\WeaponRaritySO.cs" />
     <Compile Include="Assets\Scripts\Weapons\PistolSO.cs" />
     <Compile Include="Assets\Scripts\Core\Class\Weapon.cs" />
     <Compile Include="Assets\Scripts\Generators\WallGeneration.cs" />
@@ -91,10 +92,10 @@
     <Compile Include="Assets\Scripts\Core\Class\Bullet.cs" />
     <Compile Include="Assets\Scripts\Environment\Orb.cs" />
     <Compile Include="Assets\Scripts\test.cs" />
-    <Compile Include="Assets\Scripts\Core\SO\EffectsSO.cs" />
+    <Compile Include="Assets\Scripts\ScriptableObjects\LootTableSO.cs" />
     <Compile Include="Assets\Scripts\Entity\Player\PlayerAim.cs" />
-    <Compile Include="Assets\Scripts\Core\SO\PotionSO.cs" />
     <Compile Include="Assets\Scripts\Entity\Player\PlayerWeaponSlot.cs" />
+    <Compile Include="Assets\Scripts\ScriptableObjects\PotionSO.cs" />
     <Compile Include="Assets\Scripts\Entity\Player\PlayerAction.cs" />
     <Compile Include="Assets\Scripts\Environment\Potion.cs" />
     <Compile Include="Assets\Scripts\Entity\Player\PlayerSimpleMovement.cs" />
@@ -103,8 +104,8 @@
     <Compile Include="Assets\Scripts\Core\Interfaces\IWeapons.cs" />
     <Compile Include="Assets\Scripts\Core\Class\LootAbleItem.cs" />
     <Compile Include="Assets\Scripts\Entity\Player\PlayerMana.cs" />
-    <Compile Include="Assets\Scripts\Core\SO\BulletSO.cs" />
     <Compile Include="Assets\Scripts\Configurations\GameManager.cs" />
+    <Compile Include="Assets\Scripts\Core\Class\EffectAttribute.cs" />
     <Compile Include="Assets\Scripts\Core\Interfaces\IHitpoint.cs" />
   </ItemGroup>
   <ItemGroup>

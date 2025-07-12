@@ -10,14 +10,10 @@ public class ShotgunSO : WeaponStatsSO {
     // [Header("Weapon Base Stats")]
     // public WeaponBaseAttributes weaponBaseAttributes;
     // [Header("Shotgun properties")]
-    [field:SerializeField] public int shotgunCount {get; private set;} = 1;
-    // public int shotgunSpread {get; set;}= 1;
-    [field:SerializeField] public Shotgun.ShotgunType shotgunType {get; private set;} = Shotgun.ShotgunType.Wide;
-    // public enum ShotgunType {
-    //     Wide,
-    //     Scatter,
-    //     Conical
-    // }
+    [SerializeField] private int shotgunCount = 1;
+    public int GetShotgunCount { get => shotgunCount; }
+    [SerializeField] private Shotgun.Category shotgunType = Shotgun.Category.Wide;
+    public Shotgun.Category GetShotgunType { get => shotgunType; }
     
     private void OnEnable(){
         // base.weaponBaseAttributes.weaponType = WeaponBaseAttributes.WeaponType.Shotgun;

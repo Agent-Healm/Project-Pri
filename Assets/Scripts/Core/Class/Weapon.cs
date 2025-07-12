@@ -4,53 +4,16 @@ using UnityEngine;
 using UnityEditor;
 
 // [System.Serializable]
-public abstract class Weapon : LootAbleItem, IInteractAble
+public class Weapon : LootAbleItem, IInteractAble
 {
-    // [SerializeField] private 
-    /* attackPattern[]
-    public int damage;
-    public int energyCost;
-    public int critChance;
-    public float roundsPerSec;
-    */
-    /*
-    public enum weaponType;
-    public enum subtypes;
-    public enum rarity;
-    public int inaccuracy;
-    public int speedModPct;
-    public enum effects;
-    */
-    // public AttackPattern attackPattern;
-    // public WeaponType weaponType;
-    // public SubTypes subtypes;
-
-    // public PlayerWeaponAttackPattern[] pwap;
-    // public WeaponBaseAttributes weaponBaseAttributes;
     public WeaponStatsSO weaponSO;
     protected WeaponBaseAttributes _weaponAttr;
     protected int _currentWeaponMode = 0;
     protected PlayerWeaponAttackPattern _currentPwap ;
-    // public enum xWeaponType {
-        // Pistol,
-        // Shotgun,
-        // Rifle,
-        // Railgun,
-        // Launcher,
-        // Bow,
-        // Staff,
-        // Melee,
-        // Throwables,
-        // Misc
-    // }
-    // public enum SubTypes {
-    //     None,
-    //     Shotgun
-    // }
 
     protected virtual void Awake(){
         // this.gameObject.AddComponent<BoxCollider2D>();
-        _weaponAttr = weaponSO.weaponBaseAttributes;
+        _weaponAttr = weaponSO.GetWeaponBaseAttributes;
         _currentPwap = _weaponAttr.pwap[_currentWeaponMode];
     }
 
@@ -69,7 +32,8 @@ public abstract class Weapon : LootAbleItem, IInteractAble
         
         float deg = Vector2.SignedAngle(Vector2.right, direction);
         deg += (Random.Range(- _weaponAttr.inaccuracy, _weaponAttr.inaccuracy + 1) / 2f);
-        this.Attack(deg, position);
+        // this.
+        Attack(deg, position);
     }
 
     protected void Attack(float deg, Vector2 position){

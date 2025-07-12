@@ -4,20 +4,8 @@ using UnityEngine;
 
 public class LootAbleItem : MonoBehaviour
 {
-    // Start is called before the first frame update
-    // void Start()
-    // {
-        
-    // }
-
-    // Update is called once per frame
-    // void Update()
-    // {
-        
-    // }
-
-    public virtual void SpawnLoot(Vector3 position){
-        Instantiate(this, position, Quaternion.identity);
+    public virtual void SpawnLoot(Vector3 l_position){
+        Instantiate(this, l_position, Quaternion.identity);
         // print("spawned : " + this);
     }
 }

@@ -36,9 +36,9 @@ public class MapGeneration : MonoBehaviour
         if (_coroutineGen != null){
             StopCoroutine(_coroutineGen);
         }
-        _coroutineGen = StartCoroutine(BeginGenerate(maxRooms));
+        _coroutineGen = StartCoroutine(BeginGenerate());
     }
-    private IEnumerator BeginGenerate(int maxRooms){
+    private IEnumerator BeginGenerate(){
         GenerateFirstRoom();
         yield return _wait;
         for (int i = 1; i <= maxRooms; i++){
@@ -49,21 +49,24 @@ public class MapGeneration : MonoBehaviour
         GenerateLastRoom();
         print("done");
     }
+
     /// <summary>
     /// Return the RoomObject using name
     /// </summary>
     /// <remarks>Find the room based on its name</remarks>
-    /// <param name="roomName">Literal string of a room name.</param>
+    /// <param name="l_roomName">Literal string of a room name.</param>
     /// <returns>A Room GameObject if found</returns>
-    private GameObject FindRoom(string roomName){
-        
-        Room room = Array.Find(_rooms, x => x.name == roomName);
-        if (room == null){
-            Debug.Log("The room "+ roomName +" not found");
-            return FindRoom("null"); 
+    private GameObject FindRoom(string l_roomName){
+
+        Room room = Array.Find(_rooms, x => x.GetName == l_roomName);
+        if (room == null)
+        {
+            Debug.Log("The room " + l_roomName + " not found");
+            return FindRoom("null");
         }
-        else {
-            return room.roomVariance [Random.Range(0, room.roomVariance.Length)];
+        else
+        {
+            return room.GetRoomVariance[Random.Range(0, room.GetRoomVariance.Length)];
         }
     }
     private void GenerateAllRooms(RoomUtility.RoomType roomType, string roomName, Vector3 facingPos){
@@ -172,24 +175,24 @@ public class MapGeneration : MonoBehaviour
     }
     private void InitialRoomAssign(){
         if (maxRooms <=1){maxRooms = 2;}
-        _gate = RoomConfig.Instance.path.roomVariance[0];
-        _rooms = RoomConfig.Instance.rooms;
-        ArrayUtility.AddRange(ref _rooms, RoomConfig.Instance.basicRooms);
+        _gate = RoomConfig.GetInstance.GetPath.GetRoomVariance[0];
+        _rooms = RoomConfig.GetInstance.GetRooms;
+        ArrayUtility.AddRange(ref _rooms, RoomConfig.GetInstance.GetBasicRooms);
 
         foreach(Room room in _rooms){
-            if(room.isIncluded){
-                for (int i = 1 ; i <= room.min ; i++){
-                    ArrayUtility.Add(ref _extraRooms, room.name);
+            if(room.IsIncluded){
+                for (int i = 1 ; i <= room.GetMin ; i++){
+                    ArrayUtility.Add(ref _extraRooms, room.GetName);
                 }
-                for (int i = 1 ; i <= room.max - room.min ; i++){
-                    ArrayUtility.Add(ref _extraRoomsMax, room.name);
+                for (int i = 1 ; i <= room.GetMax - room.GetMin ; i++){
+                    ArrayUtility.Add(ref _extraRoomsMax, room.GetName);
                 }
             }
         }
     }
-    private void MoveToNextTile(Vector3 _newFacing){
-        transform.position += _newFacing * tileSize;
-        _currentWorldPoint += (Vector2)_newFacing;
+    private void MoveToNextTile(Vector3 l_newFacing){
+        transform.position += l_newFacing * tileSize;
+        _currentWorldPoint += (Vector2)l_newFacing;
     }
     private void procGenRoom(){
 
