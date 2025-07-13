@@ -8,6 +8,6 @@ public class Pistol : Weapon
 {
     protected override void Awake() {
         base.Awake();
-        PistolSO pistol = base.weaponSO as PistolSO;
+        PistolSO pistol = base.baseWeaponStats as PistolSO;
     }
 }

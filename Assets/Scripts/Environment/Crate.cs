@@ -10,7 +10,7 @@ public class Crate : MonoBehaviour, IHealth, IDamageAble, ILootPool
     [SerializeField] private LootTableSO lootTableSO;
 
     private int _healthPoint;
-    private LootAbleItem[] _lootItem = {};
+    private LootItem[] _lootItem = {};
 
     // Start is called before the first frame update
     void Start()
@@ -37,7 +37,7 @@ public class Crate : MonoBehaviour, IHealth, IDamageAble, ILootPool
 
     public void LootOnDestroy(){
         Debug.Log("Spawn a random loot on crate.");
-        foreach(LootAbleItem item in _lootItem){
+        foreach(LootItem item in _lootItem){
             item.SpawnLoot(this.transform.position);
         }
     }

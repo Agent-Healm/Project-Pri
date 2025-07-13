@@ -4,22 +4,23 @@ using UnityEngine;
 using UnityEditor;
 
 // [System.Serializable]
-public class Weapon : LootAbleItem, IInteractAble
+public class Weapon : LootItem, IInteractAble
 {
-    public WeaponStatsSO weaponSO;
+    [SerializeField] protected WeaponStatsSO baseWeaponStats;
     protected WeaponBaseAttributes _weaponAttr;
     protected int _currentWeaponMode = 0;
-    protected PlayerWeaponAttackPattern _currentPwap ;
+    protected PlayerWeaponAttackPattern _currentPwap;
 
-    protected virtual void Awake(){
-        // this.gameObject.AddComponent<BoxCollider2D>();
-        _weaponAttr = weaponSO.GetWeaponBaseAttributes;
+    public int CurrentManaCost {
+        get {
+            return _currentPwap.EnergyCost;
+        }
+    }
+    protected virtual void Awake()
+    {
+        _weaponAttr = baseWeaponStats.GetWeaponBaseAttributes;
         _currentPwap = _weaponAttr.pwap[_currentWeaponMode];
     }
-
-    // void Start(){
-
-    // }
 
     public void SwitchWeaponMode(){
         if (_weaponAttr.pwap.Length == 1){return;}
@@ -31,16 +32,15 @@ public class Weapon : LootAbleItem, IInteractAble
     public virtual void Action(Vector2 direction, Vector2 position){
         
         float deg = Vector2.SignedAngle(Vector2.right, direction);
-        deg += (Random.Range(- _weaponAttr.inaccuracy, _weaponAttr.inaccuracy + 1) / 2f);
-        // this.
+        deg += Random.Range(- _weaponAttr.inaccuracy, _weaponAttr.inaccuracy + 1) / 2f;
         Attack(deg, position);
     }
 
     protected void Attack(float deg, Vector2 position){
         float rad = deg * Mathf.Deg2Rad;
-        Vector2 new_direction = new Vector2(Mathf.Cos(rad), Mathf.Sin(rad));
+        Vector2 new_direction = new (Mathf.Cos(rad), Mathf.Sin(rad));
         
-        _currentPwap.attackPattern.ShootBullet(new_direction, position, _currentPwap.critChance);
+        _currentPwap.GetPattern.ShootBullet(new_direction, position, _currentPwap.CritChance);
     }
 
     public virtual void OnPickup(PlayerAction playerAction){
@@ -48,10 +48,6 @@ public class Weapon : LootAbleItem, IInteractAble
         // Debug.Log("Player picked up " + this);
         _playerWeaponSlot.AddToWeaponSlots(this);
         this.gameObject.SetActive(false);
-    }
-
-    public int getManaCost(){
-        return _currentPwap.energyCost;
     }
 }
 
@@ -65,21 +61,21 @@ public class WeaponBaseAttributes {
     public int speedModPct;
     public PlayerWeaponAttackPattern[] pwap;
 
-    public enum xWeaponType {
-        Pistol,
-        Rifle,
-        Shotgun,
-        Railgun,
-        Launcher,
-        Bow,
-        Staff,
-        Melee,
-        Throwables,
-        Misc
-    }
-    public enum xSubTypes {
-        None,
-        Shotgun
-    }
+    // public enum xWeaponType {
+    //     Pistol,
+    //     Rifle,
+    //     Shotgun,
+    //     Railgun,
+    //     Launcher,
+    //     Bow,
+    //     Staff,
+    //     Melee,
+    //     Throwables,
+    //     Misc
+    // }
+    // public enum xSubTypes {
+    //     None,
+    //     Shotgun
+    // }
 
 }

@@ -3,28 +3,18 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEditor;
 
-using DefaultLayer;
+using Default;
 public class EnemyAI : MonoBehaviour
 {
-    public float range = 0.0f;
-    [SerializeField] private LayerMask layerMask = BitLayer.PlayerLayer() | BitLayer.EnvironmentLayer();
-    [SerializeField] private LayerMask targetMask = BitLayer.PlayerLayer();
-    public EnemyAttackPattern[] enemyAttackPattern;
+    [SerializeField] private float m_range = 0.0f;
+    [SerializeField] private LayerMask m_layerMask = GlobalLayerMask.PlayerLayer | GlobalLayerMask.EnvironmentLayer;
+    [SerializeField] private LayerMask m_targetMask = GlobalLayerMask.PlayerLayer;
+    [SerializeField] private EnemyAttackPattern[] m_enemyAttackPattern;
     
     private GameObject _target;
     private int _time;
     private Vector2 _distance;
 
-    // void Awake(){
-        
-    // }
-    // Start is called before the first frame update
-    void Start()
-    {
-
-    }
-
-    // Update is called once per frame
     void Update()
     {
         if (_target == null){
@@ -32,7 +22,7 @@ public class EnemyAI : MonoBehaviour
         }
         else{
             _distance = _target.transform.position - transform.position;
-            if (_distance.magnitude > range + 3f){
+            if (_distance.magnitude > m_range + 3f){
                 // Debug.Log("distance : " + _distance.magnitude);
                 _target = null;
                 return;
@@ -52,39 +42,39 @@ public class EnemyAI : MonoBehaviour
         _time += 1;
     }
     public bool LineOfSight(){
-        RaycastHit2D raycastHit2D = Physics2D.Raycast(transform.position, _distance.normalized, range - 0.5f, layerMask);
+        RaycastHit2D raycastHit2D = Physics2D.Raycast(transform.position, _distance.normalized, m_range - 0.5f, m_layerMask);
         // if (raycastHit2D.collider == null){
         //     Debug.Log("nothing in sight");
         // }
         // else if(raycastHit2D.collider.name == _target.name){
         //     Debug.Log("player in sight");
         // }
-        return raycastHit2D.collider?.gameObject.layer == 8;
+        return raycastHit2D.collider?.gameObject.layer == GlobalLayer.Player;
     }
-    public void Chase(){
-        transform.Translate(_distance.normalized * 0.08f);
-    }
+    // public void Chase(){
+    //     transform.Translate(_distance.normalized * 0.08f);
+    // }
 
-    public void Roam(){
-        Vector2 randomPos =  new Vector2(Random.Range(-1.0f, 1.0f), Random.Range(-1.0f, 1.0f));
-        transform.Translate(randomPos * 0.5f);
-    }
+    // public void Roam(){
+    //     Vector2 randomPos =  new Vector2(Random.Range(-1.0f, 1.0f), Random.Range(-1.0f, 1.0f));
+    //     transform.Translate(randomPos * 0.5f);
+    // }
 
-    public void Attack(){
-        foreach (EnemyAttackPattern enemyPattern in enemyAttackPattern){
+    private void Attack(){
+        foreach (EnemyAttackPattern enemyPattern in m_enemyAttackPattern){
             if (enemyPattern.Attempt(_distance.magnitude)){
-                enemyPattern.attackPattern
-                .ShootBullet(_distance, transform.position, 0);
+                enemyPattern.GetPattern.
+                ShootBullet(_distance, transform.position, 0);
                 break;
             }
         }
     }
     
-    public Collider2D[] GetSurroundingTargetAll(){
-        return Physics2D.OverlapCircleAll(transform.position, range - 0.5f, targetMask);    
+    private Collider2D[] GetSurroundingTargetAll(){
+        return Physics2D.OverlapCircleAll(transform.position, m_range - 0.5f, m_targetMask);    
     }
     
-    public GameObject GetTarget(){
+    private GameObject GetTarget(){
         // foreach(Collider2D collider in GetSurroundingTargetAll()){
         //     // Debug.Log("Enemy looking at" + collider.gameObject.name);
         //     // if (collider.gameObject.layer == 8){

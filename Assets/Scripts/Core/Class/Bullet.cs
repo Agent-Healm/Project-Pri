@@ -2,68 +2,110 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
+using Default;
 public class Bullet : MonoBehaviour
 {
-    public int uptime = 60;
-    [field:SerializeField] public int damage {get; set;} = 1;
-    [SerializeField] private Vector2 direction;
-    public int critChance {get; private set;} = 0;
+    [SerializeField] private int uptime = 60;
+    [SerializeField] private int damage = 1;
+
+    private Vector2 _direction;
+    public Vector2 Direction
+    {
+        get
+        {
+            return _direction;
+        }
+        set
+        {
+            _direction = value.normalized;
+        }
+    }
+    private int _critChance;
+    public int CritChance
+    {
+        private get
+        {
+            return _critChance;
+        }
+        set
+        {
+            _critChance = value;
+        }
+    }
 
     private Coroutine _coroutine;
-    void Awake(){
-        BoxCollider2D collider = this.GetComponent<BoxCollider2D>();
-        if (gameObject.layer == 7){
-            collider.excludeLayers = 1 << 6 | 1 << 7;
+    void Awake()
+    {
+        BoxCollider2D l_collider = this.GetComponent<BoxCollider2D>();
+        l_collider.includeLayers |= GlobalLayerMask.EnvironmentLayer;
+
+        if (this.gameObject.layer == GlobalLayer.EnemyProjectile)
+        {
+            l_collider.includeLayers |= GlobalLayerMask.PlayerLayer;
         }
-        else if (gameObject.layer == 9){
-            collider.excludeLayers = 1 << 8 | 1 << 9;
+        else if (this.gameObject.layer == GlobalLayer.PlayerProjectile)
+        {
+            l_collider.includeLayers |= GlobalLayerMask.EnemyLayer;
         }
+        // else
+        // {
+        //     Debug.LogError("Bullet must be either Player or Enemy");
+        // }
     }
-    void Start(){
-        
-        if (_coroutine != null){
+    void Start()
+    {
+        if (_coroutine != null)
+        {
             StopCoroutine(_coroutine);
         }
-        _coroutine = StartCoroutine(BulletMove(uptime));
+        _coroutine = StartCoroutine(BulletMove());
     }
-    // void FixedUpdate(){
 
-    // }
-    private IEnumerator BulletMove(int l_uptime){
-        for (int i = 0 ; i < l_uptime ; i++){
-            transform.Translate(direction * 0.08f);
+    private IEnumerator BulletMove()
+    {
+        for (int i = 0; i < uptime; i++)
+        {
+            transform.Translate(_direction * 0.08f);
             yield return null;
         }
         DestroyBullet();
 
     }
-    private void OnTriggerEnter2D(Collider2D other){
+    private void OnTriggerEnter2D(Collider2D other)
+    {
 
-        if (other.gameObject.TryGetComponent<IDamageAble>(out IDamageAble damageable)){
+        if (other.gameObject.TryGetComponent(out IDamageAble damageable))
+        {
             int finalDamage = damage;
-            if (Random.Range(0, 100) < critChance){
+            if (Random.Range(0, 100) < _critChance)
+            {
                 // finalDamage += critDamage;
                 finalDamage += damage;
             }
-            if (damageable.InflictDamage(finalDamage)){
+            if (damageable.InflictDamage(finalDamage))
+            {
                 DestroyBullet();
             }
         }
-        else {
-            if (other.gameObject.layer == 10){
+        else
+        {
+            if (other.gameObject.layer == GlobalLayer.Wall)
+            {
                 // Debug.Log("I hit a wall");
                 DestroyBullet();
             }
         }
     }
-
-    public void setDirection(Vector2 direction){
-        this.direction = direction;
-    }
-    public void setCritChance(int critChance){
-        this.critChance = critChance;
-    }
-    public void DestroyBullet(){
+    private void DestroyBullet()
+    {
         Destroy(this.gameObject);
     }
+
+    public void SpawnBullet(Vector2 l_direction, Vector2 l_position, int l_critChance)
+    {
+        Bullet new_bullet = Instantiate(this, l_position + l_direction.normalized * 0.5f, Quaternion.identity);
+        new_bullet.Direction = l_direction;
+        new_bullet.CritChance = l_critChance;
+    }
+
 }

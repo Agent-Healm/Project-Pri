@@ -2,23 +2,33 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-using DefaultLayer;
+using Default;
 public class PlayerAI : MonoBehaviour
 {
-    [SerializeField] private LayerMask layerMask = BitLayer.EnemyLayer() | BitLayer.EnvironmentLayer();
-    [SerializeField] private LayerMask targetMask = BitLayer.EnemyLayer();
+    [SerializeField] private LayerMask layerMask = GlobalLayerMask.EnemyLayer | GlobalLayerMask.EnvironmentLayer;
+    [SerializeField] private LayerMask targetMask = GlobalLayerMask.EnemyLayer;
 
-    private bool _isAimingAtTarget = false;
+    public bool AimingAtTarget {
+        get{
+            return _target != null;
+        }
+    }
     private GameObject _target;
     private Vector2 _distance;
+    
     private Vector2 _autoaimDir;
-    // Start is called before the first frame update
-    // void Start()
-    // {
-        
-    // }
-
-    // Update is called once per frame
+    public Vector2 AutoaimDir
+    {
+        get
+        {
+            return _autoaimDir;
+        }
+        private set
+        {
+            _autoaimDir = value.normalized;
+        }
+    }
+    
     void Update()
     {
         Collider2D[] collider2Ds = SearchForTargets();
@@ -28,13 +38,11 @@ public class PlayerAI : MonoBehaviour
                 if(LineOfSight(collider.gameObject)){
                     _target = collider.gameObject;
                     // Debug.Log("now targeting "  + _target.name);
-                    _isAimingAtTarget = true;
                     _autoaimDir =  (_target.transform.position - transform.position).normalized;
                     return;
                 }
             }
         }
-        _isAimingAtTarget = false;
         _target = null;
     }
     private Collider2D[] SearchForTargets(){
@@ -50,14 +58,6 @@ public class PlayerAI : MonoBehaviour
         // else if(raycastHit2D.collider.name == potentialTarget.name){
         //     Debug.Log("player in sight");
         // }
-        return raycastHit2D.collider?.gameObject.layer == 6;
-    }
-
-    public bool isAiming(){
-        return _isAimingAtTarget;
-    }
-
-    public Vector2 getAimDir(){
-        return _autoaimDir;
+        return raycastHit2D.collider?.gameObject.layer == GlobalLayer.Enemy;
     }
 }

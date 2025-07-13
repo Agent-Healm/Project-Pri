@@ -4,29 +4,18 @@ using UnityEngine;
 
 public class EnemyHitpoint : MonoBehaviour, IHealth, IDamageAble, ILootPool
 {
-    [field:SerializeField] public int maxHealthPoint {get; set;} = 8;
+    [SerializeField] private int maxHealthPoint = 8;
     private int _healthPoint;
     void Awake(){
         _healthPoint = maxHealthPoint;
     }
-    void Start()
-    {
-        
-    }
-
-    // Update is called once per frame
-    void Update()
-    {
-        
-    }
 
     public bool InflictDamage(int damage = 0){
-        if (damage <0){return false;}
+        if (damage < 0){return false;}
         _healthPoint -= damage;
         if (_healthPoint <=0) {
             HealthAtZero();
         }
-        
         return true;
     }
 

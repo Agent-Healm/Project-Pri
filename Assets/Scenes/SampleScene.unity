@@ -2448,10 +2448,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 21eb17f0c325f084db6ec94e2095013d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  <armorRegenStart>k__BackingField: 3
-  <armorRegenInterval>k__BackingField: 1
-  <maxArmorPoint>k__BackingField: 6
-  <maxHealthPoint>k__BackingField: 4
+  armorRegenStart: 3
+  armorRegenInterval: 1
+  maxArmorPoint: 4
+  maxHealthPoint: 6
 --- !u!114 &249937005
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -2524,7 +2524,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e1411bb417a7d034286b878d8ff15f53, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  <energyPoint>k__BackingField: 166
+  maxEnergyPoint: 166
 --- !u!114 &249937016
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -2764,7 +2764,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!156049354 &265075090
 Grid:
   m_ObjectHideFlags: 0
@@ -5237,14 +5237,14 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 3334439f1b140b84d916601a8c2eaab7, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  range: 5
-  layerMask:
+  m_range: 5
+  m_layerMask:
     serializedVersion: 2
     m_Bits: 3328
-  targetMask:
+  m_targetMask:
     serializedVersion: 2
     m_Bits: 256
-  enemyAttackPattern:
+  m_enemyAttackPattern:
   - attackPattern: {fileID: 2789056679808882591, guid: e836c7e847583ac4baf2d3912b0ee22e, type: 3}
     range: 3
   - attackPattern: {fileID: 2789056679808882591, guid: e70e7ad91fa54954c82a9a249bdfa0f1, type: 3}
@@ -5333,7 +5333,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 779975fc82d74ba46ab1cdb37061f5ec, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  <maxHealthPoint>k__BackingField: 20
+  maxHealthPoint: 8
 --- !u!1001 &551001869
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -6851,7 +6851,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!4 &733813989
 Transform:
   m_ObjectHideFlags: 0
@@ -7881,18 +7881,14 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 3334439f1b140b84d916601a8c2eaab7, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  range: 5
-  layerMask:
+  m_range: 0
+  m_layerMask:
     serializedVersion: 2
     m_Bits: 3328
-  targetMask:
+  m_targetMask:
     serializedVersion: 2
     m_Bits: 256
-  enemyAttackPattern:
-  - attackPattern: {fileID: 2789056679808882591, guid: e836c7e847583ac4baf2d3912b0ee22e, type: 3}
-    range: 3
-  - attackPattern: {fileID: 2789056679808882591, guid: e70e7ad91fa54954c82a9a249bdfa0f1, type: 3}
-    range: -1
+  m_enemyAttackPattern: []
 --- !u!114 &813678011
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -7905,7 +7901,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 779975fc82d74ba46ab1cdb37061f5ec, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  <maxHealthPoint>k__BackingField: 20
+  maxHealthPoint: 8
 --- !u!1 &821585713
 GameObject:
   m_ObjectHideFlags: 0

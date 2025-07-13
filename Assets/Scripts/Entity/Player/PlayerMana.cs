@@ -4,21 +4,12 @@ using UnityEngine;
 
 public class PlayerMana : MonoBehaviour
 {
-    [field:SerializeField] private int energyPoint {get; set;} = 166;
-    private int _energyPoint ;
-    private void Awake(){
-        _energyPoint = energyPoint;
-    }
-    // Start is called before the first frame update
-    void Start()
+    [SerializeField] private int maxEnergyPoint = 166;
+    public int CurrentEnergyPoint { get; private set; }
+    
+    private void Awake()
     {
-        
-    }
-
-    // Update is called once per frame
-    void Update()
-    {
-        
+        CurrentEnergyPoint = maxEnergyPoint;
     }
 
     /// <summary>
@@ -27,23 +18,20 @@ public class PlayerMana : MonoBehaviour
     /// <param name="cost"></param>
     /// <returns></returns>
     public bool ConsumeMana(int cost = 0){
-        bool isSufficient = _energyPoint >= cost;
+        bool isSufficient = CurrentEnergyPoint >= cost;
         if (isSufficient){
-            _energyPoint -= cost;
+            CurrentEnergyPoint -= cost;
         }
         return isSufficient;
     }
 
     public void RestoreMana(int manaValue){
-        if (_energyPoint + manaValue > energyPoint){
-            _energyPoint = energyPoint;
+        if (CurrentEnergyPoint + manaValue > maxEnergyPoint){
+            CurrentEnergyPoint = maxEnergyPoint;
         }
         else {
-            _energyPoint += manaValue;
+            CurrentEnergyPoint += manaValue;
         }
 
-    }
-    public int GetEnergyPoint(){
-        return _energyPoint;
     }
 }

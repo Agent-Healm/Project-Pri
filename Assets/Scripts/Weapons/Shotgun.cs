@@ -15,7 +15,7 @@ public class Shotgun : Weapon
 
     protected override void Awake(){
         base.Awake();
-        ShotgunSO _shotgunSO = base.weaponSO as ShotgunSO;
+        ShotgunSO _shotgunSO = base.baseWeaponStats as ShotgunSO;
         _shotgunCount = _shotgunSO.GetShotgunCount;
         _shotgunType = _shotgunSO.GetShotgunType;
     }

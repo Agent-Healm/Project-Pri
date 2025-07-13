@@ -15,8 +15,11 @@ MonoBehaviour:
   weaponBaseAttributes:
     weaponType: {fileID: 0}
     weaponRarity: {fileID: 0}
-    inaccuracy: 0
+    inaccuracy: 40
     speedModPct: 0
-    pwap: []
-  shotgunCount: 1
+    pwap:
+    - attackPattern: {fileID: -3985300101771644260, guid: 6ee89b86dbff4724a8015e088a5153fd, type: 3}
+      energyCost: 5
+      critChance: 0
+  shotgunCount: 4
   shotgunType: 0

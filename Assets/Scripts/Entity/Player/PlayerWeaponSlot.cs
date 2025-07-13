@@ -65,7 +65,7 @@ public class PlayerWeaponSlot : MonoBehaviour
         //     _currentWeapon.Action(_facing, transform.position);
         // }
         // _currentWeapon.AttemptAction(_playerMana.ConsumeMana(1));
-        if(_playerMana.ConsumeMana(_currentWeapon.getManaCost())){
+        if(_playerMana.ConsumeMana(_currentWeapon.CurrentManaCost)){
             _currentWeapon.Action(_facing, transform.position);
         }
 

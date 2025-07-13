@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEditor;
 
-public class Potion : LootAbleItem, IInteractAble
+public class Potion : LootItem, IInteractAble
 {
     [SerializeField] private PotionSO potion;
 

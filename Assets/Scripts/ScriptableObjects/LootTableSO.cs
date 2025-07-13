@@ -15,7 +15,7 @@ public class LootTableSO : ScriptableObject
         totalWeight = GetTotalWeight();
     }
 
-    public void GenerateLoot(ref LootAbleItem[] l_lootAbleItems, int l_maxLootCount){
+    public void GenerateLoot(ref LootItem[] l_lootAbleItems, int l_maxLootCount){
         int l_randomValue;
         for (int i = 0; i < l_maxLootCount; i++){
             if (spawnChance < Random.Range(0, 100)){break;}
@@ -23,7 +23,7 @@ public class LootTableSO : ScriptableObject
             DetermineLoot(l_randomValue, ref l_lootAbleItems);
         }
     }
-    private void DetermineLoot(int l_randomValue, ref LootAbleItem[] l_lootAbleItems){
+    private void DetermineLoot(int l_randomValue, ref LootItem[] l_lootAbleItems){
         foreach(Loot loot in lootTable){
             l_randomValue -= loot.weight;
             if (l_randomValue < 0){
@@ -45,6 +45,6 @@ public class LootTableSO : ScriptableObject
 [System.Serializable]
 public class Loot
 {
-    public LootAbleItem lootItem;
+    public LootItem lootItem;
     public int weight;
 }

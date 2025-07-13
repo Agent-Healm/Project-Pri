@@ -99,7 +99,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   uptime: 60
-  direction: {x: 0.9979022, y: 0.06473884}
+  damage: 1
 --- !u!61 &-2271398781070712716
 BoxCollider2D:
   m_ObjectHideFlags: 0

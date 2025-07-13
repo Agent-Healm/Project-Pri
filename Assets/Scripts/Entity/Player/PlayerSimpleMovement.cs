@@ -3,16 +3,14 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEditor;
 
-using DefaultLayer;
+using Default;
 public class PlayerSimpleMovement : MonoBehaviour
 {
-    public float speed = 10;
-    [SerializeField] private LayerMask layerMask = BitLayer.EnvironmentLayer();
+    [SerializeField] private float speed = 10;
+    [SerializeField] private LayerMask layerMask = GlobalLayerMask.EnvironmentLayer;
     private Vector3 _moveDir;
-    // Start is called before the first frame update
-    void Start()
-    {
-        
+    public Vector2 MoveDirection{
+        get{return _moveDir;}
     }
 
     // Update is called once per frame
@@ -38,29 +36,36 @@ public class PlayerSimpleMovement : MonoBehaviour
         }
 
         bool isIdle = moveX == 0 && moveY == 0;
-        if (isIdle){
+        if (isIdle)
+        {
             return;
         }
-        else {
+        else
+        {
             _moveDir = new Vector2(moveX, moveY);
-            RaycastHit2D raycastHit = Physics2D.Raycast(transform.position, _moveDir, _moveDir.magnitude / 2f + speed * Time.deltaTime, layerMask);
-            if (raycastHit.collider == null){
-                transform.position +=  speed * Time.deltaTime * _moveDir.normalized;
+
+            Collider2D collider2D = GetComponent<Collider2D>();
+            RaycastHit2D[] raycastHits = new RaycastHit2D[3];
+            int ObjectHitByRaycast = collider2D.Raycast(_moveDir, raycastHits, _moveDir.magnitude / 2f + speed * Time.deltaTime, layerMask);
+            // print("ObjectHitByRaycast: " + ObjectHitByRaycast);
+
+            if (ObjectHitByRaycast == 0)
+            {
+                transform.position += speed * Time.deltaTime * _moveDir.normalized;
             }
-            else if (raycastHit.collider != null){
-                // Debug.Log("Player is stuck against " + raycastHit.collider.name);
-                if (raycastHit.normal.x == 0){
-                    // transform.position += Vector3.right * moveX * speed * Time.deltaTime;
-                    transform.position += speed * Time.deltaTime * Vector3.right * _moveDir.normalized.x;
+            else if (ObjectHitByRaycast != 0)
+            {
+                // Debug.Log("Player is stuck against " + raycastHits[0].collider.name);
+                if (raycastHits[0].normal.x == 0)
+                {
+                    transform.position += _moveDir.normalized.x * speed * Time.deltaTime * Vector3.right;
                 }
-                else if (raycastHit.normal.y == 0){
-                    // transform.position += Vector3.up * moveY * speed * Time.deltaTime;
-                    transform.position += speed * Time.deltaTime * Vector3.up * _moveDir.normalized.y ;
+                else if (raycastHits[0].normal.y == 0)
+                {
+                    transform.position += _moveDir.normalized.y * speed * Time.deltaTime * Vector3.up;
                 }
             }
+
         }
-    }
-    public Vector2 getMoveDir(){
-        return _moveDir;
     }
 }

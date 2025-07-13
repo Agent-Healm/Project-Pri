@@ -20,11 +20,11 @@ public class PlayerAim : MonoBehaviour
 
     // Update is called once per frame
     void Update(){
-        if (_playerAI.isAiming()){
-            _faceDir = _playerAI.getAimDir();
+        if (_playerAI.AimingAtTarget){
+            _faceDir = _playerAI.AutoaimDir;
         }
         else {
-            _faceDir = _psm.getMoveDir();
+            _faceDir = _psm.MoveDirection;
         }
     }
 
