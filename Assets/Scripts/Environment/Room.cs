@@ -16,8 +16,6 @@ public class Room
     public int GetMin { get => min; }
     [SerializeField] private int max = 1;
     public int GetMax { get => max; }
-    [SerializeField] private bool isIncluded;
-    public bool IsIncluded { get => isIncluded; }
     [SerializeField] private GameObject[] roomVariance;
     public GameObject[] GetRoomVariance { get => roomVariance; }
 }

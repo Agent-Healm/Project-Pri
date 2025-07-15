@@ -66,6 +66,7 @@
   <ItemGroup>
     <Compile Include="Assets\Scripts\Entity\Player\PlayerAI.cs" />
     <Compile Include="Assets\Scripts\ScriptableObjects\OrbSO.cs" />
+    <Compile Include="Assets\Scripts\Environment\RoomSize.cs" />
     <Compile Include="Assets\Scripts\Generators\FloorGeneration.cs" />
     <Compile Include="Assets\Scripts\Weapons\ShotgunSO.cs" />
     <Compile Include="Assets\Scripts\Core\Default\Default_LayerMask.cs" />
@@ -102,6 +103,7 @@
     <Compile Include="Assets\Scripts\Environment\Potion.cs" />
     <Compile Include="Assets\Scripts\Entity\Player\PlayerSimpleMovement.cs" />
     <Compile Include="Assets\Scripts\Entity\Player\PlayerHitpoint.cs" />
+    <Compile Include="Assets\Scripts\Generators\MapGen2.cs" />
     <Compile Include="Assets\Scripts\Generators\LayoutGeneration.cs" />
     <Compile Include="Assets\Scripts\Core\Interfaces\IWeapons.cs" />
     <Compile Include="Assets\Scripts\Entity\Player\PlayerMana.cs" />

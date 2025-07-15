@@ -11,9 +11,9 @@ GameObject:
   - component: {fileID: 2412486964479123627}
   - component: {fileID: 6983358612047055094}
   - component: {fileID: 8410088220293470248}
-  - component: {fileID: -8331882848182339331}
+  - component: {fileID: -7714920143249133962}
   m_Layer: 0
-  m_Name: HomeRoom
+  m_Name: MinibossRoom
   m_TagString: Untagged
   m_Icon: {fileID: 1206586993520771344, guid: 0000000000000000d000000000000000, type: 0}
   m_NavMeshLayer: 0
@@ -49,7 +49,7 @@ MonoBehaviour:
   isVertical: 0
   length: 3
   width: 3
-  roomIcon: {fileID: 5570227502205663290, guid: 04ad61adf4a81a242922754b43f4566f, type: 3}
+  roomIcon: {fileID: 9164323377962720109, guid: 468350c13c2d36d42a55f0bacb272a07, type: 3}
   roomIconSprite: {fileID: 0}
   layoutType: 1
 --- !u!114 &8410088220293470248
@@ -65,10 +65,10 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   gateEast: 0
-  gateSouth: 1
+  gateSouth: 0
   gateWest: 0
-  gateNorth: 0
---- !u!212 &-8331882848182339331
+  gateNorth: 1
+--- !u!212 &-7714920143249133962
 SpriteRenderer:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -109,7 +109,7 @@ SpriteRenderer:
   m_SortingLayerID: 0
   m_SortingLayer: 0
   m_SortingOrder: 0
-  m_Sprite: {fileID: 0}
+  m_Sprite: {fileID: -642307381, guid: 0083b6c3e7b5c1c468e4f88437433d69, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_FlipX: 0
   m_FlipY: 0
@@ -117,6 +117,6 @@ SpriteRenderer:
   m_Size: {x: 1, y: 1}
   m_AdaptiveModeThreshold: 0.5
   m_SpriteTileMode: 0
-  m_WasSpriteAssigned: 0
+  m_WasSpriteAssigned: 1
   m_MaskInteraction: 0
   m_SpriteSortPoint: 0
