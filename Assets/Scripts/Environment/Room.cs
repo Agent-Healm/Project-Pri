@@ -43,7 +43,7 @@ public static class RoomUtility {
     public static void getAdjacentVec3(ref Vector3[] emptySpace, Vector3 currentPos, Vector2[] _roomPos, float tileSize = 1.0f){
         // ArrayUtility.contains method is still bugged
         foreach (Vector3 vec3 in adjacentDirection()){
-            if ((ArrayUtility.FindIndex(_roomPos, x => x == (Vector2)(currentPos + vec3 * tileSize))) == -1 
+            if (ArrayUtility.FindIndex(_roomPos, x => x == (Vector2)(currentPos + vec3 * tileSize)) == -1 
                 ){
                 ArrayUtility.Add(ref emptySpace, vec3);
             }

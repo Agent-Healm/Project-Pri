@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
 using Unity.Collections;
 using UnityEngine;
 using UnityEngine.Tilemaps;
@@ -21,11 +22,14 @@ public class MapGen2 : MonoBehaviour
 
     // [SerializeField] private GameObject m_pathPrefab;
     private List<RoomInfo> _roomInfos = new();
+
     void Start()
     {
-        GenerateMap();
+        StartCoroutine(GenerateMap());
 
         m_tilemapFloor.SetTile(new(0, 0, 0), null);
+
+        StartCoroutine(DeterminePath());
     }
 
     private void GenerateRoom(Vector3Int l_localPosition, GameObject l_roomPrefab)
@@ -37,7 +41,7 @@ public class MapGen2 : MonoBehaviour
             Position = l_localPosition,
             Size = bounds.size
         });
-        
+
         l_localPosition *= m_tileSize;
         Vector3Int boundsExtent = (bounds.size - new Vector3Int(1, 1, 1)) / 2;
 
@@ -58,11 +62,10 @@ public class MapGen2 : MonoBehaviour
         }
     }
 
-
     private BoundsInt InitializeRoomBounds(GameObject l_roomPrefab)
     {
         BoundsInt bounds = new BoundsInt();
-        if (l_roomPrefab.TryGetComponent<RoomSize>(out RoomSize l_roomSize))
+        if (l_roomPrefab.TryGetComponent(out RoomSize l_roomSize))
         {
             int width = l_roomSize.Width;
             int height = l_roomSize.Height;
@@ -78,7 +81,7 @@ public class MapGen2 : MonoBehaviour
         return bounds;
     }
 
-    private void GenerateMap()
+    private IEnumerator GenerateMap()
     {
         Vector3Int l_spawnPoint = new(0, 0, 0);
         Vector3Int[] adjacentDirection = new Vector3Int[]{
@@ -95,11 +98,12 @@ public class MapGen2 : MonoBehaviour
             emptySpace.Clear();
             foreach (Vector3Int vec3 in adjacentDirection)
             {
-                if (_roomInfos.FindIndex(x => x.Position == l_spawnPoint + vec3) == -1)
+                if (_roomInfos.FindIndex(x => x.Position.Equals(l_spawnPoint + vec3)) == -1)
                 {
                     emptySpace.Add(vec3);
                 }
             }
+
             if (emptySpace.Count == 0)
             {
                 Debug.Log("No empty space found to place a new room.");
@@ -110,8 +114,7 @@ public class MapGen2 : MonoBehaviour
             Vector3Int direction = emptySpace[randomIndex];
             emptySpace.RemoveAt(randomIndex);
 
-            l_spawnPoint += direction;
-            GenerateRoom(l_spawnPoint, m_roomPrefab);
+            GenerateRoom(l_spawnPoint + direction, m_roomPrefab);
 
             if (emptySpace.Count > 1)
             {
@@ -121,7 +124,9 @@ public class MapGen2 : MonoBehaviour
                     GenerateRoom(l_spawnPoint + vec3, m_roomPrefab);
                 }
             }
-            
+            l_spawnPoint += direction;
+
+            yield return new WaitForEndOfFrame();
         }
     }
 
@@ -131,6 +136,25 @@ public class MapGen2 : MonoBehaviour
         for (int _ = 0; _ < randomIndex; _++)
         {
             l_emptySpace.RemoveAt(Random.Range(0, l_emptySpace.Count));
+        }
+    }
+
+    private IEnumerator DeterminePath()
+    {
+        int temp = 1;
+        for (int index = 1; index < _roomInfos.Count; index++)
+        {
+            while (temp <= 4)
+            {
+                if ((_roomInfos[index - temp].Position - _roomInfos[index].Position).sqrMagnitude == 1f)
+                {
+                    print($"{_roomInfos[index - temp].Position} -> {_roomInfos[index].Position}");
+                    temp = 1;
+                    break;
+                }
+                temp++;
+            }
+            yield return new WaitForEndOfFrame();
         }
     }
 }

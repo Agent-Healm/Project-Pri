@@ -8079,7 +8079,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 29f450695f66f90438c846c80bdfdedc, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  m_maxRooms: 12
+  m_maxRooms: 13
   m_tileSize: 5
   m_roomPrefab: {fileID: 8261475582393899603, guid: 9463c4ef919c12a408e784487e4301fe, type: 3}
   m_tileFloor: {fileID: 11400000, guid: 48591727bd5496045a351d6d2c28788f, type: 2}
