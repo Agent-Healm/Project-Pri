@@ -1,63 +1,68 @@
 using System.Collections;
 using System.Collections.Generic;
+using Unity.Collections;
 using UnityEngine;
 using UnityEngine.Tilemaps;
 
 public class MapGen2 : MonoBehaviour
 {
-    // [SerializeField] private Transform m_spawnPoint;
     [SerializeField] private int m_maxRooms = 2;
     [SerializeField] private int m_tileSize = 13;
 
     [SerializeField] private GameObject m_roomPrefab;
-    [SerializeField] private TileBase m_tileBase;
 
-    private Grid _Grid;
-    private Tilemap _tilemap;
+    [Header("Tilebase")]
+    [SerializeField] private TileBase m_tileFloor;
+    [SerializeField] private TileBase m_tileWall;
 
-    private List<Vector3Int> _roomPositions;
+    [Header("Tilemaps")]
+    [SerializeField] private Tilemap m_tilemapFloor;
+    [SerializeField] private Tilemap m_tilemapWall;
+
     // [SerializeField] private GameObject m_pathPrefab;
-
-    // Start is called before the first frame update
+    private List<RoomInfo> _roomInfos = new();
     void Start()
     {
-        _Grid = GetComponent<Grid>();
-        _tilemap = GetComponentInChildren<Tilemap>();
-
-        // GenerateRoom(new(0, 0, 0));
-        // GenerateRoom(new(0, 1, 0));
-        // GenerateRoom(new(0, 2, 0));
         GenerateMap();
 
-        _tilemap.SetTile(new(0, 0, 0), null);
-
+        m_tilemapFloor.SetTile(new(0, 0, 0), null);
     }
 
-    // Update is called once per frame
-    void Update()
+    private void GenerateRoom(Vector3Int l_localPosition, GameObject l_roomPrefab)
     {
+        BoundsInt bounds = InitializeRoomBounds(l_roomPrefab);
 
-    }
-
-    private void GenerateRoom(Vector3Int l_localPosition)
-    {
+        _roomInfos.Add(new RoomInfo
+        {
+            Position = l_localPosition,
+            Size = bounds.size
+        });
+        
         l_localPosition *= m_tileSize;
-        BoundsInt bounds = InitializeRoomBounds();
         Vector3Int boundsExtent = (bounds.size - new Vector3Int(1, 1, 1)) / 2;
 
         for (int y = -boundsExtent.y; y <= boundsExtent.y; y++)
         {
             for (int x = -boundsExtent.x; x <= boundsExtent.x; x++)
             {
-                _tilemap.SetTile(new Vector3Int(x, y, 0) + l_localPosition, m_tileBase);
+                m_tilemapFloor.SetTile(new Vector3Int(x, y, 0) + l_localPosition, m_tileFloor);
+
+                if (y == -boundsExtent.y ||
+                    y == boundsExtent.y ||
+                    x == -boundsExtent.x ||
+                    x == boundsExtent.x)
+                {
+                    m_tilemapWall.SetTile(new Vector3Int(x, y, 0) + l_localPosition, m_tileWall);
+                }
             }
         }
     }
 
-    private BoundsInt InitializeRoomBounds()
+
+    private BoundsInt InitializeRoomBounds(GameObject l_roomPrefab)
     {
         BoundsInt bounds = new BoundsInt();
-        if (m_roomPrefab.TryGetComponent<RoomSize>(out RoomSize l_roomSize))
+        if (l_roomPrefab.TryGetComponent<RoomSize>(out RoomSize l_roomSize))
         {
             int width = l_roomSize.Width;
             int height = l_roomSize.Height;
@@ -65,7 +70,6 @@ public class MapGen2 : MonoBehaviour
             // Create a new bounds for the tilemap
             bounds.position = new(0, 0, 0);
             bounds.size = new Vector3Int(width, height, 1);
-
         }
         else
         {
@@ -84,16 +88,14 @@ public class MapGen2 : MonoBehaviour
             new Vector3Int(0, -1, 0) // Down
         };
         List<Vector3Int> emptySpace = new List<Vector3Int>();
-        _roomPositions = new List<Vector3Int> { l_spawnPoint };
-        GenerateRoom(l_spawnPoint);
+        GenerateRoom(l_spawnPoint, m_roomPrefab);
 
         for (int _ = 0; _ < m_maxRooms; _++)
         {
             emptySpace.Clear();
             foreach (Vector3Int vec3 in adjacentDirection)
             {
-                Vector3Int l_newPosition = l_spawnPoint + vec3;
-                if (!_roomPositions.Contains(l_newPosition))
+                if (_roomInfos.FindIndex(x => x.Position == l_spawnPoint + vec3) == -1)
                 {
                     emptySpace.Add(vec3);
                 }
@@ -104,11 +106,37 @@ public class MapGen2 : MonoBehaviour
                 break;
             }
 
-            Vector3Int direction = emptySpace[Random.Range(0, emptySpace.Count)];
+            int randomIndex = Random.Range(0, emptySpace.Count);
+            Vector3Int direction = emptySpace[randomIndex];
+            emptySpace.RemoveAt(randomIndex);
+
             l_spawnPoint += direction;
-            GenerateRoom(l_spawnPoint);
-            _roomPositions.Add(l_spawnPoint);
+            GenerateRoom(l_spawnPoint, m_roomPrefab);
+
+            if (emptySpace.Count > 1)
+            {
+                SideRoomStratergy(ref emptySpace);
+                foreach (Vector3Int vec3 in emptySpace)
+                {
+                    GenerateRoom(l_spawnPoint + vec3, m_roomPrefab);
+                }
+            }
+            
         }
     }
-    
+
+    private void SideRoomStratergy(ref List<Vector3Int> l_emptySpace)
+    {
+        int randomIndex = Random.Range(1, l_emptySpace.Count);
+        for (int _ = 0; _ < randomIndex; _++)
+        {
+            l_emptySpace.RemoveAt(Random.Range(0, l_emptySpace.Count));
+        }
+    }
+}
+
+struct RoomInfo
+{
+    public Vector3Int Position { get; set; }
+    public Vector3Int Size { get; set; }
 }
