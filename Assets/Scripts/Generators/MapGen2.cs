@@ -6,6 +6,7 @@ using Unity.Collections;
 using UnityEngine;
 using UnityEngine.InputSystem.Utilities;
 using UnityEngine.Tilemaps;
+using UnityEngine.UIElements;
 
 public class MapGen2 : MonoBehaviour
 {
@@ -18,6 +19,7 @@ public class MapGen2 : MonoBehaviour
     [Header("Tilebase")]
     [SerializeField] private TileBase m_tileFloor;
     [SerializeField] private TileBase m_tileWall;
+    [SerializeField] private TileBase m_tileGate;
 
     [Header("Tilemaps")]
     [SerializeField] private Tilemap m_tilemapFloor;
@@ -88,7 +90,11 @@ public class MapGen2 : MonoBehaviour
         for (int _ = 1; _ < m_maxRooms; _++)
         {
             l_emptySpace.Clear();
-            l_emptySpace.AddRange(l_adjacentDirection.Where(vec3 => _roomInfos.FindIndex(x => x.Position.Equals(l_spawnPoint + vec3)) == -1));
+            l_emptySpace.AddRange(l_adjacentDirection.Where(
+                vec3 =>
+                !_roomInfos.Exists(
+                    room => room.Position == l_spawnPoint + vec3))
+            );
 
             if (l_emptySpace.Count == 0)
             {
@@ -96,24 +102,25 @@ public class MapGen2 : MonoBehaviour
                 break;
             }
 
-            Vector3Int l_direction = l_emptySpace[Random.Range(0, l_emptySpace.Count)];
-            l_emptySpace.Remove(l_direction);
+            Vector3Int l_selectedDirection = l_emptySpace[Random.Range(0, l_emptySpace.Count)];
+            l_emptySpace.Remove(l_selectedDirection);
 
-            GenerateRoom(l_spawnPoint + l_direction, m_roomPrefab);
+            Vector3Int l_newPosition = l_spawnPoint + l_selectedDirection;
+            GenerateRoom(l_newPosition, m_roomPrefab);
 
-            SideRoomStratergy(ref l_emptySpace);
+            StratergySideRoom(ref l_emptySpace);
             foreach (Vector3Int vec3 in l_emptySpace)
             {
                 GenerateRoom(l_spawnPoint + vec3, m_roomPrefab);
             }
 
-            l_spawnPoint += l_direction;
+            l_spawnPoint = l_newPosition;
 
             yield return new WaitForEndOfFrame();
         }
     }
 
-    private void SideRoomStratergy(ref List<Vector3Int> emptySpace)
+    private void StratergySideRoom(ref List<Vector3Int> emptySpace)
     {
         if (emptySpace.Count == 0)
         {
@@ -153,30 +160,26 @@ public class MapGen2 : MonoBehaviour
         BoundsInt l_boundsTemp = new BoundsInt(new(0, 0, 0), new(1, 1, 1));
         Vector3Int l_direction = roomInfoEnd.Position - roomInfoStart.Position;
         Vector3Int l_posStart = roomInfoStart.Position * m_maxRoomSize;
+        
+        bool isHorizontal = l_direction.y == 0;
+        bool isVertical = l_direction.x == 0;
+        bool isNegative = (isHorizontal && l_direction.x == -1) || (isVertical && l_direction.y == -1);
+        Vector3Int offset = isHorizontal ? new(-m_maxRoomSize, 0, 0) : new(0, -m_maxRoomSize, 0);
 
-        if (l_direction.y == 0)
-        {   // horizontal path
-            int l_length = m_maxRoomSize - roomInfoEnd.Extent.x - roomInfoStart.Extent.x - 1;
-            l_boundsTemp.size = new Vector3Int(l_length, m_pathWidth, 1);
-            l_boundsTemp.position = l_posStart + new Vector3Int(roomInfoStart.Extent.x + 1, -m_pathWidth / 2, 0);
+        int l_length = m_maxRoomSize - 1 - (isHorizontal
+                            ? (roomInfoEnd.Extent.x + roomInfoStart.Extent.x)
+                            : (roomInfoEnd.Extent.y + roomInfoStart.Extent.y));
 
-            if (l_direction.x == -1)
-            {
-                l_boundsTemp.position += new Vector3Int(-m_maxRoomSize, 0, 0);
-            }
-        }
-        else if (l_direction.x == 0)
-        {   // vertical path
-            int l_length = m_maxRoomSize - roomInfoEnd.Extent.y - roomInfoStart.Extent.y - 1;
-            l_boundsTemp.size = new Vector3Int(m_pathWidth, l_length, 1);
-            l_boundsTemp.position = l_posStart + new Vector3Int(-m_pathWidth / 2, roomInfoStart.Extent.y + 1, 0);
-            if (l_direction.y == -1)
-            {
-                l_boundsTemp.position += new Vector3Int(0, -m_maxRoomSize, 0);
-            }
-        }
+        l_boundsTemp.size = isHorizontal ? new(l_length, m_pathWidth, 1) : new(m_pathWidth, l_length, 1);
+        l_boundsTemp.position = l_posStart + (isHorizontal
+                            ? new(roomInfoStart.Extent.x + 1, -m_pathWidth / 2, 0)
+                            : new(-m_pathWidth / 2, roomInfoStart.Extent.y + 1, 0));
+
+        l_boundsTemp.position += isNegative ? offset : Vector3Int.zero;
+
         GenerateFloor(l_boundsTemp);
         GenerateWall(l_boundsTemp, l_direction.x == 0, l_direction.y == 0);
+        StratergyGate(l_boundsTemp, l_direction.x == 0, l_direction.y == 0);
     }
 
     private void GenerateFloor(BoundsInt boundsInt)
@@ -203,13 +206,30 @@ public class MapGen2 : MonoBehaviour
         }
     }
 
+    private void StratergyGate(BoundsInt boundsInt, bool horizontal = true, bool vertical = true)
+    {
+        int l_gateLength = horizontal ? boundsInt.size.x : boundsInt.size.y;
+        Vector3Int l_gateSize = horizontal ? new(l_gateLength, 1, 1) : new(1, l_gateLength, 1);
+
+        TileBase[] l_gateTiles = Enumerable.Repeat(m_tileGate, l_gateLength).ToArray();
+        l_gateTiles[0] = m_tileWall;
+        l_gateTiles[l_gateLength - 1] = m_tileWall;
+
+        BoundsInt l_bounds = boundsInt;
+        l_bounds.size = l_gateSize;
+
+        l_bounds.position += horizontal ? new(0, -1, 0) : new(-1, 0, 0);
+        m_tilemapWall.SetTilesBlock(l_bounds, l_gateTiles);
+
+        l_bounds.position += horizontal ? new(0, boundsInt.size.y + 1, 0) : new(boundsInt.size.x + 1, 0, 0);
+        m_tilemapWall.SetTilesBlock(l_bounds, l_gateTiles);
+    }
 }
 
 struct RoomInfo
 {
-    public Vector3Int Position { get; set; }
-    public Vector3Int Size { get; set; }
-
+    public Vector3Int Position;
+    public Vector3Int Size;
     public Vector3Int Extent
     {
         get
