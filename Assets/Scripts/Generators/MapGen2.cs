@@ -11,6 +11,7 @@ public class MapGen2 : MonoBehaviour
 {
     [SerializeField] private int m_maxRooms = 2;
     [SerializeField] private int m_maxRoomSize = 13;
+    [SerializeField] private int m_pathWidth = 1;
 
     [SerializeField] private GameObject m_roomPrefab;
 
@@ -37,31 +38,15 @@ public class MapGen2 : MonoBehaviour
     private void GenerateRoom(Vector3Int localPosition, GameObject roomPrefab)
     {
         BoundsInt l_bounds = InitializeRoomBounds(roomPrefab);
-
+        l_bounds.position += localPosition * m_maxRoomSize;
         _roomInfos.Add(new RoomInfo
         {
             Position = localPosition,
             Size = l_bounds.size
         });
 
-        localPosition *= m_maxRoomSize;
-        Vector3Int l_boundsExtent = (l_bounds.size - new Vector3Int(1, 1, 1)) / 2;
-
-        for (int y = -l_boundsExtent.y; y <= l_boundsExtent.y; y++)
-        {
-            for (int x = -l_boundsExtent.x; x <= l_boundsExtent.x; x++)
-            {
-                m_tilemapFloor.SetTile(new Vector3Int(x, y, 0) + localPosition, m_tileFloor);
-
-                if (y == -l_boundsExtent.y ||
-                    y == l_boundsExtent.y ||
-                    x == -l_boundsExtent.x ||
-                    x == l_boundsExtent.x)
-                {
-                    m_tilemapWall.SetTile(new Vector3Int(x, y, 0) + localPosition, m_tileWall);
-                }
-            }
-        }
+        GenerateFloor(l_bounds);
+        GenerateWall(l_bounds);
     }
 
     private BoundsInt InitializeRoomBounds(GameObject roomPrefab)
@@ -73,7 +58,7 @@ public class MapGen2 : MonoBehaviour
             int height = l_roomSize.Height;
 
             // Create a new bounds for the tilemap
-            l_bounds.position = new(0, 0, 0);
+            l_bounds.position = new(-width / 2, -height / 2, 0);
             l_bounds.size = new Vector3Int(width, height, 1);
         }
         else
@@ -165,41 +150,59 @@ public class MapGen2 : MonoBehaviour
 
     private void GeneratePath(RoomInfo roomInfoStart, RoomInfo roomInfoEnd)
     {
-        int pathWidth = 3;
-        Vector3Int l_vec3Temp;
         BoundsInt l_boundsTemp = new BoundsInt(new(0, 0, 0), new(1, 1, 1));
-        TileBase[] floorTiles = Enumerable.Repeat(m_tileFloor, pathWidth).ToArray();
-
         Vector3Int l_direction = roomInfoEnd.Position - roomInfoStart.Position;
         Vector3Int l_posStart = roomInfoStart.Position * m_maxRoomSize;
-        // print($"Direction: {l_direction}");
 
         if (l_direction.y == 0)
-        {
-            // horizontal path
-            l_boundsTemp.size = new Vector3Int(1, pathWidth, 1);
-            for (int i = 1 + roomInfoStart.Extent.x; i < m_maxRoomSize - roomInfoEnd.Extent.x; i++)
+        {   // horizontal path
+            int l_length = m_maxRoomSize - roomInfoEnd.Extent.x - roomInfoStart.Extent.x - 1;
+            l_boundsTemp.size = new Vector3Int(l_length, m_pathWidth, 1);
+            l_boundsTemp.position = l_posStart + new Vector3Int(roomInfoStart.Extent.x + 1, -m_pathWidth / 2, 0);
+
+            if (l_direction.x == -1)
             {
-                l_vec3Temp = i * l_direction;
-                l_boundsTemp.position = l_posStart + l_vec3Temp - new Vector3Int(0, pathWidth / 2, 0);
-                
-                m_tilemapFloor.SetTilesBlock(l_boundsTemp, floorTiles);
-                // m_tilemapFloor.SetTile(l_posStart + l_vec3Temp, m_tileWall);
+                l_boundsTemp.position += new Vector3Int(-m_maxRoomSize, 0, 0);
             }
         }
         else if (l_direction.x == 0)
-        {
-            // vertical path
-            l_boundsTemp.size = new Vector3Int(pathWidth, 1, 1);
-            for (int i = 1 + roomInfoStart.Extent.y; i < m_maxRoomSize - roomInfoEnd.Extent.y; i++)
+        {   // vertical path
+            int l_length = m_maxRoomSize - roomInfoEnd.Extent.y - roomInfoStart.Extent.y - 1;
+            l_boundsTemp.size = new Vector3Int(m_pathWidth, l_length, 1);
+            l_boundsTemp.position = l_posStart + new Vector3Int(-m_pathWidth / 2, roomInfoStart.Extent.y + 1, 0);
+            if (l_direction.y == -1)
             {
-                l_vec3Temp = i * l_direction;
-                l_boundsTemp.position = l_posStart + l_vec3Temp - new Vector3Int(pathWidth / 2, 0, 0);
-                m_tilemapFloor.SetTilesBlock(l_boundsTemp, floorTiles);
-                // m_tilemapFloor.SetTile(l_posStart + l_vec3Temp, m_tileWall);
+                l_boundsTemp.position += new Vector3Int(0, -m_maxRoomSize, 0);
+            }
+        }
+        GenerateFloor(l_boundsTemp);
+        GenerateWall(l_boundsTemp, l_direction.x == 0, l_direction.y == 0);
+    }
+
+    private void GenerateFloor(BoundsInt boundsInt)
+    {
+        m_tilemapFloor.SetTilesBlock(boundsInt, Enumerable.Repeat(m_tileFloor, boundsInt.size.x * boundsInt.size.y).ToArray());
+    }
+
+    private void GenerateWall(BoundsInt boundsInt, bool horizontal = true, bool vertical = true)
+    {
+        // invalidate threshold if any axis has value false
+        int l_thresholdH = horizontal ? 0 : 1;
+        int l_thresholdV = vertical ? 0 : 1;
+
+        for (int y = 0; y < boundsInt.size.y; y++)
+        {
+            for (int x = 0; x < boundsInt.size.x; x++)
+            {
+                if (y == 0 - l_thresholdV || y == boundsInt.size.y - 1 + l_thresholdV ||
+                    x == 0 - l_thresholdH || x == boundsInt.size.x - 1 + l_thresholdH)
+                {
+                    m_tilemapWall.SetTile(new Vector3Int(x, y, 0) + boundsInt.position, m_tileWall);
+                }
             }
         }
     }
+
 }
 
 struct RoomInfo

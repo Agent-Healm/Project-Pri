@@ -8085,6 +8085,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   m_maxRooms: 3
   m_maxRoomSize: 9
+  m_pathWidth: 3
   m_roomPrefab: {fileID: 8261475582393899603, guid: 9463c4ef919c12a408e784487e4301fe, type: 3}
   m_tileFloor: {fileID: 11400000, guid: 48591727bd5496045a351d6d2c28788f, type: 2}
   m_tileWall: {fileID: 11400000, guid: fcb8d7298aab7a84c91f314cce34e5ea, type: 2}
