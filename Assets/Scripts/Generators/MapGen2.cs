@@ -2,9 +2,12 @@ using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using System.Net.NetworkInformation;
+using System.Numerics;
 using Unity.Collections;
+using UnityEditor.Build;
 using UnityEngine;
 using UnityEngine.InputSystem.Utilities;
+using UnityEngine.Rendering;
 using UnityEngine.Tilemaps;
 using UnityEngine.UIElements;
 
@@ -24,8 +27,8 @@ public class MapGen2 : MonoBehaviour
     [Header("Tilemaps")]
     [SerializeField] private Tilemap m_tilemapFloor;
     [SerializeField] private Tilemap m_tilemapWall;
+    [SerializeField] private Tilemap m_tilemapGate;
 
-    // [SerializeField] private GameObject m_pathPrefab;
     private List<RoomInfo> _roomInfos = new();
 
     void Start()
@@ -160,7 +163,7 @@ public class MapGen2 : MonoBehaviour
         BoundsInt l_boundsTemp = new BoundsInt(new(0, 0, 0), new(1, 1, 1));
         Vector3Int l_direction = roomInfoEnd.Position - roomInfoStart.Position;
         Vector3Int l_posStart = roomInfoStart.Position * m_maxRoomSize;
-        
+
         bool isHorizontal = l_direction.y == 0;
         bool isVertical = l_direction.x == 0;
         bool isNegative = (isHorizontal && l_direction.x == -1) || (isVertical && l_direction.y == -1);
@@ -219,11 +222,24 @@ public class MapGen2 : MonoBehaviour
         l_bounds.size = l_gateSize;
 
         l_bounds.position += horizontal ? new(0, -1, 0) : new(-1, 0, 0);
-        m_tilemapWall.SetTilesBlock(l_bounds, l_gateTiles);
+        int l_index;
+        for (int _ = 0; _ < 2; _++)
+        {
+            l_index = 0;
+            foreach (Vector3Int i_pos in l_bounds.allPositionsWithin)
+            {
+                if (!(l_index == 0 || l_index == l_gateLength - 1))
 
-        l_bounds.position += horizontal ? new(0, boundsInt.size.y + 1, 0) : new(boundsInt.size.x + 1, 0, 0);
-        m_tilemapWall.SetTilesBlock(l_bounds, l_gateTiles);
+                {
+                    m_tilemapGate.SetTile(i_pos, l_gateTiles[l_index]);
+                    m_tilemapWall.SetTile(i_pos, null);
+                }
+                l_index += 1;
+            }
+            l_bounds.position += horizontal ? new(0, boundsInt.size.y + 1, 0) : new(boundsInt.size.x + 1, 0, 0);
+        }
     }
+
 }
 
 struct RoomInfo
