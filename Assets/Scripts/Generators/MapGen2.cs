@@ -42,7 +42,7 @@ public class MapGen2 : MonoBehaviour
 
     private void GenerateRoom(Vector3Int localPosition, GameObject roomPrefab)
     {
-        BoundsInt l_bounds = InitializeRoomBounds(roomPrefab);
+        BoundsInt l_bounds = roomPrefab.GetComponent<RoomSize>().RoomBounds;
         l_bounds.position += localPosition * m_maxRoomSize;
         _roomInfos.Add(new RoomInfo
         {
@@ -52,25 +52,7 @@ public class MapGen2 : MonoBehaviour
 
         GenerateFloor(l_bounds);
         GenerateWall(l_bounds);
-    }
-
-    private BoundsInt InitializeRoomBounds(GameObject roomPrefab)
-    {
-        BoundsInt l_bounds = new BoundsInt();
-        if (roomPrefab.TryGetComponent(out RoomSize l_roomSize))
-        {
-            int width = l_roomSize.Width;
-            int height = l_roomSize.Height;
-
-            // Create a new bounds for the tilemap
-            l_bounds.position = new(-width / 2, -height / 2, 0);
-            l_bounds.size = new Vector3Int(width, height, 1);
-        }
-        else
-        {
-            Debug.Log("RoomSize component not found on the room prefab.");
-        }
-        return l_bounds;
+        GenerateLayout(l_bounds, roomPrefab.GetComponent<RoomSize>());
     }
 
     private IEnumerator GenerateMap()
@@ -87,16 +69,13 @@ public class MapGen2 : MonoBehaviour
         GenerateRoom(l_spawnPoint, m_roomPrefab);
         l_spawnPoint += l_adjacentDirection[Random.Range(0, l_adjacentDirection.Count)];
         GenerateRoom(l_spawnPoint, m_roomPrefab);
-
-        // yield return new WaitForEndOfFrame();
+        yield return new WaitForEndOfFrame();
 
         for (int _ = 1; _ < m_maxRooms; _++)
         {
             l_emptySpace.Clear();
-            l_emptySpace.AddRange(l_adjacentDirection.Where(
-                vec3 =>
-                !_roomInfos.Exists(
-                    room => room.Position == l_spawnPoint + vec3))
+            l_emptySpace.AddRange(l_adjacentDirection.Where(vec3 =>
+                !_roomInfos.Exists(room => room.Position == l_spawnPoint + vec3))
             );
 
             if (l_emptySpace.Count == 0)
@@ -240,6 +219,22 @@ public class MapGen2 : MonoBehaviour
         }
     }
 
+    private void GenerateLayout(BoundsInt boundsInt, RoomSize roomSize)
+    {
+        boundsInt = ShrinkBounds(boundsInt);
+        BoundsInt roomBounds = ShrinkBounds(roomSize.RoomBounds);
+        foreach (Tilemap tilemap in roomSize.RoomLayout)
+        {
+            m_tilemapWall.SetTilesBlock(boundsInt, tilemap.GetTilesBlock(roomBounds));
+        }
+    }
+
+    private BoundsInt ShrinkBounds(BoundsInt boundsInt, int size = 1)
+    {
+        boundsInt.position += new Vector3Int(size, size, 0);
+        boundsInt.size -= new Vector3Int(2 * size, 2 * size, 0);
+        return boundsInt;
+    }
 }
 
 struct RoomInfo
