@@ -1,12 +1,15 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using System.Numerics;
 using Unity.Collections;
+using UnityEditor.Build;
 using UnityEngine;
 using UnityEngine.InputSystem.Utilities;
 using UnityEngine.Tilemaps;
 
+using Random = UnityEngine.Random;
 public class MapGen2 : MonoBehaviour
 {
     [SerializeField] private int m_maxRooms = 2;
@@ -51,7 +54,6 @@ public class MapGen2 : MonoBehaviour
         GenerateFloor(l_bounds);
         GenerateWall(l_bounds);
         GenerateLayout(l_bounds, roomPrefab.GetComponent<RoomSize>());
-
     }
 
     private void SelectPosition(Vector3Int vec)
@@ -68,31 +70,29 @@ public class MapGen2 : MonoBehaviour
         GenerateRoom(0, m_roomHome);
         GenerateRoom(1, m_roomMob);
 
-        yield return new WaitForEndOfFrame();
-        int l_tempCurrent = 0;
-        int l_tempNext = 1;
-        
-        for (int l_index = 2; l_index < _roomInfos.Count; l_index++)
+        yield return null;
+        // int l_tempCurrent = 0;
+        // int l_tempNext = 1;
+
+        // for (int l_index = 2; l_index < _roomInfos.Count; l_index++)
+        // {
+        //     bool l_isAdjacent = (_roomInfos[l_index].Position - _roomInfos[l_tempCurrent].Position).sqrMagnitude == 1;
+
+        //     l_tempCurrent = l_isAdjacent ? l_tempCurrent : l_tempNext;
+        //     l_tempNext = l_isAdjacent ? l_tempNext : l_index;
+        //     l_roomPrefab = l_isAdjacent ? m_roomSpecial : m_roomMob;
+
+        //     GenerateRoom(l_index, l_roomPrefab);
+        //     yield return null;
+        // }
+        yield return IterateRoomLinks(2, (index, current, isAdjacent) =>
+        RoomSelect(index, isAdjacent));
+
+        IEnumerator RoomSelect(int index, bool isAdjacent)
         {
-            bool l_isAdjacent = (_roomInfos[l_index].Position - _roomInfos[l_tempCurrent].Position).sqrMagnitude == 1;
-
-            if (l_isAdjacent)
-            {
-                print($"EX room at {_roomInfos[l_index].Position}");
-            }
-            else
-            {
-                print($"Next main room at {_roomInfos[l_index].Position}");
-            }
-
-
-            l_tempCurrent = l_isAdjacent ? l_tempCurrent : l_tempNext;
-            l_tempNext = l_isAdjacent ? l_tempNext : l_index;
-            l_roomPrefab = l_isAdjacent ? m_roomSpecial : m_roomMob;
-            GenerateRoom(l_index, l_roomPrefab);
-
-            yield return new WaitForEndOfFrame();
-            // yield return null;
+            l_roomPrefab = isAdjacent ? m_roomSpecial : m_roomMob;
+            GenerateRoom(index, l_roomPrefab);
+            yield return null;
         }
     }
 
@@ -139,9 +139,9 @@ public class MapGen2 : MonoBehaviour
             {
                 SelectPosition(l_spawnPoint + vec3);
             }
-            
+
             l_spawnPoint = l_newPosition;
-            yield return new WaitForEndOfFrame();
+            yield return null;
         }
 
         // foreach (RoomInfo roomInfo in _roomInfos)
@@ -165,21 +165,29 @@ public class MapGen2 : MonoBehaviour
     }
 
     private IEnumerator DeterminePath()
-    {        
-        int l_tempCurrent = 0;
-        int l_tempNext = 1;
-        for (int index = 1; index < _roomInfos.Count; index++)
-        {
+    {
+        // int l_tempCurrent = 0;
+        // int l_tempNext = 1;
+        // for (int index = 1; index < _roomInfos.Count; index++)
+        // {
+        //     bool l_isAdjacent = (_roomInfos[index].Position - _roomInfos[l_tempCurrent].Position).sqrMagnitude == 1;
 
-            bool l_isAdjacent = (_roomInfos[index].Position - _roomInfos[l_tempCurrent].Position).sqrMagnitude == 1;
+        //     l_tempCurrent = l_isAdjacent ? l_tempCurrent : l_tempNext;
+        //     l_tempNext = l_isAdjacent ? l_tempNext : index;
 
-            l_tempCurrent = l_isAdjacent ? l_tempCurrent : l_tempNext;
-            l_tempNext = l_isAdjacent ? l_tempNext : index;
-
-            GeneratePath(_roomInfos[l_tempCurrent], _roomInfos[index]);
-            yield return new WaitForEndOfFrame();
-        }
+        //     GeneratePath(_roomInfos[l_tempCurrent], _roomInfos[index]);
+        //     yield return null;
+        // }
         // print("Number of rooms: " + _roomInfos.Count);
+        yield return IterateRoomLinks(1, (index, l_tempCurrent, l_isAdjacent) =>
+        PathConnect(index, l_tempCurrent)
+        );
+
+        IEnumerator PathConnect(int l_index, int l_tempCurrent)
+        {
+            GeneratePath(_roomInfos[l_tempCurrent], _roomInfos[l_index]);
+            yield return null;
+        }
     }
 
     private void GeneratePath(RoomInfo roomInfoStart, RoomInfo roomInfoEnd)
@@ -195,8 +203,8 @@ public class MapGen2 : MonoBehaviour
         int l_length = m_maxRoomSize - 1 - (isHorizontal
                             ? (roomInfoEnd.Extent.x + roomInfoStart.Extent.x)
                             : (roomInfoEnd.Extent.y + roomInfoStart.Extent.y));
-        Vector3Int offset = isHorizontal ? new(- roomInfoStart.Size.x - l_length, 0, 0) 
-                                        : new(0, - roomInfoStart.Size.y - l_length, 0);
+        Vector3Int offset = isHorizontal ? new(-roomInfoStart.Size.x - l_length, 0, 0)
+                                        : new(0, -roomInfoStart.Size.y - l_length, 0);
 
         l_boundsTemp.size = isHorizontal ? new(l_length, m_pathWidth, 1) : new(m_pathWidth, l_length, 1);
         l_boundsTemp.position = l_posStart + (isHorizontal
@@ -215,21 +223,24 @@ public class MapGen2 : MonoBehaviour
         m_tilemapFloor.SetTilesBlock(boundsInt, Enumerable.Repeat(m_tileFloor, boundsInt.size.x * boundsInt.size.y).ToArray());
     }
 
-    private void GenerateWall(BoundsInt boundsInt, bool horizontal = true, bool vertical = true)
+    private void GenerateWall(BoundsInt boundsInt, bool drawHorizontal = true, bool drawVertical = true)
     {
-        // invalidate threshold if any axis has value false
-        int l_thresholdH = horizontal ? 0 : 1;
-        int l_thresholdV = vertical ? 0 : 1;
-
-        for (int y = 0; y < boundsInt.size.y; y++)
+        // Vector3Int l_tempPos = boundsInt.position;
+        if (drawVertical)
         {
             for (int x = 0; x < boundsInt.size.x; x++)
             {
-                if (y == 0 - l_thresholdV || y == boundsInt.size.y - 1 + l_thresholdV ||
-                    x == 0 - l_thresholdH || x == boundsInt.size.x - 1 + l_thresholdH)
-                {
-                    m_tilemapWall.SetTile(new Vector3Int(x, y, 0) + boundsInt.position, m_tileWall);
-                }
+                m_tilemapWall.SetTile(boundsInt.position + new Vector3Int(x, 0, 0), m_tileWall);
+                m_tilemapWall.SetTile(boundsInt.position + new Vector3Int(x, boundsInt.size.y - 1, 0), m_tileWall);
+            }
+        }
+
+        if (drawHorizontal)
+        {
+            for (int y = 0; y < boundsInt.size.y; y++)
+            {
+                m_tilemapWall.SetTile(boundsInt.position + new Vector3Int(0, y, 0), m_tileWall);
+                m_tilemapWall.SetTile(boundsInt.position + new Vector3Int(boundsInt.size.x - 1, y, 0), m_tileWall);
             }
         }
     }
@@ -254,10 +265,14 @@ public class MapGen2 : MonoBehaviour
             foreach (Vector3Int i_pos in l_bounds.allPositionsWithin)
             {
                 if (!(l_index == 0 || l_index == l_gateLength - 1))
-
                 {
                     m_tilemapGate.SetTile(i_pos, l_gateTiles[l_index]);
                     m_tilemapWall.SetTile(i_pos, null);
+                }
+                else
+                {
+                    m_tilemapWall.SetTile(i_pos, l_gateTiles[l_index]);
+
                 }
                 l_index += 1;
             }
@@ -281,6 +296,22 @@ public class MapGen2 : MonoBehaviour
         boundsInt.size -= new Vector3Int(2 * size, 2 * size, 0);
         return boundsInt;
     }
+
+    private IEnumerator IterateRoomLinks(int startIndex, Func<int, int, bool, IEnumerator> action)
+    {
+        int l_tempCurrent = 0;
+        int l_tempNext = 1;
+        for (int l_index = startIndex; l_index < _roomInfos.Count; l_index++)
+        {
+            bool l_isAdjacent = (_roomInfos[l_index].Position - _roomInfos[l_tempCurrent].Position).sqrMagnitude == 1;
+
+            l_tempCurrent = l_isAdjacent ? l_tempCurrent : l_tempNext;
+            l_tempNext = l_isAdjacent ? l_tempNext : l_index;
+
+            yield return action(l_index, l_tempCurrent, l_isAdjacent);
+        }
+    }
+
 }
 
 struct RoomInfo
