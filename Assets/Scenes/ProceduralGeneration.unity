@@ -8084,7 +8084,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 29f450695f66f90438c846c80bdfdedc, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  m_maxRooms: 5
+  m_maxRooms: 13
   m_maxRoomSize: 9
   m_pathWidth: 5
   m_roomHome: {fileID: 8261475582393899603, guid: dbdf057d013d7a94dbd5b921fcc123cd, type: 3}
