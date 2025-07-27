@@ -1,15 +1,11 @@
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
-using System.Net.NetworkInformation;
 using System.Numerics;
 using Unity.Collections;
-using UnityEditor.Build;
 using UnityEngine;
 using UnityEngine.InputSystem.Utilities;
-using UnityEngine.Rendering;
 using UnityEngine.Tilemaps;
-using UnityEngine.UIElements;
 
 public class MapGen2 : MonoBehaviour
 {
@@ -17,7 +13,9 @@ public class MapGen2 : MonoBehaviour
     [SerializeField] private int m_maxRoomSize = 13;
     [SerializeField] private int m_pathWidth = 1;
 
-    [SerializeField] private GameObject m_roomPrefab;
+    [SerializeField] private GameObject m_roomHome;
+    [SerializeField] private GameObject m_roomMob;
+    [SerializeField] private GameObject m_roomSpecial;
 
     [Header("Tilebase")]
     [SerializeField] private TileBase m_tileFloor;
@@ -37,6 +35,8 @@ public class MapGen2 : MonoBehaviour
 
         m_tilemapFloor.SetTile(new(0, 0, 0), null);
 
+        // StartCoroutine(DetermineRoom());
+
         StartCoroutine(DeterminePath());
     }
 
@@ -55,6 +55,74 @@ public class MapGen2 : MonoBehaviour
         GenerateLayout(l_bounds, roomPrefab.GetComponent<RoomSize>());
     }
 
+    private void GenerateRoom(int index, GameObject roomPrefab)
+    {
+        BoundsInt l_bounds = roomPrefab.GetComponent<RoomSize>().RoomBounds;
+        RoomInfo l_roomPos = _roomInfos[index];
+        l_bounds.position += l_roomPos.Position * m_maxRoomSize;
+        l_roomPos.Size = l_bounds.size;
+
+        _roomInfos[index] = l_roomPos;
+        GenerateFloor(l_bounds);
+        GenerateWall(l_bounds);
+        GenerateLayout(l_bounds, roomPrefab.GetComponent<RoomSize>());
+
+    }
+
+    private void SelectPosition(Vector3Int vec)
+    {
+        _roomInfos.Add(new RoomInfo
+        {
+            Position = vec
+        });
+    }
+
+    private IEnumerator DetermineRoom()
+    {
+        GameObject l_roomPrefab;
+        GenerateRoom(0, m_roomHome);
+
+        int l_temp = 0;
+        int l_tempNext = 1;
+        int l_numberOfExtraRooms = 0;
+        for (int l_index = 1; l_index < _roomInfos.Count; l_index++)
+        {
+            bool l_isAdjacent = (_roomInfos[l_index].Position - _roomInfos[l_temp].Position).sqrMagnitude == 1;
+
+            if (l_isAdjacent)
+            {
+                // l_tempNext = l_index;
+                if (l_numberOfExtraRooms == 0)
+                {
+                    l_tempNext = l_index;
+                    
+                    l_roomPrefab = m_roomMob;
+                }
+                else 
+                {
+                    l_roomPrefab = m_roomSpecial;
+                }
+                l_numberOfExtraRooms += 1;
+            }
+            else
+            {
+                l_temp = l_tempNext;
+                l_tempNext = l_temp;
+                // l_roomPrefab = m_roomSpecial;
+                l_roomPrefab = m_roomMob;
+                l_numberOfExtraRooms = 1;
+            }
+            
+
+            // l_temp = l_s ? l_temp : l_index - 1;
+            // l_roomPrefab = l_s ? m_roomMob : m_roomSpecial;
+            GenerateRoom(l_index, l_roomPrefab);
+
+            yield return new WaitForEndOfFrame();
+            // yield return null;
+        }
+    }
+
     private IEnumerator GenerateMap()
     {
         Vector3Int l_spawnPoint = new(0, 0, 0);
@@ -66,9 +134,14 @@ public class MapGen2 : MonoBehaviour
         };
         List<Vector3Int> l_emptySpace = new();
 
-        GenerateRoom(l_spawnPoint, m_roomPrefab);
+        GenerateRoom(l_spawnPoint, m_roomMob);
+        // SelectPosition(l_spawnPoint);
+
         l_spawnPoint += l_adjacentDirection[Random.Range(0, l_adjacentDirection.Count)];
-        GenerateRoom(l_spawnPoint, m_roomPrefab);
+        GenerateRoom(l_spawnPoint, m_roomMob);
+        // SelectPosition(l_spawnPoint);
+        print($"Spawning basic room at {l_spawnPoint}");
+
         yield return new WaitForEndOfFrame();
 
         for (int _ = 1; _ < m_maxRooms; _++)
@@ -87,19 +160,29 @@ public class MapGen2 : MonoBehaviour
             Vector3Int l_selectedDirection = l_emptySpace[Random.Range(0, l_emptySpace.Count)];
             l_emptySpace.Remove(l_selectedDirection);
 
-            Vector3Int l_newPosition = l_spawnPoint + l_selectedDirection;
-            GenerateRoom(l_newPosition, m_roomPrefab);
 
             StratergySideRoom(ref l_emptySpace);
             foreach (Vector3Int vec3 in l_emptySpace)
             {
-                GenerateRoom(l_spawnPoint + vec3, m_roomPrefab);
+                // GenerateRoom(l_spawnPoint + vec3, m_roomMob);
+                GenerateRoom(l_spawnPoint + vec3, m_roomSpecial);
+                // SelectPosition(l_spawnPoint + vec3);
             }
 
+            Vector3Int l_newPosition = l_spawnPoint + l_selectedDirection;
+            GenerateRoom(l_newPosition, m_roomMob);
+            // SelectPosition(l_newPosition);
+            print($"Spawning basic room at {l_newPosition}");
+            
             l_spawnPoint = l_newPosition;
 
             yield return new WaitForEndOfFrame();
         }
+
+        // foreach (RoomInfo roomInfo in _roomInfos)
+        // {
+        //     Debug.Log($"Room at : {roomInfo.Position}");
+        // }
     }
 
     private void StratergySideRoom(ref List<Vector3Int> emptySpace)
@@ -132,6 +215,16 @@ public class MapGen2 : MonoBehaviour
                 }
                 l_temp++;
             }
+        
+        // int l_temp = 0;
+        // for (int index = 1; index < _roomInfos.Count; index++)
+        // {
+
+        //     bool l_s = (_roomInfos[l_temp].Position - _roomInfos[index].Position).sqrMagnitude == 1;
+        //     l_temp = l_s ? l_temp : index - 1;
+
+        //     print($"{_roomInfos[l_temp].Position} -> {_roomInfos[index].Position}, temp diff is at {index - l_temp}");
+        //     GeneratePath(_roomInfos[l_temp], _roomInfos[index]);
             yield return new WaitForEndOfFrame();
         }
         print("Number of rooms: " + _roomInfos.Count);
@@ -146,11 +239,12 @@ public class MapGen2 : MonoBehaviour
         bool isHorizontal = l_direction.y == 0;
         bool isVertical = l_direction.x == 0;
         bool isNegative = (isHorizontal && l_direction.x == -1) || (isVertical && l_direction.y == -1);
-        Vector3Int offset = isHorizontal ? new(-m_maxRoomSize, 0, 0) : new(0, -m_maxRoomSize, 0);
 
         int l_length = m_maxRoomSize - 1 - (isHorizontal
                             ? (roomInfoEnd.Extent.x + roomInfoStart.Extent.x)
                             : (roomInfoEnd.Extent.y + roomInfoStart.Extent.y));
+        Vector3Int offset = isHorizontal ? new(- roomInfoStart.Size.x - l_length, 0, 0) 
+                                        : new(0, - roomInfoStart.Size.y - l_length, 0);
 
         l_boundsTemp.size = isHorizontal ? new(l_length, m_pathWidth, 1) : new(m_pathWidth, l_length, 1);
         l_boundsTemp.position = l_posStart + (isHorizontal
@@ -248,5 +342,4 @@ struct RoomInfo
             return (Size - new Vector3Int(1, 1, 1)) / 2;
         }
     }
-
 }

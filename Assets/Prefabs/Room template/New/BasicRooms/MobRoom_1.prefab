@@ -442,7 +442,7 @@ GameObject:
   - component: {fileID: 6653998023110697873}
   - component: {fileID: 3352284594041811471}
   m_Layer: 0
-  m_Name: MobRoom
+  m_Name: MobRoom_1
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
