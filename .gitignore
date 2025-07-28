@@ -92,7 +92,7 @@ Assets/Rule Tile/
 Assets/TextMesh Pro
 
 # *.asset
-*.meta
+# *.meta
 # *.json
 # *.txt
 # *.asset
@@ -100,3 +100,4 @@ Assets/TextMesh Pro
 # *.png
 # *.unity
 # *.mat
+*.csproj

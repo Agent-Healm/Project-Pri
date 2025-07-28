@@ -16,31 +16,42 @@ public class MapGen2 : MonoBehaviour
     [SerializeField] private int m_maxRoomSize = 13;
     [SerializeField] private int m_pathWidth = 1;
 
-    [SerializeField] private GameObject m_roomHome;
-    [SerializeField] private GameObject m_roomMob;
-    [SerializeField] private GameObject m_roomSpecial;
-
-    [Header("Tilebase")]
-    [SerializeField] private TileBase m_tileFloor;
-    [SerializeField] private TileBase m_tileWall;
-    [SerializeField] private TileBase m_tileGate;
+    [Header("Texture Pack")]
+    [SerializeField] private TileTheme tileTheme;
 
     [Header("Tilemaps")]
     [SerializeField] private Tilemap m_tilemapFloor;
     [SerializeField] private Tilemap m_tilemapWall;
     [SerializeField] private Tilemap m_tilemapGate;
 
+    private TileBase _tileGate;
+    private TileBase _tileFloor;
+    private TileBase _tileWall;
+    
+    private GameObject _roomHome;
+    private GameObject _roomMob;
+    private GameObject _roomSpecial;
+    private GameObject _roomExit;
     private List<RoomInfo> _roomInfos = new();
 
-    void Start()
+    private void InitializeTiles()
     {
-        StartCoroutine(GenerateMap());
+        _tileFloor = tileTheme.FloorTile;
+        _tileWall = tileTheme.WallTile;
+        _tileGate = tileTheme.GateTile;
 
+        _roomHome = tileTheme.HomeRoom;
+        _roomMob = tileTheme.MobRoom;
+        _roomSpecial = tileTheme.SpecialRoom;
+        _roomExit = tileTheme.ExitRoom;
+    }
+    private IEnumerator Start()
+    {
+        InitializeTiles();
+        yield return StartCoroutine(GenerateMap());
+        yield return StartCoroutine(DetermineRoom());
+        yield return StartCoroutine(DeterminePath());
         m_tilemapFloor.SetTile(new(0, 0, 0), null);
-
-        StartCoroutine(DetermineRoom());
-
-        StartCoroutine(DeterminePath());
     }
 
     private void GenerateRoom(int index, GameObject roomPrefab)
@@ -67,31 +78,24 @@ public class MapGen2 : MonoBehaviour
     private IEnumerator DetermineRoom()
     {
         GameObject l_roomPrefab;
-        GenerateRoom(0, m_roomHome);
-        GenerateRoom(1, m_roomMob);
-
+        GenerateRoom(0, _roomHome);
+        GenerateRoom(1, _roomMob);
         yield return null;
-        // int l_tempCurrent = 0;
-        // int l_tempNext = 1;
 
-        // for (int l_index = 2; l_index < _roomInfos.Count; l_index++)
-        // {
-        //     bool l_isAdjacent = (_roomInfos[l_index].Position - _roomInfos[l_tempCurrent].Position).sqrMagnitude == 1;
-
-        //     l_tempCurrent = l_isAdjacent ? l_tempCurrent : l_tempNext;
-        //     l_tempNext = l_isAdjacent ? l_tempNext : l_index;
-        //     l_roomPrefab = l_isAdjacent ? m_roomSpecial : m_roomMob;
-
-        //     GenerateRoom(l_index, l_roomPrefab);
-        //     yield return null;
-        // }
         yield return IterateRoomLinks(2, (index, current, isAdjacent) =>
         RoomSelect(index, isAdjacent));
 
         IEnumerator RoomSelect(int index, bool isAdjacent)
         {
-            l_roomPrefab = isAdjacent ? m_roomSpecial : m_roomMob;
-            GenerateRoom(index, l_roomPrefab);
+            l_roomPrefab = isAdjacent ? _roomSpecial : _roomMob;
+            if (index == _roomInfos.Count - 1)
+            {
+                GenerateRoom(index, _roomExit);
+            }
+            else
+            {
+                GenerateRoom(index, l_roomPrefab);
+            }
             yield return null;
         }
     }
@@ -112,7 +116,7 @@ public class MapGen2 : MonoBehaviour
         SelectPosition(l_spawnPoint);
         // print($"Spawning basic room at {l_spawnPoint}");
 
-        yield return new WaitForEndOfFrame();
+        yield return null;
 
         for (int _ = 1; _ < m_maxRooms; _++)
         {
@@ -166,26 +170,13 @@ public class MapGen2 : MonoBehaviour
 
     private IEnumerator DeterminePath()
     {
-        // int l_tempCurrent = 0;
-        // int l_tempNext = 1;
-        // for (int index = 1; index < _roomInfos.Count; index++)
-        // {
-        //     bool l_isAdjacent = (_roomInfos[index].Position - _roomInfos[l_tempCurrent].Position).sqrMagnitude == 1;
-
-        //     l_tempCurrent = l_isAdjacent ? l_tempCurrent : l_tempNext;
-        //     l_tempNext = l_isAdjacent ? l_tempNext : index;
-
-        //     GeneratePath(_roomInfos[l_tempCurrent], _roomInfos[index]);
-        //     yield return null;
-        // }
-        // print("Number of rooms: " + _roomInfos.Count);
-        yield return IterateRoomLinks(1, (index, l_tempCurrent, l_isAdjacent) =>
-        PathConnect(index, l_tempCurrent)
+        yield return IterateRoomLinks(1, (index, tempCurrent, isAdjacent) =>
+        PathConnect(index, tempCurrent)
         );
 
-        IEnumerator PathConnect(int l_index, int l_tempCurrent)
+        IEnumerator PathConnect(int index, int tempCurrent)
         {
-            GeneratePath(_roomInfos[l_tempCurrent], _roomInfos[l_index]);
+            GeneratePath(_roomInfos[tempCurrent], _roomInfos[index]);
             yield return null;
         }
     }
@@ -215,12 +206,12 @@ public class MapGen2 : MonoBehaviour
 
         GenerateFloor(l_boundsTemp);
         GenerateWall(l_boundsTemp, l_direction.x == 0, l_direction.y == 0);
-        StratergyGate(l_boundsTemp, l_direction.x == 0, l_direction.y == 0);
+        GenerateGate(l_boundsTemp, l_direction.x == 0, l_direction.y == 0);
     }
 
     private void GenerateFloor(BoundsInt boundsInt)
     {
-        m_tilemapFloor.SetTilesBlock(boundsInt, Enumerable.Repeat(m_tileFloor, boundsInt.size.x * boundsInt.size.y).ToArray());
+        m_tilemapFloor.SetTilesBlock(boundsInt, Enumerable.Repeat(_tileFloor, boundsInt.size.x * boundsInt.size.y).ToArray());
     }
 
     private void GenerateWall(BoundsInt boundsInt, bool drawHorizontal = true, bool drawVertical = true)
@@ -230,8 +221,8 @@ public class MapGen2 : MonoBehaviour
         {
             for (int x = 0; x < boundsInt.size.x; x++)
             {
-                m_tilemapWall.SetTile(boundsInt.position + new Vector3Int(x, 0, 0), m_tileWall);
-                m_tilemapWall.SetTile(boundsInt.position + new Vector3Int(x, boundsInt.size.y - 1, 0), m_tileWall);
+                m_tilemapWall.SetTile(boundsInt.position + new Vector3Int(x, 0, 0), _tileWall);
+                m_tilemapWall.SetTile(boundsInt.position + new Vector3Int(x, boundsInt.size.y - 1, 0), _tileWall);
             }
         }
 
@@ -239,20 +230,20 @@ public class MapGen2 : MonoBehaviour
         {
             for (int y = 0; y < boundsInt.size.y; y++)
             {
-                m_tilemapWall.SetTile(boundsInt.position + new Vector3Int(0, y, 0), m_tileWall);
-                m_tilemapWall.SetTile(boundsInt.position + new Vector3Int(boundsInt.size.x - 1, y, 0), m_tileWall);
+                m_tilemapWall.SetTile(boundsInt.position + new Vector3Int(0, y, 0), _tileWall);
+                m_tilemapWall.SetTile(boundsInt.position + new Vector3Int(boundsInt.size.x - 1, y, 0), _tileWall);
             }
         }
     }
 
-    private void StratergyGate(BoundsInt boundsInt, bool horizontal = true, bool vertical = true)
+    private void GenerateGate(BoundsInt boundsInt, bool horizontal = true, bool vertical = true)
     {
         int l_gateLength = horizontal ? boundsInt.size.x : boundsInt.size.y;
         Vector3Int l_gateSize = horizontal ? new(l_gateLength, 1, 1) : new(1, l_gateLength, 1);
 
-        TileBase[] l_gateTiles = Enumerable.Repeat(m_tileGate, l_gateLength).ToArray();
-        l_gateTiles[0] = m_tileWall;
-        l_gateTiles[l_gateLength - 1] = m_tileWall;
+        TileBase[] l_gateTiles = Enumerable.Repeat(_tileGate, l_gateLength).ToArray();
+        l_gateTiles[0] = _tileWall;
+        l_gateTiles[l_gateLength - 1] = _tileWall;
 
         BoundsInt l_bounds = boundsInt;
         l_bounds.size = l_gateSize;
@@ -311,6 +302,7 @@ public class MapGen2 : MonoBehaviour
             yield return action(l_index, l_tempCurrent, l_isAdjacent);
         }
     }
+
 
 }
 
