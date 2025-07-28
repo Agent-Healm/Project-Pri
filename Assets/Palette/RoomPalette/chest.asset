@@ -10,9 +10,9 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 13312, guid: 0000000000000000e000000000000000, type: 0}
-  m_Name: edge_left
+  m_Name: chest
   m_EditorClassIdentifier: 
-  m_Sprite: {fileID: 445899885, guid: b5e2e6e52b6c981458116cd0a64c907a, type: 3}
+  m_Sprite: {fileID: -824435580, guid: 0083b6c3e7b5c1c468e4f88437433d69, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_Transform:
     e00: 1

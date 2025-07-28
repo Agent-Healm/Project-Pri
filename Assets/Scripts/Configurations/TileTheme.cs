@@ -1,6 +1,6 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
-using System.Runtime.InteropServices.WindowsRuntime;
 using UnityEngine;
 using UnityEngine.Tilemaps;
 
@@ -44,4 +44,24 @@ public class TileTheme : MonoBehaviour
     {
         get => m_roomSpecial;
     }
+
+    [Header("Experimental room groups")]
+    [SerializeField] private RoomFrequency[] m_roomFrequencies;
+    public RoomFrequency[] GetRoomFrequency
+    {
+        get => m_roomFrequencies;
+    }
+
+    [SerializeField] private RoomFrequency[] m_roomMobVariant;   
+    public RoomFrequency[] GetRoomMobVariant
+    {
+        get => m_roomMobVariant;
+    }
+}
+
+[Serializable]
+public class RoomFrequency
+{
+    [SerializeField] public GameObject roomPrefab;
+    [SerializeField] public int quantity;
 }

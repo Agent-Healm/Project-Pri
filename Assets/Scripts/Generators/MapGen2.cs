@@ -2,9 +2,6 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
-using System.Numerics;
-using Unity.Collections;
-using UnityEditor.Build;
 using UnityEngine;
 using UnityEngine.InputSystem.Utilities;
 using UnityEngine.Tilemaps;
@@ -27,12 +24,15 @@ public class MapGen2 : MonoBehaviour
     private TileBase _tileGate;
     private TileBase _tileFloor;
     private TileBase _tileWall;
-    
+
     private GameObject _roomHome;
     private GameObject _roomMob;
     private GameObject _roomSpecial;
     private GameObject _roomExit;
     private List<RoomInfo> _roomInfos = new();
+
+    private List<RoomFrequency> _roomFrequencies;
+    private RoomFrequency[] _roomMobVariant;
 
     private void InitializeTiles()
     {
@@ -44,6 +44,9 @@ public class MapGen2 : MonoBehaviour
         _roomMob = tileTheme.MobRoom;
         _roomSpecial = tileTheme.SpecialRoom;
         _roomExit = tileTheme.ExitRoom;
+
+        _roomFrequencies = tileTheme.GetRoomFrequency.ToList();
+        _roomMobVariant = tileTheme.GetRoomMobVariant;
     }
     private IEnumerator Start()
     {
@@ -82,15 +85,42 @@ public class MapGen2 : MonoBehaviour
         GenerateRoom(1, _roomMob);
         yield return null;
 
+        int l_numberOfMainRooms = 1;
+
         yield return IterateRoomLinks(2, (index, current, isAdjacent) =>
         RoomSelect(index, isAdjacent));
 
         IEnumerator RoomSelect(int index, bool isAdjacent)
         {
-            l_roomPrefab = isAdjacent ? _roomSpecial : _roomMob;
-            if (index == _roomInfos.Count - 1)
+            if (isAdjacent)
+            {
+                if (_roomFrequencies.Count > 0)
+                {
+                    int l_selectedIndex = Random.Range(0, _roomFrequencies.Count);
+                    l_roomPrefab = _roomFrequencies[l_selectedIndex].roomPrefab;
+                    _roomFrequencies[l_selectedIndex].quantity -= 1;
+                    if (_roomFrequencies[l_selectedIndex].quantity == 0)
+                    {
+                        _roomFrequencies.RemoveAt(l_selectedIndex);
+                    }
+                }
+                else
+                {
+                    l_roomPrefab = _roomSpecial;
+                }
+            }
+            else
+            {
+                // l_roomPrefab = _roomMob;
+                l_roomPrefab = _roomMobVariant[Random.Range(0, _roomMobVariant.Length)].roomPrefab;
+                l_numberOfMainRooms++; 
+            }
+            // l_roomPrefab = isAdjacent ? _roomSpecial : _roomMob;
+            // l_numberOfMainRooms += isAdjacent ? 0 : 1;
+            if (m_maxRooms == l_numberOfMainRooms && !isAdjacent)
             {
                 GenerateRoom(index, _roomExit);
+                l_numberOfMainRooms = -1;
             }
             else
             {

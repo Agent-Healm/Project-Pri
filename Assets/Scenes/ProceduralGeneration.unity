@@ -17406,7 +17406,19 @@ MonoBehaviour:
   m_roomHome: {fileID: 8261475582393899603, guid: dbdf057d013d7a94dbd5b921fcc123cd, type: 3}
   m_roomMob: {fileID: 8261475582393899603, guid: 9463c4ef919c12a408e784487e4301fe, type: 3}
   m_roomExit: {fileID: 8261475582393899603, guid: 50ee3cf722789c048b8abb19d3ea4e0e, type: 3}
-  m_roomSpecial: {fileID: 8261475582393899603, guid: 24956230d7458844bbfd129e3c164a61, type: 3}
+  m_roomSpecial: {fileID: 8261475582393899603, guid: 61992a0cd81f150489c152c8bd603936, type: 3}
+  m_roomFrequencies:
+  - roomPrefab: {fileID: 8261475582393899603, guid: c1085cda8ca341946a24504bcb72256b, type: 3}
+    quantity: 1
+  - roomPrefab: {fileID: 8261475582393899603, guid: 388644c16eefb054ea2c870aca6401c8, type: 3}
+    quantity: 1
+  - roomPrefab: {fileID: 8261475582393899603, guid: 24956230d7458844bbfd129e3c164a61, type: 3}
+    quantity: 1
+  m_roomMobVariant:
+  - roomPrefab: {fileID: 8261475582393899603, guid: 9463c4ef919c12a408e784487e4301fe, type: 3}
+    quantity: 0
+  - roomPrefab: {fileID: 8261475582393899603, guid: 2fa7197eb1dd9a24ba7240fc039a1ec5, type: 3}
+    quantity: 0
 --- !u!1001 &2036303599
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -18795,6 +18807,6 @@ SceneRoots:
   - {fileID: 93022160}
   - {fileID: 733813989}
   - {fileID: 224122496}
-  - {fileID: 2020493633}
   - {fileID: 1749330282}
+  - {fileID: 2020493633}
   - {fileID: 824831007}
