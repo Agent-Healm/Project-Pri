@@ -5,12 +5,12 @@ using UnityEngine;
 
 public class RoomConfig : MonoBehaviour
 {
-    [SerializeField] private Room path;
-    public Room GetPath { get => path; }
-    [SerializeField] private Room[] basicRooms;
-    public Room[] GetBasicRooms { get => basicRooms; }
-    [SerializeField] private Room[] rooms;
-    public Room[] GetRooms { get => rooms; }
+    [SerializeField] private RoomObsolete path;
+    public RoomObsolete GetPath { get => path; }
+    [SerializeField] private RoomObsolete[] basicRooms;
+    public RoomObsolete[] GetBasicRooms { get => basicRooms; }
+    [SerializeField] private RoomObsolete[] rooms;
+    public RoomObsolete[] GetRooms { get => rooms; }
     [SerializeField] private int targetFrameRate = 30;
     [SerializeField] private static RoomConfig Instance;
 

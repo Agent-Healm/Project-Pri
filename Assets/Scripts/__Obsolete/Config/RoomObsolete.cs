@@ -7,7 +7,7 @@ using UnityEditor;
 using Random = UnityEngine.Random;
 
 [System.Serializable]
-public class Room
+public class RoomObsolete
 {
     [SerializeField] private string name;
     public string GetName { get => name; }

@@ -48,6 +48,7 @@ public class MapGen2 : MonoBehaviour
         _roomFrequencies = tileTheme.GetRoomFrequency.ToList();
         _roomMobVariant = tileTheme.GetRoomMobVariant;
     }
+
     private IEnumerator Start()
     {
         InitializeTiles();
