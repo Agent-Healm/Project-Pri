@@ -7,12 +7,13 @@ public class PlayerHitpoint : MonoBehaviour, IHealth, IArmor, IDamageAble, IHeal
     [SerializeField] private float armorRegenStart = 3f;
     [SerializeField] private float armorRegenInterval = 1f;
     [SerializeField] private int maxArmorPoint = 1;
-    public int GetCurrentArmorPoint => _armorPoint;
     [SerializeField] private int maxHealthPoint = 1;
-    public int GetCurrentHealthPoint => _healthPoint;
     
     private int _armorPoint;
+    public int GetCurrentArmorPoint => _armorPoint;
     private int _healthPoint;
+    public int GetCurrentHealthPoint => _healthPoint;
+    
     private Coroutine _coroutine;
     void Awake(){
         _armorPoint = maxArmorPoint;

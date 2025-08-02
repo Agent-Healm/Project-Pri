@@ -5,8 +5,7 @@ using UnityEngine;
 using Default;
 public class Bullet : MonoBehaviour
 {
-    [SerializeField] private int uptime = 60;
-    [SerializeField] private int damage = 1;
+    [SerializeField] private BulletDataSO baseBullet;
 
     private Vector2 _direction;
     public Vector2 Direction
@@ -31,6 +30,13 @@ public class Bullet : MonoBehaviour
         {
             _critChance = value;
         }
+    }
+
+    private int _actualUptime;
+    private int _actualDamage;
+    public int SetUptime
+    {
+        set => _actualUptime = value;
     }
 
     private Coroutine _coroutine;
@@ -63,7 +69,7 @@ public class Bullet : MonoBehaviour
 
     private IEnumerator BulletMove()
     {
-        for (int i = 0; i < uptime; i++)
+        for (int i = 0; i < _actualUptime; i++)
         {
             transform.Translate(_direction * 0.08f);
             yield return null;
@@ -76,11 +82,11 @@ public class Bullet : MonoBehaviour
 
         if (other.gameObject.TryGetComponent(out IDamageAble damageable))
         {
-            int finalDamage = damage;
+            int finalDamage = _actualDamage;
             if (Random.Range(0, 100) < _critChance)
             {
                 // finalDamage += critDamage;
-                finalDamage += damage;
+                finalDamage += _actualDamage;
             }
             if (damageable.InflictDamage(finalDamage))
             {
@@ -89,11 +95,7 @@ public class Bullet : MonoBehaviour
         }
         else
         {
-            if (other.gameObject.layer == GlobalLayer.Wall)
-            {
-                // Debug.Log("I hit a wall");
-                DestroyBullet();
-            }
+            DestroyBullet();
         }
     }
     private void DestroyBullet()
@@ -106,6 +108,20 @@ public class Bullet : MonoBehaviour
         Bullet new_bullet = Instantiate(this, l_position + l_direction.normalized * 0.5f, Quaternion.identity);
         new_bullet.Direction = l_direction;
         new_bullet.CritChance = l_critChance;
+
+        SetupBullet(new_bullet);
     }
 
+    private void SetupBullet(Bullet bullet)
+    {
+        foreach (var behaviourSO in baseBullet.Behaviours)
+        {
+            if (behaviourSO is IBulletBehaviour behaviour)
+            {
+                behaviour.Apply(bullet);
+            }
+        }
+
+        _actualDamage = baseBullet.Damage;
+    }
 }

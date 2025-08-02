@@ -1,13 +1,24 @@
+using System.Collections.Generic;
 using UnityEngine;
 
-[CreateAssetMenu(fileName = "BulletSO", menuName = "SO/Misc/Bullets")]
-public class BulletSO : ScriptableObject
+[CreateAssetMenu(fileName = "BulletDataSO", menuName = "SO/Misc/Bullets")]
+public class BulletDataSO : ScriptableObject
 {
-    [SerializeField] private Sprite bulletSprite;
-    [SerializeField] private Color bulletColor = Color.white;
-    [SerializeField] private int uptime;
-    [SerializeField] private int damage;
-    [SerializeField] private float speed;
+    [SerializeField] private int m_damage;
+    public int Damage
+    {
+        get => m_damage;
+    }
+    [SerializeField] private float m_speed;
+    public float Speed
+    {
+        get => m_speed;
+    }
 
-    // TODO
+    [SerializeField] private List<ScriptableObject> m_bulletBehaviours;
+    public List<ScriptableObject> Behaviours
+    {
+        get => m_bulletBehaviours;
+    }
+
 }
