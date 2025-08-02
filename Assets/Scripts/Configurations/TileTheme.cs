@@ -6,6 +6,9 @@ using UnityEngine.Tilemaps;
 
 public class TileTheme : MonoBehaviour
 {
+    [Header("Config")]
+    [SerializeField] private int m_maxFPS;
+
     [Header("Base Tile")]
     [SerializeField] private TileBase m_tileFloor;
     public TileBase FloorTile
@@ -52,10 +55,15 @@ public class TileTheme : MonoBehaviour
         get => m_roomFrequencies;
     }
 
-    [SerializeField] private RoomFrequency[] m_roomMobVariant;   
+    [SerializeField] private RoomFrequency[] m_roomMobVariant;
     public RoomFrequency[] GetRoomMobVariant
     {
         get => m_roomMobVariant;
+    }
+
+    private void Awake()
+    {
+        Application.targetFrameRate = m_maxFPS;
     }
 }
 

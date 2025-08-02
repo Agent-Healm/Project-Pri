@@ -7,7 +7,7 @@ using UnityEngine.InputSystem.Utilities;
 using UnityEngine.Tilemaps;
 
 using Random = UnityEngine.Random;
-public class MapGen2 : MonoBehaviour
+public class MapGenerator : MonoBehaviour
 {
     [SerializeField] private int m_maxRooms = 2;
     [SerializeField] private int m_maxRoomSize = 13;
