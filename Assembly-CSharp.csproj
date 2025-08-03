@@ -1160,6 +1160,9 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="NaughtyAttributes.Editor.csproj" />
+    <ProjectReference Include="NaughtyAttributes.Test.csproj" />
+    <ProjectReference Include="NaughtyAttributes.Core.csproj" />
   </ItemGroup>
   <Import Project="Sdk.targets" Sdk="Microsoft.NET.Sdk" />
   <ItemGroup>
