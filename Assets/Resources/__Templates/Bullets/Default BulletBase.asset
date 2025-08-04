@@ -12,6 +12,5 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: a9c0874246d2c0f4694a5473727c9e0d, type: 3}
   m_Name: Default BulletBase
   m_EditorClassIdentifier: 
-  m_bulletSprite: {fileID: -642307381, guid: 0083b6c3e7b5c1c468e4f88437433d69, type: 3}
   m_bulletColor: {r: 0, g: 1, b: 0.02745098, a: 1}
-  m_uptime: 60
+  m_bulletSprite: {fileID: -642307381, guid: 0083b6c3e7b5c1c468e4f88437433d69, type: 3}

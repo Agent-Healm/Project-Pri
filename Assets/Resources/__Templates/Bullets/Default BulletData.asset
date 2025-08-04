@@ -12,7 +12,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c91b962a14e15224d92350278e9c86cb, type: 3}
   m_Name: Default BulletData
   m_EditorClassIdentifier: 
-  m_damage: 0
-  m_speed: 0
   m_bulletBehaviours:
   - {fileID: 11400000, guid: 0f6722edb17b1964cb038bf91bdfe54e, type: 2}
+  - {fileID: 11400000, guid: eed8cda8f4955ff4cbc47882133ae371, type: 2}

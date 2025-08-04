@@ -3,9 +3,12 @@ using System.Collections.Generic;
 using UnityEngine;
 
 using Default;
+using NaughtyAttributes;
 public class Bullet : MonoBehaviour
 {
-    [SerializeField] private BulletDataSO baseBullet;
+    [Expandable]
+    [SerializeField]
+    private BulletDataSO baseBullet;
 
     private Vector2 _direction;
     public Vector2 Direction
@@ -33,10 +36,19 @@ public class Bullet : MonoBehaviour
     }
 
     private int _actualUptime;
-    private int _actualDamage;
     public int SetUptime
     {
         set => _actualUptime = value;
+    }
+    private int _actualDamage;
+    public int SetDamage
+    {
+        set => _actualDamage = value;
+    }
+    private float _actualSpeed = 0;
+    public float SetSpeed
+    {
+        set => _actualSpeed = value;
     }
 
     private Coroutine _coroutine;
@@ -71,7 +83,7 @@ public class Bullet : MonoBehaviour
     {
         for (int i = 0; i < _actualUptime; i++)
         {
-            transform.Translate(_direction * 0.08f);
+            transform.Translate(_direction * 0.08f * _actualSpeed);
             yield return null;
         }
         DestroyBullet();
@@ -106,8 +118,8 @@ public class Bullet : MonoBehaviour
     public void SpawnBullet(Vector2 l_direction, Vector2 l_position, int l_critChance)
     {
         Bullet new_bullet = Instantiate(this, l_position + l_direction.normalized * 0.5f, Quaternion.identity);
-        new_bullet.Direction = l_direction;
-        new_bullet.CritChance = l_critChance;
+        new_bullet._direction = l_direction;
+        new_bullet._critChance = l_critChance;
 
         SetupBullet(new_bullet);
     }
@@ -121,7 +133,5 @@ public class Bullet : MonoBehaviour
                 behaviour.Apply(bullet);
             }
         }
-
-        _actualDamage = baseBullet.Damage;
     }
 }

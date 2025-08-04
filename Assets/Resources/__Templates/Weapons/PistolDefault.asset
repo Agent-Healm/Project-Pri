@@ -12,12 +12,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 0fcd877c488274b419e3f25ec9ab617f, type: 3}
   m_Name: PistolDefault
   m_EditorClassIdentifier: 
-  weaponBaseAttributes:
-    weaponType: {fileID: 0}
-    weaponRarity: {fileID: 0}
-    inaccuracy: 30
-    speedModPct: 0
-    pwap:
-    - attackPattern: {fileID: 816135234040244261, guid: a0a9c4ca4ae231e48ae885642a497cd3, type: 3}
-      energyCost: 0
-      critChance: 0
+  m_weaponType: {fileID: 0}
+  m_weaponRarity: {fileID: 0}
+  m_inaccuracy: 30
+  m_speedModPct: 0
+  m_pwap:
+  - attackPattern: {fileID: 816135234040244261, guid: a0a9c4ca4ae231e48ae885642a497cd3, type: 3}
+    energyCost: 0
+    critChance: 0

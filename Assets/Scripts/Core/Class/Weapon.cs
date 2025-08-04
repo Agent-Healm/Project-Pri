@@ -2,12 +2,19 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEditor;
+using NaughtyAttributes;
 
 // [System.Serializable]
 public class Weapon : LootItem, IInteractAble
 {
-    [SerializeField] protected WeaponStatsSO baseWeaponStats;
-    protected WeaponBaseAttributes _weaponAttr;
+    [SerializeField, Expandable]
+    protected WeaponStatsSO m_baseWeaponStats;
+    protected WeaponTypeSO m_weaponType;
+    protected WeaponRaritySO m_weaponRarity;
+    protected int m_deviation;
+    protected int m_speedModPct;
+    protected PlayerWeaponAttackPattern[] m_pwap;
+
     protected int _currentWeaponMode = 0;
     protected PlayerWeaponAttackPattern _currentPwap;
 
@@ -16,23 +23,29 @@ public class Weapon : LootItem, IInteractAble
             return _currentPwap.EnergyCost;
         }
     }
+
     protected virtual void Awake()
     {
-        _weaponAttr = baseWeaponStats.GetWeaponBaseAttributes;
-        _currentPwap = _weaponAttr.pwap[_currentWeaponMode];
+        m_weaponType = m_baseWeaponStats.WeaponType;
+        m_weaponRarity = m_baseWeaponStats.Rarity;
+        m_deviation = m_baseWeaponStats.Deviation;
+        m_speedModPct = m_baseWeaponStats.SpeedModifier;
+        m_pwap = m_baseWeaponStats.AttackPatterns;
+
+        _currentPwap = m_pwap[_currentWeaponMode];
     }
 
     public void SwitchWeaponMode(){
-        if (_weaponAttr.pwap.Length == 1){return;}
+        if (m_pwap.Length == 1){return;}
 
-        _currentWeaponMode = (_currentWeaponMode + _weaponAttr.pwap.Length + 1) % _weaponAttr.pwap.Length;
-        _currentPwap = _weaponAttr.pwap[_currentWeaponMode];
+        _currentWeaponMode = (_currentWeaponMode + m_pwap.Length + 1) % m_pwap.Length;
+        _currentPwap = m_pwap[_currentWeaponMode];
     }
 
     public virtual void Action(Vector2 direction, Vector2 position){
         
         float deg = Vector2.SignedAngle(Vector2.right, direction);
-        deg += Random.Range(- _weaponAttr.inaccuracy, _weaponAttr.inaccuracy + 1) / 2f;
+        deg += Random.Range(- m_deviation, m_deviation + 1) * 0.5f;
         Attack(deg, position);
     }
 
@@ -54,12 +67,12 @@ public class Weapon : LootItem, IInteractAble
 [System.Serializable]
 public class WeaponBaseAttributes {
     // public SubTypes subtypes;
-    public WeaponTypeSO weaponType;
-    public WeaponRaritySO weaponRarity;
+    // public WeaponTypeSO weaponType;
+    // public WeaponRaritySO weaponRarity;
     // public Effects effects;
-    public int inaccuracy;
-    public int speedModPct;
-    public PlayerWeaponAttackPattern[] pwap;
+    // public int inaccuracy;
+    // public int speedModPct;
+    // public PlayerWeaponAttackPattern[] pwap;
 
     // public enum xWeaponType {
     //     Pistol,

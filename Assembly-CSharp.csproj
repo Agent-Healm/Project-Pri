@@ -69,10 +69,11 @@
     <Compile Include="Assets\Scripts\Objects\BulletBehaviour\BulletBaseSO.cs" />
     <Compile Include="Assets\Scripts\Objects\LootTableSO.cs" />
     <Compile Include="Assets\Scripts\Objects\WeaponsSO\WeaponRaritySO.cs" />
-    <Compile Include="Assets\Scripts\Core\Interface\IWeapons.cs" />
     <Compile Include="Assets\Scripts\Core\Class\AttackPattern.cs" />
+    <Compile Include="Assets\Scripts\Core\Interface\IWeapons.cs" />
     <Compile Include="Assets\Scripts\Environment\Crate.cs" />
     <Compile Include="Assets\Scripts\Entity\Enemy\EnemyHitpoint.cs" />
+    <Compile Include="Assets\Scripts\Objects\BulletBehaviour\BulletActionDoDamageSO.cs" />
     <Compile Include="Assets\Scripts\Entity\Enemy\EnemyAI.cs" />
     <Compile Include="Assets\Scripts\Weapons\Pistol.cs" />
     <Compile Include="Assets\Scripts\Objects\EffectsSO.cs" />
