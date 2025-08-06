@@ -14,7 +14,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   m_weaponType: {fileID: 0}
   m_weaponRarity: {fileID: 0}
-  m_inaccuracy: 30
+  m_deviation: 30
   m_speedModPct: 0
   m_pwap:
   - attackPattern: {fileID: 816135234040244261, guid: a0a9c4ca4ae231e48ae885642a497cd3, type: 3}

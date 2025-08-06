@@ -1164,6 +1164,8 @@
     <ProjectReference Include="NaughtyAttributes.Editor.csproj" />
     <ProjectReference Include="NaughtyAttributes.Test.csproj" />
     <ProjectReference Include="NaughtyAttributes.Core.csproj" />
+    <ProjectReference Include="Healm.Custom.Drawer.csproj" />
+    <ProjectReference Include="Healm.Editor.csproj" />
   </ItemGroup>
   <Import Project="Sdk.targets" Sdk="Microsoft.NET.Sdk" />
   <ItemGroup>

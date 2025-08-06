@@ -15,3 +15,6 @@ MonoBehaviour:
   m_damage: 1
   m_speed: 1
   m_uptime: 60
+  a: 0
+  b: 0
+  c: 0

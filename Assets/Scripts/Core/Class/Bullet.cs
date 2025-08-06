@@ -6,8 +6,7 @@ using Default;
 using NaughtyAttributes;
 public class Bullet : MonoBehaviour
 {
-    [Expandable]
-    [SerializeField]
+    [SerializeField, Expandable]
     private BulletDataSO baseBullet;
 
     private Vector2 _direction;

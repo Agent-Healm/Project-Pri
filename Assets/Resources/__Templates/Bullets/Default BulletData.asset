@@ -13,5 +13,5 @@ MonoBehaviour:
   m_Name: Default BulletData
   m_EditorClassIdentifier: 
   m_bulletBehaviours:
-  - {fileID: 11400000, guid: 0f6722edb17b1964cb038bf91bdfe54e, type: 2}
   - {fileID: 11400000, guid: eed8cda8f4955ff4cbc47882133ae371, type: 2}
+  - {fileID: 11400000, guid: 0f6722edb17b1964cb038bf91bdfe54e, type: 2}

@@ -5,13 +5,13 @@ using UnityEngine;
 
 public class WeaponStatsSO : ScriptableObject
 {
-    [SerializeField, BoxGroup("Weapon Info")]
+    [SerializeField]
     protected WeaponTypeSO m_weaponType;
     public WeaponTypeSO WeaponType
     {
         get => m_weaponType;
     }
-    [SerializeField, BoxGroup("Weapon Info")]
+    [SerializeField]
     protected WeaponRaritySO m_weaponRarity;
     public WeaponRaritySO Rarity
     {
