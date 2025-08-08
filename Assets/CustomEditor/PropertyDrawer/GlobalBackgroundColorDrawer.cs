@@ -7,6 +7,8 @@ namespace Healm.EditorTools
 {
     [CustomPropertyDrawer(typeof(int), true)]
     [CustomPropertyDrawer(typeof(float), true)]
+    [CustomPropertyDrawer(typeof(Color), true)]
+    [CustomPropertyDrawer(typeof(Sprite), true)]
     [CustomPropertyDrawer(typeof(MonoBehaviour), true)]
     [CustomPropertyDrawer(typeof(SerializedProperty), true)]
     public class GlobalBackgroundColorDrawer : PropertyDrawer
@@ -21,14 +23,17 @@ namespace Healm.EditorTools
             if (attr != null)
             {
                 Color l_originalColor = GUI.backgroundColor;
-                attr.m_backgroundColor *= 1.3f;
-                // GUI.color = new(1.5f, 1.5f, 1.5f ,1);
+                Color l_originalContentColor = GUI.contentColor;
+                // GUI.color = new(1,1,1,1);
                 GUI.backgroundColor = attr.m_backgroundColor * 0.2f;
+                attr.m_backgroundColor *= 1.3f;
+                // GUI.contentColor = (attr.m_backgroundColor.r + attr.m_backgroundColor.g + attr.m_backgroundColor.b)
+
                 EditorGUI.DrawRect(position, attr.m_backgroundColor * 0.6f);
                 EditorGUI.PropertyField(position, property, label, true);
 
                 GUI.backgroundColor = l_originalColor;
-                // GUI.color = new(1,1,1,1);
+                GUI.contentColor = l_originalContentColor;
             }
             else
             {

@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using NaughtyAttributes;
 using UnityEngine;
 
+[GlobalBackgroundColor(0,100,0, 0.4f)]
 [CreateAssetMenu(fileName = "BulletBaseSO", menuName = "SO/BulletBase", order = 0)]
 public class BulletBaseSO : ScriptableObject, IBulletBehaviour
 {
