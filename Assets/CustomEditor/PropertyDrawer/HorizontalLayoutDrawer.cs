@@ -2,7 +2,6 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Reflection;
-using Healm.EditorTools;
 using UnityEditor;
 using UnityEngine;
 [CustomPropertyDrawer(typeof(HorizontalLayoutAttribute))]
@@ -11,6 +10,7 @@ public class HorizontalLayoutDrawer : PropertyDrawer
     private static readonly List<string> propertyPaths = new();
 
     private static SerializedObject currentSO;
+
     public override void OnGUI(Rect position, SerializedProperty property, GUIContent label)
     {
         var attr = attribute as HorizontalLayoutAttribute;
@@ -43,7 +43,7 @@ public class HorizontalLayoutDrawer : PropertyDrawer
         var attr = attribute as HorizontalLayoutAttribute;
         return attr.m_EOL
             ? EditorGUIUtility.singleLineHeight
-            : 0f;
+            : 0f;   
     }
 }
 
@@ -51,23 +51,19 @@ public static class SafeSiblingDrawer
 {
     public static void DrawSiblingProperty(Rect position, SerializedProperty current, string siblingName)
     {
+        float originalLabelWidth = EditorGUIUtility.labelWidth;
+        EditorGUIUtility.labelWidth -= EditorGUIUtility.fieldWidth;
+
         SerializedProperty sibling = current.serializedObject.FindProperty(siblingName);
 
         if (sibling == null)
         {
             EditorGUI.LabelField(position, $"<Missing: {siblingName}>");
+            
             return;
         }
 
-        // float prevLabelWidth = EditorGUIUtility.labelWidth;
-        // float labelWidth = 30f;
         var fieldInfo = current.serializedObject.targetObject.GetType().GetField(siblingName, BindingFlags.Public | BindingFlags.NonPublic | BindingFlags.Instance);
-
-        // FieldColorAttribute fieldColorAttribute = fieldInfo?.GetCustomAttribute<FieldColorAttribute>();
-        // fieldColorAttribute?.Apply(position);
-
-        // LabelSizeAttribute labelSizeAttr = fieldInfo?.GetCustomAttribute<LabelSizeAttribute>();
-        // labelSizeAttr?.Apply();
 
         var customAttrs = fieldInfo?.GetCustomAttributes(false);
         var appliedAttrs = new List<object>();
@@ -116,8 +112,8 @@ public static class SafeSiblingDrawer
                 break;
         }
 
-        // fieldColorAttribute?.Revert();
-        // labelSizeAttr?.Revert();
+        EditorGUIUtility.labelWidth = originalLabelWidth;
+
         for (int i = appliedAttrs.Count - 1; i >= 0; i--)
         {
             var revertMethod = appliedAttrs[i].GetType().GetMethod("Revert");

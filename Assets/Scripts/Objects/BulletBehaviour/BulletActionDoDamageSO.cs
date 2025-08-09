@@ -1,6 +1,7 @@
 using NaughtyAttributes;
 using UnityEngine;
 using Healm.EditorTools;
+using UnityEditor;
 
 // [GlobalBackgroundColor(0,0.3f,1)]
 [CreateAssetMenu(fileName = "BulletActionDoDamageSO", menuName = "SO/BulletActionDoDamage", order = 0)]
@@ -24,6 +25,15 @@ public class BulletActionDoDamageSO : ScriptableObject, IBulletBehaviour
     // {
     //     get => m_uptime;
     // }
+    [HorizontalLayout("text")]
+    public int a;
+    [HorizontalLayout("text")]
+    public int b;
+    [HorizontalLayout("text", true)]
+    public int c;
+    
+    public int end;
+
     private bool MustNotNegative(int value) => value >= 0;
     public void Apply(Bullet bullet)
     {
