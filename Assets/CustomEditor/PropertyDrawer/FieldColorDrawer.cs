@@ -17,10 +17,5 @@ namespace Healm.EditorTools
 
             colorAttr.Revert();
         }
-        public override float GetPropertyHeight(SerializedProperty property, GUIContent label)
-        {
-            return EditorGUI.GetPropertyHeight(property, label, true);
-        }
-
     }   
 }
