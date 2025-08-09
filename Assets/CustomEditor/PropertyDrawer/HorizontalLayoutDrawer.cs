@@ -21,6 +21,9 @@ public class HorizontalLayoutDrawer : LayoutDrawer
     {
         AddVerticalFields(property.propertyPath);
         var attr = attribute as HorizontalLayoutAttribute;
+        // return attr.m_EOL
+        //     ? EditorGUIUtility.singleLineHeight - EditorGUIUtility.standardVerticalSpacing
+        //     : -EditorGUIUtility.standardVerticalSpacing;
         return attr.m_EOL
             ? EditorGUIUtility.singleLineHeight - EditorGUIUtility.standardVerticalSpacing
             : -EditorGUIUtility.standardVerticalSpacing;

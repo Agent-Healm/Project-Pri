@@ -74,10 +74,11 @@ public class BulletActionDoDamageSO : ScriptableObject, IBulletBehaviour
     [VerticalLayout("text/v")] public int ww1;
     [VerticalLayout("text/v")] public int ww2;
     [VerticalLayout("text/v")] public int ww3;
-    [VerticalLayout("text/v")] public int ww4;
-    [VerticalLayout("text/v")] public int ww5;
-    [VerticalLayout("text/v")] public int ww6;
-    [VerticalLayout("text/v", true)] public int ww7;
+    // [VerticalLayout("text/v")] public int ww4;
+    // [VerticalLayout("text/v")] public int ww5;
+    // [VerticalLayout("text/v")] public int ww6;
+    // [VerticalLayout("text/v")] public int ww7;
+    [VerticalLayout("text/v", true)] public int ww8;
     // [HorizontalLayout("text", true)] public int ww7;
 
     /*
