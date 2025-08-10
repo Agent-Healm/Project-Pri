@@ -5,7 +5,7 @@ using UnityEngine;
 public class LayoutDrawer : PropertyDrawer
 {
     private static List<VerticalField> s_verticalFields = new();
-    private static int s_numberOfLines = 1;
+    protected static int s_numberOfLines = 1;
     private static string s_lastAddedPropPath;
 
     public static void AddVerticalFields(string propPath)

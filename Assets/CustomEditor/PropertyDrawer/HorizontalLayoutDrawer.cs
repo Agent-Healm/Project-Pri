@@ -1,3 +1,4 @@
+using System.Xml.Schema;
 using UnityEditor;
 using UnityEngine;
 
@@ -11,7 +12,6 @@ public class HorizontalLayoutDrawer : LayoutDrawer
         {
             return;
         }
-        // position.y -= EditorGUIUtility.singleLineHeight;
         SetRect(position, property);
         DrawProperty(property);
     }
@@ -19,10 +19,16 @@ public class HorizontalLayoutDrawer : LayoutDrawer
     {
         AddVerticalFields(property.propertyPath);
         var attr = attribute as HorizontalLayoutAttribute;
-        return attr.m_EOL
-            ? EditorGUIUtility.singleLineHeight
-            - EditorGUIUtility.standardVerticalSpacing
-            : -EditorGUIUtility.standardVerticalSpacing;
-            // : 0;
+        // return attr.m_EOL
+        //     ? EditorGUIUtility.singleLineHeight
+        // : -EditorGUIUtility.standardVerticalSpacing;
+        // : EditorGUIUtility.singleLineHeight - EditorGUIUtility.standardVerticalSpacing * 2;
+        // : 2 *EditorGUIUtility.standardVerticalSpacing;
+        if (attr.m_EOL)
+        {
+            return EditorGUIUtility.singleLineHeight;
+        }
+        return - EditorGUIUtility.standardVerticalSpacing;
+        // return 0;
     }
 }
