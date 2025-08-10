@@ -81,11 +81,13 @@ public class BulletActionDoDamageSO : ScriptableObject, IBulletBehaviour
     [VerticalLayout("zet")] public SpriteRenderer q10;
     [VerticalLayout("zet")] public Sprite q9;
     // [VerticalLayout("zet")] public AudioClip q11;
-    // [VerticalLayout("zet")] public GameObject q12;
+    [VerticalLayout("zet")] public GameObject q12;
     // [VerticalLayout("zet")] public Vector3 q11;
 
     [VerticalLayout("zet", true)] public int qEnd;
     public int batasQ1toQEnd;
+    public GameObject gamaeObject;
+    public SpriteRenderer spreteeerREndere;
 
     // [HorizontalLayout("")] public int f1;
     // [HorizontalLayout("")] public int f2;

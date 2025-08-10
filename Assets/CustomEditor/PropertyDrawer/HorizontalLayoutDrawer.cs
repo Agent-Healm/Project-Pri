@@ -12,7 +12,7 @@ public class HorizontalLayoutDrawer : LayoutDrawer
         {
             return;
         }
-        property.serializedObject.Update();
+        // property.serializedObject.Update();
         // EditorGUI.BeginProperty(position, label, property);
         SetRect(position);
         DrawProperty(property);
