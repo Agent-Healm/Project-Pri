@@ -12,23 +12,17 @@ public class HorizontalLayoutDrawer : LayoutDrawer
         {
             return;
         }
-        SetRect(position, property);
+        SetRect(position);
         DrawProperty(property);
     }
     public override float GetPropertyHeight(SerializedProperty property, GUIContent label)
     {
         AddVerticalFields(property.propertyPath);
         var attr = attribute as HorizontalLayoutAttribute;
-        // return attr.m_EOL
-        //     ? EditorGUIUtility.singleLineHeight
-        // : -EditorGUIUtility.standardVerticalSpacing;
-        // : EditorGUIUtility.singleLineHeight - EditorGUIUtility.standardVerticalSpacing * 2;
-        // : 2 *EditorGUIUtility.standardVerticalSpacing;
         if (attr.m_EOL)
         {
             return EditorGUIUtility.singleLineHeight;
         }
         return - EditorGUIUtility.standardVerticalSpacing;
-        // return 0;
     }
 }

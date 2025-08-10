@@ -46,6 +46,7 @@ public class BulletActionDoDamageSO : ScriptableObject, IBulletBehaviour
     [HorizontalLayout("text")] public int z2;
     [VerticalLayout("text/v")] public int z3;
     [VerticalLayout("text/v")] public int z4;
+    // [HorizontalLayout("text")] public int z9;
     [VerticalLayout("text/v")] public int z5;
     [VerticalLayout("text/v")] public int z6;
     // [VerticalLayout("text/v")] public int z7;

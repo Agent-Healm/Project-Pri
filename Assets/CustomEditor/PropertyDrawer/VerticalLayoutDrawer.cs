@@ -11,8 +11,7 @@ public class VerticalLayoutDrawer : LayoutDrawer
         {
             return;
         }
-        // position.y += EditorGUIUtility.singleLineHeight;
-        SetRect(position, property);
+        SetRect(position);
         DrawProperty(property);
     }
 
@@ -20,25 +19,14 @@ public class VerticalLayoutDrawer : LayoutDrawer
     {
         AddPropertyDataWithPath(property.propertyPath);
         var attr = attribute as VerticalLayoutAttribute;
-        // return attr.m_EOL
-        //     ? EditorGUIUtility.singleLineHeight
-        //     : EditorGUIUtility.singleLineHeight;
-        // - EditorGUIUtility.standardVerticalSpacing
-        // : EditorGUIUtility.singleLineHeight + EditorGUIUtility.standardVerticalSpacing;
-        // : EditorGUIUtility.singleLineHeight + 2 * EditorGUIUtility.standardVerticalSpacing;
-
         if (attr.m_EOL)
         {
             return EditorGUIUtility.singleLineHeight;
         }
-        // return EditorGUIUtility.singleLineHeight + EditorGUIUtility.standardVerticalSpacing * 1.5f;
         if (s_numberOfLines > 2)
         {
-            // return EditorGUIUtility.singleLineHeight;
-            return EditorGUIUtility.singleLineHeight + EditorGUIUtility.standardVerticalSpacing * 1;
+            return EditorGUIUtility.singleLineHeight;
         }
-        return EditorGUIUtility.singleLineHeight * 2 + EditorGUIUtility.standardVerticalSpacing * 2;
-        // return EditorGUIUtility.singleLineHeight * 2;
-        // return EditorGUIUtility.singleLineHeight + EditorGUIUtility.standardVerticalSpacing;
+        return EditorGUIUtility.singleLineHeight * 2 + EditorGUIUtility.standardVerticalSpacing * 1;
     }
 }

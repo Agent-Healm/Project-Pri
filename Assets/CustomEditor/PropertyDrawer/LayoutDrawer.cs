@@ -27,19 +27,12 @@ public class LayoutDrawer : PropertyDrawer
             }
         }
     }
-    protected void SetRect(Rect position, SerializedProperty seriProp)
+    protected void SetRect(Rect position)
     {
-        // position.y = 1;
-        // position.y 
-        // Debug.Log($"Initial position at {CalculateDrawPropertyHeight(seriProp)}");
-        position.y -= EditorGUIUtility.standardVerticalSpacing * (s_numberOfLines - 1);
-        // position.y -= EditorGUIUtility.singleLineHeight * (s_numberOfLines);
-
-        // position.y -= EditorGUIUtility.standardVerticalSpacing;
-        position.y -= EditorGUIUtility.singleLineHeight * (s_numberOfLines - 1);
+        float rowLength = EditorGUIUtility.singleLineHeight + EditorGUIUtility.standardVerticalSpacing;
+        position.y -= rowLength * (s_numberOfLines - 1);
         int numberOfColumn = s_verticalFields.Count;
         float fieldWidth = position.width / numberOfColumn;
-        float rowLength = EditorGUIUtility.singleLineHeight + EditorGUIUtility.standardVerticalSpacing;
 
         for (int col = 0; col < s_verticalFields.Count; col++)
         {
@@ -69,38 +62,6 @@ public class LayoutDrawer : PropertyDrawer
         s_verticalFields.Clear();
         s_numberOfLines = 1;
     }
-
-    // protected float CalculateDrawPropertyHeight(SerializedProperty property)
-    // {
-    //     float height = 0f;
-
-    //     float heightTemp;
-    //     PropertyData propertyData;
-    //     SerializedProperty seriProperty;
-
-    //     for (int col = 0; col < s_verticalFields.Count; col++)
-    //     {
-    //         List<PropertyData> propertyDatas = s_verticalFields[col].propertyData;
-    //         // heightTemp = - EditorGUIUtility.standardVerticalSpacing;
-    //         heightTemp = 0;
-    //         for (int row = 0; row < propertyDatas.Count; row++)
-    //         {
-    //             propertyData = propertyDatas[row];
-    //             seriProperty = property.serializedObject.FindProperty(propertyData.propertyPath);
-
-    //             heightTemp += EditorGUI.GetPropertyHeight(seriProperty, true);
-    //             // heightTemp += EditorGUIUtility.singleLineHeight;
-    //             // heightTemp += EditorGUIUtility.standardVerticalSpacing;
-    //             // heightTemp = Mathf.Max(propertyData.rect.y + propertyData.rect.height, heightTemp);
-    //             // Debug.Log($"Property height : {EditorGUI.GetPropertyHeight(seriProperty, true)}");
-    //             // Debug.Log($"Property height : {heightTemp}");
-    //         }
-    //         height = Mathf.Max(height, heightTemp);
-    //     }
-
-    //     // Debug.Log($"Final height : {height}");
-    //     return height;
-    // }
 }
 public class VerticalField
 {
@@ -115,9 +76,7 @@ public class VerticalField
 public class PropertyData
 {
     public string propertyPath;
-    // public string PropertyPath => propertyPath;
     public Rect rect;
-    // public Rect PropertyRect => rect;
     public PropertyData(string propertyPath)
     {
         this.propertyPath = propertyPath;
