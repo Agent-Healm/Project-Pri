@@ -1,9 +1,6 @@
-using System;
-using System.Collections;
-using System.Collections.Generic;
-using System.Reflection;
 using UnityEditor;
 using UnityEngine;
+
 [CustomPropertyDrawer(typeof(HorizontalLayoutAttribute))]
 public class HorizontalLayoutDrawer : LayoutDrawer
 {
@@ -14,18 +11,18 @@ public class HorizontalLayoutDrawer : LayoutDrawer
         {
             return;
         }
-        SetRect(position);
+        // position.y -= EditorGUIUtility.singleLineHeight;
+        SetRect(position, property);
         DrawProperty(property);
     }
     public override float GetPropertyHeight(SerializedProperty property, GUIContent label)
     {
         AddVerticalFields(property.propertyPath);
         var attr = attribute as HorizontalLayoutAttribute;
-        // return attr.m_EOL
-        //     ? EditorGUIUtility.singleLineHeight - EditorGUIUtility.standardVerticalSpacing
-        //     : -EditorGUIUtility.standardVerticalSpacing;
         return attr.m_EOL
-            ? EditorGUIUtility.singleLineHeight - EditorGUIUtility.standardVerticalSpacing
+            ? EditorGUIUtility.singleLineHeight
+            - EditorGUIUtility.standardVerticalSpacing
             : -EditorGUIUtility.standardVerticalSpacing;
+            // : 0;
     }
 }

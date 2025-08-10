@@ -42,20 +42,19 @@ public class BulletActionDoDamageSO : ScriptableObject, IBulletBehaviour
 
     public int batasTexta;
 
-    [HorizontalLayout("text")] public int end;
-    [HorizontalLayout("text")] public int d;
-    [VerticalLayout("text/v")] public int z;
-    [VerticalLayout("text/v")] public int w;
-    [VerticalLayout("text/v")] public int w2;
-    [VerticalLayout("text/v")] public int w3;
-    [VerticalLayout("text/v")] public int w4;
-    [VerticalLayout("text/v")] public int w5;
-    [VerticalLayout("text/v")] public int w6;
-    [HorizontalLayout("text", true)] public int w7;
+    [HorizontalLayout("text")] public int z1;
+    [HorizontalLayout("text")] public int z2;
+    [VerticalLayout("text/v")] public int z3;
+    // [VerticalLayout("text/v")] public int z4;
+    // [VerticalLayout("text/v")] public int z5;
+    // [VerticalLayout("text/v")] public int z6;
+    // [VerticalLayout("text/v")] public int z7;
+    // [VerticalLayout("text/v")] public int z8;
+    [HorizontalLayout("text", true)] public int z9;
 
 
 
-    public int batas1;
+    public int batas_z1_to_z9;
 
 
 
@@ -64,29 +63,46 @@ public class BulletActionDoDamageSO : ScriptableObject, IBulletBehaviour
     // [HorizontalLayout("wtf")] public int zw2;
     // [HorizontalLayout("wtf", true)] public int zw3;
 
+    public int batas_z2;
+    public int batas_z3;
 
-    public int batas2;
-    public int batas2_v2;
 
-    [HorizontalLayout("text")] public int end2;
-    [HorizontalLayout("text")] public int d2;
-    [VerticalLayout("text/v")] public int z2;
-    [VerticalLayout("text/v")] public int ww1;
-    [VerticalLayout("text/v")] public int ww2;
-    [VerticalLayout("text/v")] public int ww3;
-    // [VerticalLayout("text/v")] public int ww4;
-    // [VerticalLayout("text/v")] public int ww5;
-    // [VerticalLayout("text/v")] public int ww6;
-    // [VerticalLayout("text/v")] public int ww7;
-    [VerticalLayout("text/v", true)] public int ww8;
-    // [HorizontalLayout("text", true)] public int ww7;
+    [HorizontalLayout("text")] public int x1;
+    [HorizontalLayout("text")] public int x2;
+    // [VerticalLayout("text/v")] public int x3;
+    // [VerticalLayout("text/v")] public int x4;
+    // [VerticalLayout("text/v")] public int x5;
+    // [VerticalLayout("text/v")] public int x6;
+    [VerticalLayout("text/v", true)] public int x7;
 
     /*
         something weird about eol in vertical layout
     */
 
 
-    public int batas3;
+    public int batas_x1_to_x7;
+
+    [HorizontalLayout("zet")] public int q1;
+    [HorizontalLayout("zet")] public int q2;
+    [VerticalLayout("zet")] public int q3;
+    [VerticalLayout("zet")] public int q4;
+    [VerticalLayout("zet")] public int q5;
+    [VerticalLayout("zet")] public int q6;
+    [VerticalLayout("zet")] public int q7;
+    [VerticalLayout("zet")] public int q9;
+    [VerticalLayout("zet")] public int q10;
+    
+    [VerticalLayout("zet", true)] public int q8;
+
+    public int batasQ1toQ8;
+
+    [HorizontalLayout("")] public int f1;
+    [HorizontalLayout("")] public int f2;
+    [HorizontalLayout("")] public int f3;
+    [HorizontalLayout("")] public int f4;
+    [HorizontalLayout("", true)] public int f5;
+
+    public int batasF1;
 
     private bool MustNotNegative(int value) => value >= 0;
     public void Apply(Bullet bullet)

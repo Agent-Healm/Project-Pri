@@ -1,5 +1,3 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEditor;
 using UnityEngine;
 
@@ -13,8 +11,8 @@ public class VerticalLayoutDrawer : LayoutDrawer
         {
             return;
         }
-        position.y += EditorGUIUtility.singleLineHeight;
-        SetRect(position);
+        // position.y += EditorGUIUtility.singleLineHeight;
+        SetRect(position, property);
         DrawProperty(property);
     }
 
@@ -22,9 +20,11 @@ public class VerticalLayoutDrawer : LayoutDrawer
     {
         AddPropertyDataWithPath(property.propertyPath);
         var attr = attribute as VerticalLayoutAttribute;
-        // Debug.Log($"Number of line at : {s_numberOfLines}");
         return attr.m_EOL
-        ? EditorGUIUtility.singleLineHeight - EditorGUIUtility.standardVerticalSpacing
-        : EditorGUIUtility.singleLineHeight - EditorGUIUtility.standardVerticalSpacing;
+            ? EditorGUIUtility.singleLineHeight
+            // - EditorGUIUtility.standardVerticalSpacing
+            : EditorGUIUtility.singleLineHeight;
+            // : EditorGUIUtility.singleLineHeight + EditorGUIUtility.standardVerticalSpacing;
+            // : EditorGUIUtility.singleLineHeight + 2 * EditorGUIUtility.standardVerticalSpacing;
     }
 }

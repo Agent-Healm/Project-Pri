@@ -15,7 +15,29 @@ MonoBehaviour:
   m_damage: 1
   m_speed: 1.9
   m_uptime: 60
-  a: 0
-  b: 0
-  c: 0
+  text: 0
+  weirdField: 0
+  b: 1
+  e: 0
+  batasTexta: 0
   end: 0
+  d: 0
+  z: 0
+  w: 0
+  w2: 0
+  w3: 0
+  w4: 0
+  w5: 0
+  w6: 0
+  w7: 0
+  batas1: 0
+  batas2: 0
+  batas2_v2: 0
+  end2: 0
+  d2: 0
+  z2: 0
+  ww1: 0
+  ww2: 0
+  ww3: 0
+  ww8: 0
+  batas3: 0
