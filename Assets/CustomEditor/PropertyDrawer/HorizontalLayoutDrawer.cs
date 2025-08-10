@@ -12,8 +12,12 @@ public class HorizontalLayoutDrawer : LayoutDrawer
         {
             return;
         }
+        property.serializedObject.Update();
+        // EditorGUI.BeginProperty(position, label, property);
         SetRect(position);
         DrawProperty(property);
+        // EditorGUI.EndProperty();
+        property.serializedObject.ApplyModifiedProperties();
     }
     public override float GetPropertyHeight(SerializedProperty property, GUIContent label)
     {
