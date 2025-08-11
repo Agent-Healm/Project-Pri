@@ -1,12 +1,10 @@
 using System.Collections.Generic;
-using Healm.EditorTools;
-using NaughtyAttributes;
 using UnityEngine;
 
 [CreateAssetMenu(fileName = "BulletDataSO", menuName = "SO/Misc/Bullets")]
 public class BulletDataSO : ScriptableObject
 {
-    [SerializeField, Expandable]
+    [SerializeField]
     private List<ScriptableObject> m_bulletBehaviours;
     public List<ScriptableObject> Behaviours
     {

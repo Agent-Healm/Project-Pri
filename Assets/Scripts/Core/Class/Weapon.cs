@@ -2,12 +2,11 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEditor;
-using NaughtyAttributes;
 
 // [System.Serializable]
 public class Weapon : LootItem, IInteractAble
 {
-    [SerializeField, Expandable]
+    [SerializeField]
     protected WeaponStatsSO m_baseWeaponStats;
     protected WeaponTypeSO m_weaponType;
     protected WeaponRaritySO m_weaponRarity;

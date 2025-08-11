@@ -15,8 +15,19 @@ MonoBehaviour:
   m_damage: 1
   m_speed: 1
   m_uptime: 1
-  a: 0
-  d: 0
-  z: 0
-  e: 0
-  end: 0
+  text: 0
+  q1: 0
+  q2: 0
+  q3: 0
+  q4: 0
+  q5: 0
+  q6: 0
+  q7: 0
+  q8: 0
+  q10: {fileID: 7093671000468269792, guid: f52620fbb14456c488bfbcd9d18de9b9, type: 3}
+  q9: {fileID: 0}
+  q12: {fileID: 9164323377962720109, guid: f52620fbb14456c488bfbcd9d18de9b9, type: 3}
+  qEnd: 0
+  batasQ1toQEnd: 0
+  gamaeObject: {fileID: 9164323377962720109, guid: 30d362a3e61a2b84184c86b257d53e8f, type: 3}
+  spreteeerREndere: {fileID: 0}

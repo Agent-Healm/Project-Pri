@@ -1,6 +1,5 @@
 // using System.Collections;
 // using System.Collections.Generic;
-using NaughtyAttributes;
 using UnityEngine;
 
 public class WeaponStatsSO : ScriptableObject
@@ -29,7 +28,7 @@ public class WeaponStatsSO : ScriptableObject
     {
         get => m_speedModPct;
     }
-    [SerializeField, Label("Weapon Attack Pattern")]
+    [SerializeField]
     protected PlayerWeaponAttackPattern[] m_pwap;
     public PlayerWeaponAttackPattern[] AttackPatterns
     {

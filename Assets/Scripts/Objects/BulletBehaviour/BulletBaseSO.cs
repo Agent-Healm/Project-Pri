@@ -1,19 +1,18 @@
 using System.Collections;
 using System.Collections.Generic;
-using NaughtyAttributes;
+using EditorAttributes;
 using UnityEngine;
 
-[GlobalBackgroundColor(0,100,0, 0.4f)]
 [CreateAssetMenu(fileName = "BulletBaseSO", menuName = "SO/BulletBase", order = 0)]
 public class BulletBaseSO : ScriptableObject, IBulletBehaviour
 {
-    [SerializeField, Label("Color")]
+    [SerializeField]
     private Color m_bulletColor = Color.white;
     // public Color BulletColor
     // {
     //     get => m_bulletColor;
     // }
-    [SerializeField, ShowAssetPreview(50,50), Label("Sprite")]
+    [SerializeField] [AssetPreview(60f, 60f)]
     private Sprite m_bulletSprite;
     // public Sprite BulletSprite
     // {

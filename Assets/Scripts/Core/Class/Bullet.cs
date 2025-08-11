@@ -3,10 +3,9 @@ using System.Collections.Generic;
 using UnityEngine;
 
 using Default;
-using NaughtyAttributes;
 public class Bullet : MonoBehaviour
 {
-    [SerializeField, Expandable]
+    [SerializeField]
     private BulletDataSO baseBullet;
 
     private Vector2 _direction;

@@ -16,28 +16,16 @@ MonoBehaviour:
   m_speed: 1.9
   m_uptime: 60
   text: 0
-  weirdField: 0
-  b: 1
-  e: 0
-  batasTexta: 0
-  end: 0
-  d: 0
-  z: 0
-  w: 0
-  w2: 0
-  w3: 0
-  w4: 0
-  w5: 0
-  w6: 0
-  w7: 0
-  batas1: 0
-  batas2: 0
-  batas2_v2: 0
-  end2: 0
-  d2: 0
-  z2: 0
-  ww1: 0
-  ww2: 0
-  ww3: 0
-  ww8: 0
-  batas3: 0
+  q1: 0
+  q2: 0
+  q3: 0
+  q4: 0
+  q5: 0
+  q6: 0
+  q7: 0
+  q8: 0
+  q9: {fileID: 21300000, guid: 1c06397ee036ada47840b81f83aa7b84, type: 3}
+  q10: {fileID: 0}
+  q11: {fileID: 0}
+  q12: {fileID: 5634725015979399922, guid: 92ca872e10c0a7247b756408b85ee91f, type: 3}
+  q13: {x: 0, y: 0, z: 0}
