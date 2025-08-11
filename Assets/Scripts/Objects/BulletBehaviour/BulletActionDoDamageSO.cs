@@ -27,9 +27,9 @@ public class BulletActionDoDamageSO : ScriptableObject, IBulletBehaviour
     [SerializeField, HideInInspector] private Void vertGroup2;
     [VerticalGroup(true, nameof(q9), nameof(q10), nameof(q11), nameof(q12), nameof(q13))]
     [SerializeField, HideInInspector] private Void vertGroup3;
+
     [SerializeField, HideInInspector]
     // [FieldColor(0,0,1)]
-    // [PropertyWidth(-60f)]
     public int q1;
     [SerializeField, HideInInspector] public int q2;
     [SerializeField, HideInInspector] public int q3;
