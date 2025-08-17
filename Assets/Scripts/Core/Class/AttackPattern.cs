@@ -20,6 +20,12 @@ public class EnemyAttackPattern
             return attackPattern;
         }
     }
+    [SerializeField] private AttackPatternSO attackPatternSO;
+    public AttackPatternSO GetAttackPatternSO {
+        get {
+            return attackPatternSO;
+        }
+    }
     [SerializeField] private int range;
     // public BulletSO bullet;
     public bool Attempt(float range){

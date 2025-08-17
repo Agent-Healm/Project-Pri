@@ -835,13 +835,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c304949463e519246998c534c4a152a0, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  testw: 0
-  gObj: {fileID: 0}
-  sprite: {fileID: 0}
-  spr: {fileID: 0}
-  testa: 0
-  testc: 0
-  a: 0
 --- !u!4 &348849132 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 5596094675921451095, guid: db20116f63cfd474785eb290275c969f, type: 3}
@@ -3839,13 +3832,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c304949463e519246998c534c4a152a0, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  testw: 0
-  gObj: {fileID: 0}
-  sprite: {fileID: 0}
-  spr: {fileID: 0}
-  testa: 0
-  testc: 0
-  a: 0
 --- !u!1 &739453263
 GameObject:
   m_ObjectHideFlags: 0

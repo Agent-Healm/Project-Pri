@@ -63,7 +63,8 @@ public class EnemyAI : MonoBehaviour
     private void Attack(){
         foreach (EnemyAttackPattern enemyPattern in m_enemyAttackPattern){
             if (enemyPattern.Attempt(_distance.magnitude)){
-                enemyPattern.GetPattern.
+                // enemyPattern.GetPattern.
+                enemyPattern.GetAttackPatternSO.
                 ShootBullet(_distance, transform.position, 0);
                 break;
             }

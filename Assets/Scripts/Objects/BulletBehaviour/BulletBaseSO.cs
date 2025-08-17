@@ -1,9 +1,9 @@
 using System.Collections;
 using System.Collections.Generic;
-using EditorAttributes;
+// using EditorAttributes;
 using UnityEngine;
 
-[CreateAssetMenu(fileName = "BulletBaseSO", menuName = "SO/BulletBase", order = 0)]
+[CreateAssetMenu(fileName = "BulletBaseSO", menuName = "SO/Bullet/BulletBase", order = 0)]
 public class BulletBaseSO : ScriptableObject, IBulletBehaviour
 {
     [SerializeField]
@@ -12,7 +12,8 @@ public class BulletBaseSO : ScriptableObject, IBulletBehaviour
     // {
     //     get => m_bulletColor;
     // }
-    [SerializeField] [AssetPreview(60f, 60f)]
+    [SerializeField]
+    // [AssetPreview(60f, 60f)]
     private Sprite m_bulletSprite;
     // public Sprite BulletSprite
     // {

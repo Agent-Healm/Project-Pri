@@ -12,8 +12,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 0fcd877c488274b419e3f25ec9ab617f, type: 3}
   m_Name: PistolDefault
   m_EditorClassIdentifier: 
-  m_weaponType: {fileID: 0}
-  m_weaponRarity: {fileID: 0}
+  m_weaponType: {fileID: 11400000, guid: 481b15a29ce4e194d98426876e2de735, type: 2}
+  m_weaponRarity: {fileID: 11400000, guid: c0018b357eccf9348bbfe09b357167e3, type: 2}
   m_deviation: 30
   m_speedModPct: 0
   m_pwap:
