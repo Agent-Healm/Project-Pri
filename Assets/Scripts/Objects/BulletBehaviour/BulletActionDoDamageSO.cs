@@ -1,4 +1,5 @@
 // using EditorAttributes;
+using Healm.EditorTools;
 using UnityEngine;
 
 [CreateAssetMenu(fileName = "BulletActionDoDamageSO", menuName = "SO/Bullet/BulletActionDoDamage", order = 0)]
@@ -15,11 +16,13 @@ public class BulletActionDoDamageSO : ScriptableObject, IBulletBehaviour
     // {
     //     get => m_uptime;
     // }
-    [HorizontalLayout2("groupZ")] public int z1;
-    [HorizontalLayout2("groupZ")] public int z2;
-    [HorizontalLayout2("groupZ")] public int z3;
-    public int z4;
-
+    [HorizontalLayout2("groupZ")]
+    public int z1;
+    [HorizontalLayout2("groupZ"), HideInInspector] public int z2;
+    [HorizontalLayout2("groupZ"), HideInInspector] public int z3;
+    // [HorizontalLayout2("groupZ"), HideInInspector] public SpriteRenderer z4;
+    // [HorizontalLayout2("groupZ")] public int z4;
+    public int zEnd;
 
     public void Apply(Bullet bullet)
     {

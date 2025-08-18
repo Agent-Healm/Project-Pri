@@ -1,38 +1,46 @@
 using System.Collections;
 using System.Collections.Generic;
 using System.Reflection;
+using Codice.Client.Common;
 using UnityEditor;
 using UnityEngine;
 
-[CustomPropertyDrawer(typeof(HorizontalLayout2Attribute))]
+[CustomPropertyDrawer(typeof(HorizontalLayout2Attribute), useForChildren:false  )]
 public class HorizontalLayout2Drawer : PropertyDrawer
 {
     private static Dictionary<string, List<string>> s_dict = new();
-
     public override void OnGUI(Rect position, SerializedProperty property, GUIContent label)
     {
         var attr = attribute as HorizontalLayout2Attribute;
-            
+
         if (!s_dict.ContainsKey(attr.GroupName))
         {
-            Debug.Log($"No width defined for {attr.GroupName}");
             GetNumberOfField(property);
         }
+        var props = s_dict[attr.GroupName];
+        if (props[0] != property.name)
+        {
+            EditorGUI.PropertyField(position, property, false);
+            return;
+        }
 
-        // Rect rect = EditorGUILayout.GetControlRect();
-        // EditorGUI.prop
+        float fieldWidth = position.width / props.Count;
 
+        EditorGUIUtility.labelWidth = 50;
+        for (int i = 0; i < props.Count; i++)
+        {
+            string propName = props[i];
+            var path = property.propertyPath.Replace(property.name, propName);
+            var seriProp = property.serializedObject.FindProperty(path);
 
-        // position.width /= s_dict[attr.GroupName].Count;
-        // // float fixedWidth = position.width;
-        // position.x += position.width * s_dict[attr.GroupName].IndexOf(property.name);
-        // // Debug.Log($"Prop name : {property.name}");
-        // EditorGUI.PropertyField(position, property, label);
-
-        // position.x += position.width;
-        // EditorGUI.PropertyField(position, property, label);
-        // EditorGUI.PropertyField(position, property, label);
-
+            var rect = new Rect(position.x + i * fieldWidth,
+                                position.y,
+                                fieldWidth,
+                                EditorGUIUtility.singleLineHeight);
+            EditorGUI.DrawRect(rect, new(i, i, 0, 0.5f));
+            EditorGUI.PropertyField(rect, seriProp, false);
+            Debug.Log($"Drawing prop for : {propName}");
+        }
         foreach (var dict in s_dict)
         {
             Debug.Log($"{dict.Key} : {dict.Value.Count}");
@@ -41,12 +49,24 @@ public class HorizontalLayout2Drawer : PropertyDrawer
 
     public override float GetPropertyHeight(SerializedProperty property, GUIContent label)
     {
-        return EditorGUI.GetPropertyHeight(property, label, true);
+        var attr = attribute as HorizontalLayout2Attribute;
+        if (!s_dict.ContainsKey(attr.GroupName))
+        {
+            return EditorGUIUtility.singleLineHeight;
+        }
+        var props = s_dict[attr.GroupName];
+
+        // Only the first property takes space
+        if (props[0] != property.name)
+        {
+            return 0;
+        }
+        return EditorGUIUtility.singleLineHeight;
     }
 
     private void GetNumberOfField(SerializedProperty property)
     {
-        Debug.Log("Invoked GetNumberOf FIeld");
+        // Debug.Log("Invoked GetNumberOf FIeld");
         FieldInfo[] fieldInfos = property.serializedObject.targetObject.GetType()
         .GetFields(BindingFlags.Public | BindingFlags.NonPublic | BindingFlags.Instance);
         // Debug.Log($"Type : {property.serializedObject.targetObject.GetType()}");
@@ -65,12 +85,13 @@ public class HorizontalLayout2Drawer : PropertyDrawer
                     {
                         s_dict[horizontalAttr.GroupName] = new();
                     }
-                    s_dict[horizontalAttr.GroupName].Add(fieldInfo.Name);
+                    // s_dict[horizontalAttr.GroupName].Add(fieldInfo.Name);
+                    string path = property.propertyPath.Replace(property.name, fieldInfo.Name);
+                    s_dict[horizontalAttr.GroupName].Add(path);
                     break;
                 }
             }
         }
-        
 
     }
 }
