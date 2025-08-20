@@ -1,97 +1,115 @@
 using System.Collections;
 using System.Collections.Generic;
 using System.Reflection;
-using Codice.Client.Common;
 using UnityEditor;
+using UnityEditor.UIElements;
 using UnityEngine;
+using UnityEngine.SocialPlatforms.Impl;
+using UnityEngine.UIElements;
 
-[CustomPropertyDrawer(typeof(HorizontalLayout2Attribute), useForChildren:false  )]
-public class HorizontalLayout2Drawer : PropertyDrawer
+[CustomPropertyDrawer(typeof(HorizontalLayout2Attribute))]
+public class HorizontalLayout2Drawer : GroupDrawer
 {
-    private static Dictionary<string, List<string>> s_dict = new();
     public override void OnGUI(Rect position, SerializedProperty property, GUIContent label)
     {
+        // Test();
         var attr = attribute as HorizontalLayout2Attribute;
 
-        if (!s_dict.ContainsKey(attr.GroupName))
+        if (tree == null)
         {
-            GetNumberOfField(property);
+            SetupTree(property);
         }
-        var props = s_dict[attr.GroupName];
-        if (props[0] != property.name)
+
+        // var props = tree.children;
+
+        if (property.name != (tree.children[0] as Leaf).id)
         {
-            EditorGUI.PropertyField(position, property, false);
             return;
+            // if (!isDrawn)
+            // {
+            //     // EditorGUI.PropertyField(position, property, false);
+            // }
+            // return;
         }
 
-        float fieldWidth = position.width / props.Count;
-
+        // isDrawn = false;
         EditorGUIUtility.labelWidth = 50;
-        for (int i = 0; i < props.Count; i++)
-        {
-            string propName = props[i];
-            var path = property.propertyPath.Replace(property.name, propName);
-            var seriProp = property.serializedObject.FindProperty(path);
+        SetRect(position, attr.GroupName);
+        DrawField2(property, tree);
 
-            var rect = new Rect(position.x + i * fieldWidth,
-                                position.y,
-                                fieldWidth,
-                                EditorGUIUtility.singleLineHeight);
-            EditorGUI.DrawRect(rect, new(i, i, 0, 0.5f));
-            EditorGUI.PropertyField(rect, seriProp, false);
-            Debug.Log($"Drawing prop for : {propName}");
-        }
-        foreach (var dict in s_dict)
-        {
-            Debug.Log($"{dict.Key} : {dict.Value.Count}");
-        }
+        // for (int i = 0; i < tree.children.Count; i++)
+        // {
+        //     string propName;
+        //     if (tree.children[i] is Leaf leaf)
+        //     {
+        //         propName = leaf.id;
+        //     }
+        //     else
+        //     {
+        //         continue;
+        //     }
+        //     var path = property.propertyPath.Replace(property.name, propName);
+        //     var seriProp = property.serializedObject.FindProperty(path);
+
+        //     var rect = outRects[propName];
+        //     EditorGUI.DrawRect(rect, new(0, 0.1f * (i + 1), 0.2f * (i + 1), 0.5f));
+        //     // EditorGUI.PropertyField(rect, seriProp, false);
+
+        //     if (i == tree.children.Count - 1)
+        //     {
+        //         isDrawn = true;
+        //     }
+        // }
+        // DrawField(property, tree, new(position.x, position.y, position.width, 80));
+        // DrawField2(property, tree);
     }
 
     public override float GetPropertyHeight(SerializedProperty property, GUIContent label)
     {
         var attr = attribute as HorizontalLayout2Attribute;
-        if (!s_dict.ContainsKey(attr.GroupName))
-        {
-            return EditorGUIUtility.singleLineHeight;
-        }
-        var props = s_dict[attr.GroupName];
 
-        // Only the first property takes space
-        if (props[0] != property.name)
+        if (tree?.groupName != attr.GroupName)
         {
-            return 0;
+            // return EditorGUIUtility.singleLineHeight;
+            return 100f; 
+        }
+        if (tree.children[0] is Leaf leaf) {
+            if (property.name != leaf.id)
+            {
+                return 0f;
+            }
         }
         return EditorGUIUtility.singleLineHeight;
     }
 
-    private void GetNumberOfField(SerializedProperty property)
+    private void Test()
     {
-        // Debug.Log("Invoked GetNumberOf FIeld");
-        FieldInfo[] fieldInfos = property.serializedObject.targetObject.GetType()
-        .GetFields(BindingFlags.Public | BindingFlags.NonPublic | BindingFlags.Instance);
-        // Debug.Log($"Type : {property.serializedObject.targetObject.GetType()}");
-        foreach (var fieldInfo in fieldInfos)
-        {
-            // Debug.Log($"Field : {fieldInfo}");
+        
+        var root =
+        GroupLayout.Horizontal(
+            "ok",
+            GroupLayout.Field("x1"),
+            GroupLayout.Vertical(
+                "ok",
+                GroupLayout.Field("x2"),
+                GroupLayout.Horizontal(
+                    "ok",
+                    GroupLayout.Field("x3"),
+                    GroupLayout.Vertical(
+                        "ok",
+                        GroupLayout.Field("x4"),
+                        GroupLayout.Field("x5")
+                    )
+                ),
+                GroupLayout.Field("x7")
+            ),
+            GroupLayout.Field("x6")
+        );
 
-            var attrs = fieldInfo.GetCustomAttributes(false);
-            foreach (var attr in attrs)
-            {
-                // Debug.Log($"This field has {attr.GetType()}");
-                if (attr is HorizontalLayout2Attribute horizontalAttr)
-                {
-                    // Debug.Log("Field name : " + fieldInfo.Name);
-                    if (!s_dict.ContainsKey(horizontalAttr.GroupName))
-                    {
-                        s_dict[horizontalAttr.GroupName] = new();
-                    }
-                    // s_dict[horizontalAttr.GroupName].Add(fieldInfo.Name);
-                    string path = property.propertyPath.Replace(property.name, fieldInfo.Name);
-                    s_dict[horizontalAttr.GroupName].Add(path);
-                    break;
-                }
-            }
-        }
+        var rects = new Dictionary<string, Rect>();
+        GroupLayout.Compute(root, new Rect(0, 0, 1000, 600), rects);
 
+        foreach (var kv in rects)
+            Debug.Log($"{kv.Key} -> {kv.Value}");
     }
 }
