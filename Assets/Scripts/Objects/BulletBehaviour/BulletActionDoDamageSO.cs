@@ -1,7 +1,7 @@
 // using EditorAttributes;
 using System;
 using System.Collections.Generic;
-using Healm.EditorTools;
+using Healm.Inspector;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -26,26 +26,24 @@ public class BulletActionDoDamageSO : ScriptableObject, IBulletBehaviour
     // [HorizontalLayout2("groupZ")] public int z4;
     // public int zEnd;
 
-    [HorizontalLayout2("GroupX")] public int x1;
-    [HorizontalLayout2("GroupX")] public int x2;
-    [HorizontalLayout2("GroupX")] public int x3;
-    // [VerticalLayout2("GroupX/Right")] public int x11;
-    // [VerticalLayout2("GroupX/Right")] public int x12;
-    // [VerticalLayout2("GroupX/Right")] public int x13;
-    // [VerticalLayout2("GroupX/Right")] public int x14;
-    [HorizontalLayout2("GroupX")] public int x4;
-    // [HorizontalLayout2("GroupX")]
-    // [VerticalLayout2("GroupX")] public int x4;
-    // [VerticalLayout2("GroupX")] public int x5;
+    [HorizontalLayout("GroupX")] public int x1;
+    [HorizontalLayout("GroupX")] public int x2;
+    [HorizontalLayout("GroupX")] public int x3;
+    [VerticalLayout("GroupX/Right")] public int x11;
+    [VerticalLayout("GroupX/Right")] public int x12;
+    [VerticalLayout("GroupX/Right")] public int x13;
+    [VerticalLayout("GroupX/Right")] public int x14;
+    [HorizontalLayout("GroupX")] public int x4;
     public int xEnd;
 
-    /*
-        H(x1, x2, V(x11, x12, x13))
-
-       x1 [] x2[] x11[]
-                  x12[]     
-                  x13[]     
-    */
+    // H(x1, V(x2, H(x3, V(x4, x5)), x7), x6)
+    // [HorizontalLayout2("GroupR")] public int r1;
+    // [VerticalLayout2("GroupR/split")] public int r2;
+    // [HorizontalLayout2("GroupR/split/inner")] public int r3;
+    // [VerticalLayout2("GroupR/split/inner/inner2")] public int r4;
+    // [VerticalLayout2("GroupR/split/inner/inner2")] public int r5;
+    // [VerticalLayout2("GroupR/split")] public int r7;
+    // [HorizontalLayout2("GroupR")] public int r6;
 
     /*
         H group1 x1
@@ -67,10 +65,6 @@ public class BulletActionDoDamageSO : ScriptableObject, IBulletBehaviour
                (       (x5[]))
                (    x7[]     )
     */
-    
-    // public void OnEnable()
-    // {
-    // }
     public void Apply(Bullet bullet)
     {
         bullet.SetDamage = m_damage;

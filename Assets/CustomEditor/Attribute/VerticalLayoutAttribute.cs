@@ -1,21 +1,16 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
-using Codice.Client.Common;
 using UnityEngine;
 
-namespace Healm.EditorTools
-{
+namespace Healm.Inspector{
     [AttributeUsage(AttributeTargets.Field, AllowMultiple = true, Inherited = false)]
-    public class VerticalLayoutAttribute : PropertyAttribute
-    {
-        public string m_groupName;
-        public bool m_EOL;
-
-        public VerticalLayoutAttribute(string groupName, bool EOL = false)
+        public class VerticalLayoutAttribute : GroupAttribute
         {
-            m_groupName = groupName;
-            m_EOL = EOL;
+            public string GroupName;
+            public VerticalLayoutAttribute(string groupName)
+            {
+                GroupName = groupName;
+            }
         }
-    }
 }

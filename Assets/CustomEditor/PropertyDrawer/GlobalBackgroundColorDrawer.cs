@@ -3,7 +3,7 @@ using System;
 using UnityEditor;
 using UnityEngine;
 
-namespace Healm.EditorTools
+namespace Healm.Inspector
 {
     [CustomPropertyDrawer(typeof(int), true)]
     [CustomPropertyDrawer(typeof(float), true)]

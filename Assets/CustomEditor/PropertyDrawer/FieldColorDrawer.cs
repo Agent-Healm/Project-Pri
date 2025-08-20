@@ -4,7 +4,7 @@ using Codice.CM.Client.Gui;
 using UnityEditor;
 using UnityEngine;
 
-namespace Healm.EditorTools
+namespace Healm.Inspector
 {
     [CustomPropertyDrawer(typeof(FieldColorAttribute))]
     public class FieldColorDrawer : PropertyDrawer

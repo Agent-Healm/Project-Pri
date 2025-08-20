@@ -4,7 +4,7 @@ using System.Collections.Generic;
 using UnityEditor;
 using UnityEngine;
 
-namespace Healm.EditorTools
+namespace Healm.Inspector
 {
     [AttributeUsage(AttributeTargets.Field, AllowMultiple = true, Inherited = false)]
     public class LabelSizeAttribute : PropertyAttribute

@@ -3,7 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-namespace Healm.EditorTools
+namespace Healm.Inspector
 {
     [AttributeUsage(AttributeTargets.Class, AllowMultiple = true, Inherited = false)]
     public class GlobalBackgroundColorAttribute : PropertyAttribute

@@ -4,9 +4,9 @@ using System.Collections.Generic;
 using UnityEditor;
 using UnityEngine;
 
-namespace Healm.EditorTools
+namespace Healm.Inspector
 {
-    [AttributeUsage(System.AttributeTargets.Field, Inherited = false, AllowMultiple = true)]
+    [AttributeUsage(AttributeTargets.Field, Inherited = false, AllowMultiple = true)]
     public class FieldColorAttribute : PropertyAttribute
     {
         public Color m_backgroundColor;
