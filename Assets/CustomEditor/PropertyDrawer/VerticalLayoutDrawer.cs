@@ -10,7 +10,8 @@ namespace Healm.Inspector
     {
         public override void OnGUI(Rect position, SerializedProperty property, GUIContent label)
         {
-            return;
+            OnGUI_Internal(position, property, label);
+            // return;
         }
 
         public override float GetPropertyHeight(SerializedProperty property, GUIContent label)

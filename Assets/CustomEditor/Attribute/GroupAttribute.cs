@@ -2,7 +2,10 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class GroupAttribute : PropertyAttribute
+namespace Healm.Inspector
 {
-    
+    public class GroupAttribute : PropertyAttribute
+    {
+
+    }
 }

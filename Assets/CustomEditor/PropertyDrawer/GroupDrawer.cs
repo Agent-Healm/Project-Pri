@@ -1,5 +1,3 @@
-using System;
-using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
@@ -11,24 +9,105 @@ namespace Healm.Inspector
     [CustomPropertyDrawer(typeof(GroupAttribute))]
     public class GroupDrawer : PropertyDrawer
     {
-        // protected static bool isDrawn;
+        protected static bool isDrawn;
         protected static float s_globalHeight = 0f;
         protected static float s_offsetHeight = -EditorGUIUtility.standardVerticalSpacing;
         protected static Split s_tree;
         protected static Dictionary<string, Rect> outRects = new();
 
-        // public override void OnGUI(Rect position, SerializedProperty property, GUIContent label)
-        // {
-
-        // }
-        // public override float GetPropertyHeight(SerializedProperty property, GUIContent label)
-        // {
-        //     return 40f;
-        // }
-
-        protected void SetRect(Rect position, string groupName)
+        private string TreeDebug(Node node)
         {
-            Debug.Log($"Debug for tree: {s_tree.children.Count}");
+            if (node is Leaf leaf)
+            {
+                // Debug.Log($"height for: {leaf.id}");
+                return $" {leaf.id}, ";
+            }
+            var split = node as Split;
+            int numberOfChildren = split.children.Count;
+            if (numberOfChildren == 0) return "";
+
+            if (split.groupType == GroupType.H)
+            {
+                string myString = $"H [{split.groupName}] ( ";
+                for (int i = 0; i < numberOfChildren; i++)
+                {
+                    myString += TreeDebug(split.children[i]);
+                }
+                myString += " )";
+                return myString;
+            }
+            else if (split.groupType == GroupType.V)
+            {
+                string myString = $"V [{split.groupName}] ( ";
+                for (int i = 0; i < numberOfChildren; i++)
+                { 
+                    myString += TreeDebug(split.children[i]);
+                }
+                myString += ") ";
+                return myString;
+            }
+
+            return "";
+        }
+
+        private void Test()
+        {
+
+            var root =
+            GroupLayout.Horizontal(
+                "ok",
+                GroupLayout.Field("x1"),
+                GroupLayout.Vertical(
+                    "ok",
+                    GroupLayout.Field("x2"),
+                    GroupLayout.Horizontal(
+                        "ok",
+                        GroupLayout.Field("x3"),
+                        GroupLayout.Vertical(
+                            "ok",
+                            GroupLayout.Field("x4"),
+                            GroupLayout.Field("x5")
+                        )
+                    ),
+                    GroupLayout.Field("x7")
+                ),
+                GroupLayout.Field("x6")
+            );
+
+            var rects = new Dictionary<string, Rect>();
+            GroupLayout.Compute(root, new Rect(0, 0, 1000, 600), rects);
+
+            foreach (var kv in rects)
+                Debug.Log($"{kv.Key} -> {kv.Value}");
+        }
+
+        private void TreeTest()
+        {
+            s_tree = 
+            GroupLayout.Horizontal(
+                "main",
+                GroupLayout.Field("x1"),
+                GroupLayout.Vertical(
+                    "inner",
+                    GroupLayout.Field("x2"),
+                    GroupLayout.Horizontal(
+                        "inner2",
+                        GroupLayout.Field("x3"),
+                        GroupLayout.Vertical(
+                            "inner3",
+                            GroupLayout.Field("x4"),
+                            GroupLayout.Field("x5")
+                        )
+                    ),
+                    GroupLayout.Field("x7")
+                ),
+                GroupLayout.Field("x6")
+            );
+        }
+
+        protected void SetRect(Rect position)
+        {
+            // Debug.Log($"Debug for tree: {s_tree.children.Count}");
             var rect = position;
             rect.height = s_globalHeight;
             GroupLayout.Compute(s_tree, rect, outRects, spacing: 0);
@@ -49,16 +128,42 @@ namespace Healm.Inspector
                     // Debug.Log($"This field has {attr.GetType()}");
                     if (attr is HorizontalLayoutAttribute horizontalAttr)
                     {
-                        // Debug.Log("Field name : " + fieldInfo.Name);
                         string path = property.propertyPath.Replace(property.name, fieldInfo.Name);
                         if (s_tree == null)
                         {
                             s_tree = GroupLayout.Horizontal(horizontalAttr.GroupName);
                         }
 
-                        Debug.Log($"Added {path} into tree, group: {horizontalAttr.GroupName}");
-                        s_tree.children.Add(new Leaf(path));
-                        break;
+                        var subGroup = horizontalAttr.GroupName.Split("/");
+                        Split currentSplit = s_tree;
+
+                        if (subGroup[0].Equals(s_tree.groupName))
+                        {
+                            for (int i = 1; i < subGroup.Length; i++)
+                            {
+                                var subGroupName = subGroup[i];
+
+                                var existing = currentSplit.children
+                                .OfType<Split>()
+                                .FirstOrDefault(split => split.groupName == subGroupName);
+                                if (existing == null)
+                                {
+                                    existing = GroupLayout.Horizontal(subGroupName);
+                                    currentSplit.children.Add(existing);
+                                }
+                                currentSplit = existing;
+                            }
+                            currentSplit.children.Add(new Leaf(path));
+                        }
+                        else
+                        {
+                            Debug.Log($"New horizontal");
+                            currentSplit.children.Add(new Leaf(path));
+                            Debug.Log($"Added {path} into hori tree, group: {horizontalAttr.GroupName}");
+                            // s_tree.children.Add(new Leaf(path));
+                            break;
+                        
+                        }
                     }
                     else if (attr is VerticalLayoutAttribute vertiAttr)
                     {
@@ -70,45 +175,34 @@ namespace Healm.Inspector
 
                         string path = property.propertyPath.Replace(property.name, fieldInfo.Name);
                         var subGroup = vertiAttr.GroupName.Split("/");
-                        // Debug.Log($"Split group: {subGroup[0]}, {subGroup[1]}");  
-                        // Debug.Log($"Split group result: {subGroup.Length}");
                         Split currentSplit = s_tree;
 
                         if (subGroup[0].Equals(s_tree.groupName))
                         {
                             for (int i = 1; i < subGroup.Length; i++)
                             {
-                                // Debug.Log($"{i}| Starting at split: {currentSplit.groupName}");
                                 var subGroupName = subGroup[i];
 
                                 var existing = currentSplit.children
                                 .OfType<Split>()
                                 .FirstOrDefault(split => split.groupName == subGroupName);
 
-                                // Debug.Log($"{i}| split at {existing?.groupName}");
-
                                 if (existing == null)
                                 {
-                                    // Debug.Log($"{i}| {subGroupName} doesnt exist, creating");
                                     existing = GroupLayout.Vertical(subGroupName);
                                     currentSplit.children.Add(existing);
                                 }
                                 currentSplit = existing;
-
-
                             }
                             currentSplit.children.Add(new Leaf(path));
                         }
                         else
                         {
                             Debug.Log($"new vertical");
-
-                            // currentSplit.children.Add(new Leaf(path));
+                            currentSplit.children.Add(new Leaf(path));
                             Debug.Log($"Added {path} into vertical tree, group: {vertiAttr.GroupName}");
-                            s_tree.children.Add(new Leaf(path));
                             break;
                         }
-
                     }
                 }
             }
@@ -118,11 +212,17 @@ namespace Healm.Inspector
         {
             if (node is Leaf leaf)
             {
-                int colorIndex = UnityEngine.Random.Range(0, 41);
+                int colorIndex = Random.Range(0, 41);
                 var rect = outRects[leaf.id];
                 // Debug.Log($"Rect height: {rect.height}");
+                if (rect.height <= EditorGUIUtility.singleLineHeight)
+                {
+                    Debug.Log($"{leaf.id} rect is too short: {rect.height}");
+                }
+                var seriProp = property.serializedObject.FindProperty(leaf.id);
+
                 EditorGUI.DrawRect(rect, new(0, 0.025f * (colorIndex + 1), 0.025f * (colorIndex + 1), 1));
-                EditorGUI.PropertyField(rect, property);
+                // EditorGUI.PropertyField(rect, seriProp);
                 return;
             }
             var split = node as Split;
@@ -140,7 +240,7 @@ namespace Healm.Inspector
             if (node is Leaf leaf)
             {
                 s_offsetHeight += EditorGUIUtility.standardVerticalSpacing;
-                Debug.Log($"height for: {leaf.id}");
+                // Debug.Log($"height for: {leaf.id}");
                 return EditorGUIUtility.singleLineHeight;
             }
             var split = node as Split;
@@ -149,12 +249,14 @@ namespace Healm.Inspector
 
             if (split.groupType == GroupType.H)
             {
+                // float maxHeight = EditorGUIUtility.singleLineHeight;
                 float maxHeight = 0f;
                 for (int i = 0; i < numberOfChildren; i++)
                 {
                     float childHeight = ComputeTotalHeight(split.children[i]);
                     maxHeight = Mathf.Max(maxHeight, childHeight);
                 }
+                // return maxHeight + EditorGUIUtility.standardVerticalSpacing;
                 return maxHeight;
             }
             else if (split.groupType == GroupType.V)
@@ -170,13 +272,34 @@ namespace Healm.Inspector
             return 0f;
         }
 
+        protected void OnGUI_Internal(Rect position, SerializedProperty property, GUIContent label)
+        {
+            if (property.name != (s_tree.children[0] as Leaf).id)
+            {
+                if (!isDrawn)
+                {
+                    var rect = outRects[property.name];
+                    EditorGUI.PropertyField(rect, property, false);
+                }
+                return;
+            }
+            isDrawn = false;
+            EditorGUIUtility.labelWidth = 50;
+            SetRect(position);
+            DrawField(property, s_tree);
+            isDrawn = true;
+        }
+
         protected float GetPropertyHeight_Internal(SerializedProperty property)
         {
             if (s_tree == null)
             {
                 SetupTree(property);
+                // TreeTest();
+                Debug.Log($"Tree debug: {TreeDebug(s_tree)}");
                 s_globalHeight = ComputeTotalHeight(s_tree);
             }
+            // Debug.Log($"tree: {s_tree?.children.Count}");
             if (s_tree.children[0] is Leaf leaf)
             {
                 if (property.name != leaf.id)
@@ -260,7 +383,7 @@ namespace Healm.Inspector
                     x += wi + spacing;
                 }
             }
-            else
+            else if (s.groupType == GroupType.V)
             {
                 float usableHeight = rect.height - totalSpacing;
                 float y = rect.y;
