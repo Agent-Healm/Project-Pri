@@ -5,7 +5,7 @@ using UnityEngine;
 
 namespace Healm.Inspector
 {
-    [CustomPropertyDrawer(typeof(VerticalLayoutAttribute))]
+    [CustomPropertyDrawer(typeof(VerticalGroupAttribute))]
     public class VerticalLayoutDrawer : GroupDrawer
     {
         public override void OnGUI(Rect position, SerializedProperty property, GUIContent label)

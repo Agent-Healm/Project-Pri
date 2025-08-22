@@ -1,9 +1,11 @@
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
-using Unity.VisualScripting.YamlDotNet.Core.Events;
 using UnityEditor;
 using UnityEngine;
+
+using Random = UnityEngine.Random;
 
 namespace Healm.Inspector
 {
@@ -11,11 +13,27 @@ namespace Healm.Inspector
     public class GroupDrawer : PropertyDrawer
     {
         protected static bool isDrawn;
-        protected static float s_globalHeight = 0f;
-        protected static float s_offsetHeight = 0;
-        protected static Split s_tree;
-        protected static List<Split> splits;
+        // protected static float s_globalHeight = 0f;
+        // protected static float s_offsetHeight = - EditorGUIUtility.standardVerticalSpacing * 0.5f;
+        // protected static Split s_tree;
+        protected static List<Split> splits = new();
+        protected static List<SplitInformation> splitHeight = new();
         protected static Dictionary<string, Rect> outRects = new();
+
+        protected class SplitInformation
+        {
+            public string groupName;
+            public float globalHeight = 0f;
+            public float offsetHeight = -EditorGUIUtility.standardVerticalSpacing * 0.5f;
+
+            public SplitInformation(string groupName)
+            {
+                this.groupName = groupName;
+                // globalHeight = 0f;
+                // offsetHeight = -EditorGUIUtility.standardVerticalSpacing * 0.5f;
+            }
+        }
+
 
         private string TreeDebug(Node node)
         {
@@ -52,36 +70,36 @@ namespace Healm.Inspector
             return "";
         }
 
-        private void Test()
-        {
+        // private void Test()
+        // {
 
-            var root =
-            GroupLayout.Horizontal(
-                "ok",
-                GroupLayout.Field("x1"),
-                GroupLayout.Vertical(
-                    "ok",
-                    GroupLayout.Field("x2"),
-                    GroupLayout.Horizontal(
-                        "ok",
-                        GroupLayout.Field("x3"),
-                        GroupLayout.Vertical(
-                            "ok",
-                            GroupLayout.Field("x4"),
-                            GroupLayout.Field("x5")
-                        )
-                    ),
-                    GroupLayout.Field("x7")
-                ),
-                GroupLayout.Field("x6")
-            );
+        //     var root =
+        //     GroupLayout.Horizontal(
+        //         "ok",
+        //         GroupLayout.Field("x1"),
+        //         GroupLayout.Vertical(
+        //             "ok",
+        //             GroupLayout.Field("x2"),
+        //             GroupLayout.Horizontal(
+        //                 "ok",
+        //                 GroupLayout.Field("x3"),
+        //                 GroupLayout.Vertical(
+        //                     "ok",
+        //                     GroupLayout.Field("x4"),
+        //                     GroupLayout.Field("x5")
+        //                 )
+        //             ),
+        //             GroupLayout.Field("x7")
+        //         ),
+        //         GroupLayout.Field("x6")
+        //     );
 
-            var rects = new Dictionary<string, Rect>();
-            GroupLayout.Compute(root, new Rect(0, 0, 1000, 600), rects);
+        //     var rects = new Dictionary<string, Rect>();
+        //     GroupLayout.Compute(root, new Rect(0, 0, 1000, 600), rects);
 
-            foreach (var kv in rects)
-                Debug.Log($"{kv.Key} -> {kv.Value}");
-        }
+        //     foreach (var kv in rects)
+        //         Debug.Log($"{kv.Key} -> {kv.Value}");
+        // }
 
         // private void TreeTest()
         // {
@@ -110,8 +128,10 @@ namespace Healm.Inspector
         protected void SetRect(Rect position, Node node)
         {
             // Debug.Log($"Debug for tree: {s_tree.children.Count}");
+            var split = node as Split;
             var rect = position;
-            rect.height = s_globalHeight;
+            // rect.height = s_globalHeight;
+            rect.height = splitHeight.Find(info => info.groupName.Equals(split.groupName)).globalHeight;
             GroupLayout.Compute(node, rect, outRects, spacing: 0);
         }
 
@@ -128,19 +148,30 @@ namespace Healm.Inspector
                 foreach (var attr in attrs)
                 {
                     // Debug.Log($"This field has {attr.GetType()}");
-                    if (attr is HorizontalLayoutAttribute horizontalAttr)
+                    if (attr is HorizontalGroupAttribute horizontalAttr)
                     {
                         string path = property.propertyPath.Replace(property.name, fieldInfo.Name);
                         var subGroup = horizontalAttr.GroupName.Split("/");
 
-                        if (s_tree == null)
+                        Split splitTemp = splits.Find(split => split.groupName == subGroup[0]);
+                        // Debug.Log($"I found {splitTemp?.groupName ?? "nothing"}");
+
+                        if (splitTemp == null)
                         {
-                            s_tree = GroupLayout.Horizontal(horizontalAttr.GroupName);
+                            splitTemp = GroupLayout.Horizontal(horizontalAttr.GroupName);
+                            splits.Add(splitTemp);
                         }
 
-                        Split currentSplit = s_tree;
+                        // if (s_tree == null)
+                        // {
+                        //     s_tree = GroupLayout.Horizontal(horizontalAttr.GroupName);
+                        // }
 
-                        if (subGroup[0].Equals(s_tree.groupName))
+                        // Split currentSplit = s_tree;
+                        Split currentSplit = splitTemp;
+
+                        // if (subGroup[0].Equals(s_tree.groupName))
+                        if (subGroup[0].Equals(splitTemp.groupName))
                         {
                             for (int i = 1; i < subGroup.Length; i++)
                             {
@@ -168,19 +199,28 @@ namespace Healm.Inspector
 
                         }
                     }
-                    else if (attr is VerticalLayoutAttribute vertiAttr)
+                    else if (attr is VerticalGroupAttribute vertiAttr)
                     {
-
-                        if (s_tree == null)
-                        {
-                            s_tree = GroupLayout.Vertical(vertiAttr.GroupName);
-                        }
-
                         string path = property.propertyPath.Replace(property.name, fieldInfo.Name);
                         var subGroup = vertiAttr.GroupName.Split("/");
-                        Split currentSplit = s_tree;
 
-                        if (subGroup[0].Equals(s_tree.groupName))
+                        Split splitTemp = splits.Find(s => s.groupName == subGroup[0]);
+
+                        if (splitTemp == null)
+                        {
+                            splitTemp = GroupLayout.Vertical(vertiAttr.GroupName);
+                            splits.Add(splitTemp);
+                        }
+                        // if (s_tree == null)
+                        // {
+                        //     s_tree = GroupLayout.Vertical(vertiAttr.GroupName);
+                        // }
+
+                        // Split currentSplit = s_tree;
+                        Split currentSplit = splitTemp;
+
+                        // if (subGroup[0].Equals(s_tree.groupName))
+                        if (subGroup[0].Equals(currentSplit.groupName))
                         {
                             for (int i = 1; i < subGroup.Length; i++)
                             {
@@ -285,7 +325,7 @@ namespace Healm.Inspector
         {
             if (node is Leaf leaf)
             {
-                s_offsetHeight += EditorGUIUtility.standardVerticalSpacing;
+                // s_offsetHeight += EditorGUIUtility.standardVerticalSpacing;
                 // Debug.Log($"height for: {leaf.id}");
                 return EditorGUIUtility.singleLineHeight;
             }
@@ -318,9 +358,60 @@ namespace Healm.Inspector
             return 0f;
         }
 
+        protected float ComputeOffsetHeight(Node node)
+        {
+            if (node is Leaf leaf)
+            {
+                // s_offsetHeight +=
+                // Debug.Log($"height for: {leaf.id}");
+                return EditorGUIUtility.standardVerticalSpacing;
+                // return EditorGUIUtility.singleLineHeight;
+            }
+            var split = node as Split;
+            int numberOfChildren = split.children.Count;
+            if (numberOfChildren == 0) return 0;
+
+            float maxHeight = 0f;
+            for (int i = 0; i < numberOfChildren; i++)
+            {
+                maxHeight += ComputeOffsetHeight(split.children[i]);
+                // Debug.Log($"New height {maxHeight}"); 
+            }
+            // Debug.Log($"Return: {maxHeight}");
+            return maxHeight;
+            // if (split.groupType == GroupType.H)
+            // {
+            //     // float maxHeight = EditorGUIUtility.singleLineHeight;
+            //     float maxHeight = 0f;
+            //     for (int i = 0; i < numberOfChildren; i++)
+            //     {
+            //         float childHeight = ComputeTotalHeight(split.children[i]);
+            //         maxHeight = Mathf.Max(maxHeight, childHeight);
+            //     }
+            //     // return maxHeight + EditorGUIUtility.standardVerticalSpacing;
+            //     return maxHeight;
+            // }
+            // else if (split.groupType == GroupType.V)
+            // {
+            //     float sumHeight = 0f;
+            //     for (int i = 0; i < numberOfChildren; i++)
+            //     {
+            //         sumHeight += ComputeTotalHeight(split.children[i]);
+            //     }
+            //     return sumHeight;
+            // }
+
+            // return 0f;
+        }
+
         protected void OnGUI_Internal(Rect position, SerializedProperty property, GUIContent label)
         {
-            if (property.name != (s_tree.children[0] as Leaf).id)
+            var groupName = (attribute as GroupAttribute).GroupName;
+            var rootGroupName = groupName.Split("/");
+            Split currentSplit = splits.Find(s => s.groupName.Equals(rootGroupName[0]));
+
+            // if (property.name != (s_tree.children[0] as Leaf).id)
+            if (property.name != (currentSplit.children[0] as Leaf).id)
             {
                 if (!isDrawn)
                 {
@@ -331,36 +422,95 @@ namespace Healm.Inspector
             }
             isDrawn = false;
             EditorGUIUtility.labelWidth = 50;
-            // var groupName = (attribute as GroupAttribute).GroupName;
-            SetRect(position, s_tree);
-            DrawField(property, s_tree);
+
+            SetRect(position, currentSplit);
+            DrawField(property, currentSplit);
+            // SetRect(position, s_tree);
+            // DrawField(property, s_tree);
             isDrawn = true;
         }
 
         protected float GetPropertyHeight_Internal(SerializedProperty property)
         {
+            // if (splits == null)
+            // {
+            //     SetupTree(property);
+            // }
+
             var groupName = (attribute as GroupAttribute).GroupName;
+            var rootGroup = groupName.Split("/");
+            var currentSplit = splits.Find(split => split.groupName.Equals(rootGroup[0]));
 
-            List<Split> item = new();
-            var split = item.Find(split => split.groupName.Equals(groupName));
-
-            if (s_tree == null)
+            // if (s_tree == null) 
+            // Debug.Log($"{rootGroup[0]} -> {currentSplit?.groupName ?? "none"}");
+            if (currentSplit == null)
             {
                 SetupTree(property);
                 // TreeTest();
-                Debug.Log($"Tree debug: {TreeDebug(s_tree)}");
-                s_globalHeight = ComputeTotalHeight(s_tree);
-                ComputeWeights(s_tree);
+                // Debug.Log($"Tree debug: {TreeDebug(s_tree)}");
+                // s_globalHeight = ComputeTotalHeight(s_tree);
+                // ComputeWeights(s_tree);
+
+                // --------------
+
+                // split = splits.Find(split => split.groupName.Equals(rootGroup[0]));
+                // Debug.Log($"Tree debug: {TreeDebug(split)}");
+
+                // SplitInformation splitInfo = new(rootGroup[0])
+                // {
+                //     // s_globalHeight = ComputeTotalHeight(split);
+                //     globalHeight = ComputeTotalHeight(split),
+                //     // offsetHeight += ComputeOffsetHeight(split);
+                // };
+                // splitInfo.offsetHeight += ComputeOffsetHeight(split);
+                // // Debug.Log($"offset set: {splitInfo.offsetHeight}");
+                // // Debug.Log($"offset set: {ComputeOffsetHeight(split)}");
+                // splitHeight.Add(splitInfo);
+
+                // ComputeWeights(split);
+
+                currentSplit = splits.Find(split => split.groupName.Equals(rootGroup[0]));
+
+                foreach (var split in splits)
+                {
+                    // Debug.Log($"Tree debug: {TreeDebug(split)}");
+
+                    SplitInformation splitInfo = new(split.groupName)
+                    {
+                        globalHeight = ComputeTotalHeight(split),
+                    };
+                    splitInfo.offsetHeight += ComputeOffsetHeight(split);
+                    splitHeight.Add(splitInfo);
+
+                    ComputeWeights(split);
+                }
             }
             // Debug.Log($"tree: {s_tree?.children.Count}");
-            if (s_tree.children[0] is Leaf leaf)
+            // if (s_tree.children[0] is Leaf leaf)
+            if (currentSplit.children[0] is Leaf leaf)
             {
                 if (property.name != leaf.id)
                 {
                     return 0f;
                 }
             }
-            return s_globalHeight - s_offsetHeight;
+            try
+            {
+                var x = splitHeight.Find(info => info.groupName.Equals(rootGroup[0]));
+                return x.globalHeight - x.offsetHeight;
+            }
+            catch (NullReferenceException)
+            {
+                Debug.Log($"Null Reference: {rootGroup[0]}");
+                Debug.Log($"Current height list");
+                foreach (var item in splitHeight)
+                {
+                    Debug.Log($"{item.groupName}: {item.globalHeight} - {item.offsetHeight}");
+                }
+            }
+            return 40f;
+            // Debug.Log($"OFfset height: {x.offsetHeight}");
+            // return s_globalHeight - s_offsetHeight;
         }
 
     }
@@ -452,5 +602,5 @@ namespace Healm.Inspector
             }
         }
     }
-    
+
 }

@@ -5,11 +5,11 @@ using UnityEngine;
 
 namespace Healm.Inspector{
     [AttributeUsage(AttributeTargets.Field, AllowMultiple = true, Inherited = false)]
-        public class VerticalLayoutAttribute : GroupAttribute
+    public class HorizontalGroupAttribute : GroupAttribute
+    {
+        public HorizontalGroupAttribute(string groupName)
         {
-            public VerticalLayoutAttribute(string groupName)
-            {
-                GroupName = groupName;
-            }
+            GroupName = groupName;
         }
+    }
 }

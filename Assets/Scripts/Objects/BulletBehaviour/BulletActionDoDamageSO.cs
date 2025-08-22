@@ -26,31 +26,31 @@ public class BulletActionDoDamageSO : ScriptableObject, IBulletBehaviour
     // [HorizontalLayout("groupZ")] public int z4;
     // public int zEnd;
 
-    // [HorizontalLayout("GroupX")] public int x1;
-    // [HorizontalLayout("GroupX")] public int x2;
-    // [HorizontalLayout("GroupX")] public int x3;
-    // [VerticalLayout("GroupX/Right")] public int x11;
-    // [VerticalLayout("GroupX/Right")] public int x12;
-    // [VerticalLayout("GroupX/Right")] public int x13;
-    // // [VerticalLayout("GroupX/Right")] public int x14;
-    // // [VerticalLayout("GroupX/Right")] public int x15;
-    // // [VerticalLayout("GroupX/Right")] public int x16;
-    // [HorizontalLayout("GroupX")] public int x4;
-    // public int xEnd;
+    [HorizontalGroup("GroupX")] public int x1;
+    [HorizontalGroup("GroupX")] public int x2;
+    [HorizontalGroup("GroupX")] public int x3;
+    [VerticalGroup("GroupX/Right")] public int x11;
+    [VerticalGroup("GroupX/Right")] public int x12;
+    [VerticalGroup("GroupX/Right")] public int x13;
+    // [VerticalLayout("GroupX/Right")] public int x14;
+    // [VerticalLayout("GroupX/Right")] public int x15;
+    // [VerticalLayout("GroupX/Right")] public int x16;
+    [HorizontalGroup("GroupX")] public int x4;
+    public int xEnd;
 
     // H(x1, V(x2, H(x3, V(x4, x5)), x7), x6)
 
-    [HorizontalLayout("GroupR")] public int r1;
-    [VerticalLayout("GroupR/split")] public int r2;
-    [HorizontalLayout("GroupR/split/inner")] public int r3;
-    [VerticalLayout("GroupR/split/inner/inner2")] public int r4;
-    [VerticalLayout("GroupR/split/inner/inner2")] public int r5;
-    [VerticalLayout("GroupR/split/inner/inner2")] public int r51;
-    [VerticalLayout("GroupR/split/inner/inner2")] public int r52;
-    [VerticalLayout("GroupR/split/inner/inner2")] public int r53;
-    [VerticalLayout("GroupR/split/inner/inner2")] public int r54;
-    [VerticalLayout("GroupR/split")] public int r6;
-    [HorizontalLayout("GroupR")] public int r7;
+    [HorizontalGroup("GroupR")] public int r1;
+    [VerticalGroup("GroupR/split")] public int r2;
+    [HorizontalGroup("GroupR/split/inner")] public int r3;
+    [VerticalGroup("GroupR/split/inner/inner2")] public int r4;
+    [VerticalGroup("GroupR/split/inner/inner2")] public int r5;
+    [VerticalGroup("GroupR/split/inner/inner2")] public int r51;
+    [VerticalGroup("GroupR/split/inner/inner2")] public int r52;
+    [VerticalGroup("GroupR/split/inner/inner2")] public int r53;
+    [VerticalGroup("GroupR/split/inner/inner2")] public int r54;
+    [VerticalGroup("GroupR/split")] public int r6;
+    [HorizontalGroup("GroupR")] public int r7;
     public int rEnd;
 
     // [VerticalLayout("GroupY")] public int y1;
