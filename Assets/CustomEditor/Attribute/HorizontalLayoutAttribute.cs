@@ -7,7 +7,6 @@ namespace Healm.Inspector{
     [AttributeUsage(AttributeTargets.Field, AllowMultiple = true, Inherited = false)]
     public class HorizontalLayoutAttribute : GroupAttribute
     {
-        public string GroupName;
         public HorizontalLayoutAttribute(string groupName)
         {
             GroupName = groupName;

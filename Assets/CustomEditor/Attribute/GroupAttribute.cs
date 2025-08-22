@@ -6,6 +6,6 @@ namespace Healm.Inspector
 {
     public class GroupAttribute : PropertyAttribute
     {
-
+        public string GroupName;
     }
 }

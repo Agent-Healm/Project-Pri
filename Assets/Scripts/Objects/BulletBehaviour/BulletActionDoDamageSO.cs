@@ -45,8 +45,10 @@ public class BulletActionDoDamageSO : ScriptableObject, IBulletBehaviour
     [HorizontalLayout("GroupR/split/inner")] public int r3;
     [VerticalLayout("GroupR/split/inner/inner2")] public int r4;
     [VerticalLayout("GroupR/split/inner/inner2")] public int r5;
-    // [VerticalLayout("GroupR/split/inner/inner2")] public int r51;
-    // [VerticalLayout("GroupR/split/inner/inner2")] public int r52;
+    [VerticalLayout("GroupR/split/inner/inner2")] public int r51;
+    [VerticalLayout("GroupR/split/inner/inner2")] public int r52;
+    [VerticalLayout("GroupR/split/inner/inner2")] public int r53;
+    [VerticalLayout("GroupR/split/inner/inner2")] public int r54;
     [VerticalLayout("GroupR/split")] public int r6;
     [HorizontalLayout("GroupR")] public int r7;
     public int rEnd;
