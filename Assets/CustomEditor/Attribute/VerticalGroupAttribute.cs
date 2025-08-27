@@ -7,9 +7,9 @@ namespace Healm.Inspector{
     [AttributeUsage(AttributeTargets.Field, AllowMultiple = true, Inherited = false)]
         public class VerticalGroupAttribute : GroupAttribute
         {
-            public VerticalGroupAttribute(string groupName)
+            public VerticalGroupAttribute(string groupName) : base(groupName)
             {
-                GroupName = groupName;
+                // GroupName = groupName;
             }
         }
 }
