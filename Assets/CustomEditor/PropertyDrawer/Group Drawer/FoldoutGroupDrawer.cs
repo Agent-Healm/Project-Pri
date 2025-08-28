@@ -30,6 +30,14 @@ public class FoldoutGroupDrawer : PropertyDrawer
     public override float GetPropertyHeight(SerializedProperty property, GUIContent label)
     {
         var groupName = ((FoldoutGroupAttribute)attribute).groupName;
+        
+         // ✅ Always let Unity handle arrays and their children
+        if (property.isArray && property.propertyType != SerializedPropertyType.String)
+            return EditorGUI.GetPropertyHeight(property, true);
+
+        if (property.propertyPath.Contains("Array.data["))
+            return EditorGUI.GetPropertyHeight(property, true);
+
         if (props.Count == 0)
         {
             SetupFold(property);
@@ -43,21 +51,22 @@ public class FoldoutGroupDrawer : PropertyDrawer
                 return 0;
             }
             
-            Debug.Log($"create foldout heading");
+            // Debug.Log($"create foldout heading");
             return EditorGUIUtility.singleLineHeight - props.Count * EditorGUIUtility.standardVerticalSpacing;
         }
 
         // only first gets height
         // Debug.Log($"Returned default height");
-        if (property.name.Equals("data"))
-        {
-            return EditorGUIUtility.singleLineHeight;
-            // return 100f;
-        }
+        // if (property.name.Equals("data"))
+        // {
+        //     return EditorGUIUtility.singleLineHeight;
+        //     // return 100f;
+        // }
         if (property.name.Equals(props[0]))
         {
             // // Debug.Log($"create foldout heading");
             float height = EditorGUIUtility.singleLineHeight;
+            // float height = 0;
             foreach (var item in props)
             {
                 float heightTemp = 0;
@@ -89,40 +98,21 @@ public class FoldoutGroupDrawer : PropertyDrawer
                         // Debug.Log($"{prop.name} is an array? : {prop.isArray}");
                         if (prop.isArray)
                         {
-                            // heightTemp += 80f;
-                            // var tempHeight = EditorGUI.GetPropertyHeight(prop, true);
-                            // Debug.Log($"array height: {tempHeight}");
-                            // heightTemp += tempHeight;
-                            // heightTemp += 120f;
-
-                            // var sizeProp = prop.FindPropertyRelative("Array.size");
-                            // heightTemp += EditorGUI.GetPropertyHeight(sizeProp, true) + EditorGUIUtility.standardVerticalSpacing;
-
-                            // Debug.Log($"array.size size: {EditorGUI.GetPropertyHeight(sizeProp, true)}");
-                            // Debug.Log($"This array has sizeof: {prop.arraySize}");
-
-                            // for (int i = 0; i < prop.arraySize; i++)
-                            {
-                                // var element = prop.GetArrayElementAtIndex(i);
-                                // Debug.Log($"child-{i} size: {EditorGUIUtility.singleLineHeight + EditorGUIUtility.standardVerticalSpacing}");
-                                // height += EditorGUI.GetPropertyHeight(element, true) + EditorGUIUtility.standardVerticalSpacing;
-                                // heightTemp += EditorGUI.GetPropertyHeight(element, true) + EditorGUIUtility.standardVerticalSpacing;
-                                // var propHeight = EditorGUIUtility.singleLineHeight;
-
-                                // var propHeight = EditorGUI.GetPropertyHeight(prop, true);
-                                // // var propHeight = 0f;
-                                // Debug.Log($"total child height: {propHeight}");
-                                // heightTemp += propHeight + EditorGUIUtility.standardVerticalSpacing;
-                            }
+                            var propHeight = EditorGUI.GetPropertyHeight(prop, true);
+                            // var propHeight = 0f;
+                            // Debug.Log($"total child height: {propHeight}");
+                            heightTemp += propHeight - EditorGUIUtility.singleLineHeight;
                             // Debug.Log($"Array height total: {heightTemp} ");
 
-                            while (start.NextVisible(enterChild) && !SerializedProperty.EqualContents(start, end))
-                            {
-                                var childHeight = EditorGUI.GetPropertyHeight(start, true);
-                                heightTemp += childHeight + EditorGUIUtility.standardVerticalSpacing;
-                                Debug.Log($"Child {start.name} height: {childHeight}");
-                                enterChild = false;
-                            }
+                            // while (start.NextVisible(enterChild) && !SerializedProperty.EqualContents(start, end))
+                            // {
+                            //     var childHeight = EditorGUI.GetPropertyHeight(start, true);
+                            //     // heightTemp += childHeight + EditorGUIUtility.standardVerticalSpacing;
+                            //     Debug.Log($"Child {start.name} height: {childHeight}");
+                            //     enterChild = false;
+
+                            // }
+                            // Debug.Log($"Array height total: {heightTemp} ");
                         }
                         else
                         {
@@ -134,17 +124,11 @@ public class FoldoutGroupDrawer : PropertyDrawer
                                 enterChild = false;
                             }
                         }
-                        // }
                     }
                 }
-                // else
-                // {
-                heightTemp += EditorGUIUtility.singleLineHeight
-                ;
-
+                heightTemp += EditorGUIUtility.singleLineHeight;
                 heights[item] = heightTemp;
                 height += heightTemp;
-                // }
             }
             return height;
         }
@@ -165,12 +149,8 @@ public class FoldoutGroupDrawer : PropertyDrawer
                 return;
 
             SetRect(position);
-            // Debug.Log($"I only executed once from {property.name}");
             DrawField(property);
         }
-
-        // if (!foldoutStates[groupName])
-        //     return;
 
         if (isDrawing)
         {
@@ -178,8 +158,8 @@ public class FoldoutGroupDrawer : PropertyDrawer
             var foundRect = rects.TryGetValue(property.name, out var item);
             if (!foundRect)
             {
-                Debug.Log($"Rects for {property.name} not found");
                 item = position;
+                Debug.Log($"Rects for {property.name} not found");
                 // item.height = 80f;
                 if (property.name.Equals("data"))
                 {
@@ -189,19 +169,12 @@ public class FoldoutGroupDrawer : PropertyDrawer
                     // return;
                 }
             }
+            PropertyField_Internal(item, property, true);
             // if (property.isArray)
             // {
             //     PropertyField_Internal(item, property, true);
             // }
-            PropertyField_Internal(item, property, true);
         }
-
-        // if (property.name.Equals(props[0]))
-        // {
-        //     SetRect(position);
-        //     Debug.Log($"I only executed once from {property.name}");
-        //     DrawField(property);
-        // }
     }
 
     private void SetupFold(SerializedProperty property)
@@ -267,50 +240,51 @@ public class FoldoutGroupDrawer : PropertyDrawer
 
     private void PropertyField_Internal(Rect rect, SerializedProperty property, bool includeChildren = true)
     {
-        // Debug.Log($"Drawing {property.name} with {rect}");
-        if (property.isArray && property.propertyType != SerializedPropertyType.String)
-        {
-            // Debug.Log($"try skipping array drawing");
-            // Debug.Log($"{property.name} debug: {rect}");
-            // return;
+        // // Debug.Log($"Drawing {property.name} with {rect}");
+        // if (property.isArray && property.propertyType != SerializedPropertyType.String)
+        // {
+        //     // Debug.Log($"try skipping array drawing");
+        //     // Debug.Log($"{property.name} debug: {rect}");
+        //     // return;
 
-            float y = rect.y;
-            float x = rect.x;
-            float width = rect.width;
+        //     float y = rect.y;
+        //     float x = rect.x;
+        //     float width = rect.width;
 
-            // Header
-            Rect headerRect = new Rect(x, y, width, EditorGUIUtility.singleLineHeight);
-            property.isExpanded = EditorGUI.Foldout(headerRect, property.isExpanded, property.displayName, true);
-            y += EditorGUIUtility.singleLineHeight + EditorGUIUtility.standardVerticalSpacing;
+        //     // Header
+        //     Rect headerRect = new Rect(x, y, width, EditorGUIUtility.singleLineHeight);
+        //     property.isExpanded = EditorGUI.Foldout(headerRect, property.isExpanded, property.displayName, true);
+        //     y += EditorGUIUtility.singleLineHeight + EditorGUIUtility.standardVerticalSpacing;
 
-            if (!property.isExpanded)
-                return;
+        //     if (!property.isExpanded)
+        //         return;
 
-            // Size field
-            var sizeProp = property.FindPropertyRelative("Array.size");
-            float sizeHeight = EditorGUI.GetPropertyHeight(sizeProp, true);
-            // Debug.Log($"size height: {sizeHeight}");
-            EditorGUI.PropertyField(new Rect(x, y, width, sizeHeight), sizeProp, true);
-            y += sizeHeight + EditorGUIUtility.standardVerticalSpacing;
+        //     // Size field
+        //     var sizeProp = property.FindPropertyRelative("Array.size");
+        //     float sizeHeight = EditorGUI.GetPropertyHeight(sizeProp, true);
+        //     // Debug.Log($"size height: {sizeHeight}");
+        //     EditorGUI.PropertyField(new Rect(x, y, width, sizeHeight), sizeProp, true);
+        //     y += sizeHeight + EditorGUIUtility.standardVerticalSpacing;
 
-            // Elements
-            for (int i = 0; i < property.arraySize; i++)
-            {
-                var element = property.GetArrayElementAtIndex(i);
-                // Debug.Log($"child name: {element.name}");
-                float elemHeight = EditorGUI.GetPropertyHeight(element, true);
-                // float elemHeight = EditorGUIUtility.singleLineHeight;
-                // Debug.Log($"child-{i} height: {elemHeight}");
-                EditorGUI.PropertyField(new Rect(x, y, width, elemHeight), element, true);
-                y += elemHeight + EditorGUIUtility.standardVerticalSpacing;
-            }
+        //     // Elements
+        //     for (int i = 0; i < property.arraySize; i++)
+        //     {
+        //         var element = property.GetArrayElementAtIndex(i);
+        //         // Debug.Log($"child name: {element.name}");
+        //         float elemHeight = EditorGUI.GetPropertyHeight(element, true);
+        //         // float elemHeight = EditorGUIUtility.singleLineHeight;
+        //         // Debug.Log($"child-{i} height: {elemHeight}");
+        //         EditorGUI.PropertyField(new Rect(x, y, width, elemHeight), element, true);
+        //         y += elemHeight + EditorGUIUtility.standardVerticalSpacing;
+        //     }
 
-        }
-        else
-        {
+        // }
+        // else
+        // {
             
+        // EditorGUI.PropertyField(rect, property, includeChildren);
+        // }
         EditorGUI.PropertyField(rect, property, includeChildren);
-        }
     }
 
 

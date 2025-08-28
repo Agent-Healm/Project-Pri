@@ -72,17 +72,18 @@ public class BulletActionDoDamageSO : ScriptableObject, IBulletBehaviour
     // [FoldoutGroup("GroupF")] public MyData f0;
     [FoldoutGroup("GroupF")] public int f1;
     [FoldoutGroup("GroupF")] public int f2;
-    [FoldoutGroup("GroupF")] public MyData f3;
+    // [FoldoutGroup("GroupF")] public MyData f3;
     [FoldoutGroup("GroupF")] public int f4;
     [FoldoutGroup("GroupF")] public int f5;
-    // [FoldoutGroup("GroupF")] public List<int> f6;
+    [FoldoutGroup("GroupF")] public List<int> f6;
     // [FoldoutGroup("GroupF")] public List<MyData> f61;
     [FoldoutGroup("GroupF")] public int f7;
     [FoldoutGroup("GroupF")] public int f8;
     // [FoldoutGroup("GroupF")] public List<int> f9;
 
     public int fEnd;
-
+    // public int[] items;
+    // public int itemEnd;
 
 
     public void Apply(Bullet bullet)
