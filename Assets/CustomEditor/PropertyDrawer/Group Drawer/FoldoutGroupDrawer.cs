@@ -4,9 +4,11 @@ using System.Linq;
 using System.Reflection;
 using System.Runtime.InteropServices;
 using Codice.Client.Common;
+using PlasticGui.WorkspaceWindow.Topbar;
 using Unity.Properties;
 using UnityEditor;
 using UnityEngine;
+using UnityEngine.UIElements;
 
 [CustomPropertyDrawer(typeof(FoldoutGroupAttribute), false)]
 public class FoldoutGroupDrawer : PropertyDrawer
@@ -15,8 +17,9 @@ public class FoldoutGroupDrawer : PropertyDrawer
     private static Dictionary<string, bool> foldoutStates = new();
 
     // Track if we've already drawn a group in this frame
-    private static HashSet<string> drawnGroups = new();
-
+    // private static HashSet<string> drawnGroups = new();
+    // private static Rect firstRect;
+    private static Dictionary<string, Rect> rects = new();
     private static List<string> props = new();
 
     private static bool isDrawing = false;
@@ -26,77 +29,73 @@ public class FoldoutGroupDrawer : PropertyDrawer
         var groupName = ((FoldoutGroupAttribute)attribute).groupName;
 
         // Skip if already drawn
-        if (drawnGroups.Contains(groupName)){
-            Debug.Log($"Drawing field");
-            return EditorGUIUtility.singleLineHeight;
-        }
+        // if (drawnGroups.Contains(groupName)){
+        //     Debug.Log($"Drawing field");
+        //     return EditorGUIUtility.singleLineHeight;
+        // }
         // return 0f; 
-
-        SetupFold(property);
+        if (props.Count == 0)
+        {
+            SetupFold(property);
+        }
 
         // If collapsed → only header
         if (!foldoutStates.TryGetValue(groupName, out bool expanded) || !expanded)
         {
-            Debug.Log($"create foldout heading");
-            return EditorGUIUtility.singleLineHeight;
+            // Debug.Log($"prop count: {props.Count}");
+            if (property.name.Equals(props[0]))
+            {
+                Debug.Log($"create foldout heading");
+                return EditorGUIUtility.singleLineHeight - (props.Count) * EditorGUIUtility.standardVerticalSpacing;
+            }
+            else { return 0f; }
         }
         // Expanded → sum heights of only fields in this group
-        // Debug.Log($"Returned default height");
+        Debug.Log($"Returned default height");
         // return GetGroupHeight(property, groupName);
-        return 36f;
+        // return EditorGUIUtility.singleLineHeight * (props.Count + 1);
+        // return 36f;
+        // return 18f;
+        // return 0f;
+        if (property.name.Equals(props[0]))
+        {
+            Debug.Log($"create foldout heading");
+            // return EditorGUIUtility.singleLineHeight;
+            return EditorGUIUtility.singleLineHeight * (props.Count + 1);
+
+            // return 36f;
+        }
+        else { return 0f; }
+        // else { return 18f; }
     }
 
     public override void OnGUI(Rect position, SerializedProperty property, GUIContent label)
     {
         var groupName = ((FoldoutGroupAttribute)attribute).groupName;
-        // if ()            EditorGUI.PropertyField(position, property);
+
         if (property.name.Equals(props[0]))
         {
             foldoutStates[groupName] = EditorGUI.Foldout(
                 new Rect(position.x, position.y, position.width, EditorGUIUtility.singleLineHeight),
                 foldoutStates[groupName], "FoldOutGroup", true);
-            
-        }
- 
-        // if (isDrawing || foldoutStates[groupName])
-        if (isDrawing || foldoutStates[groupName])
-        {
-            var rect = position;
-            rect.y += EditorGUIUtility.singleLineHeight;
-            // EditorGUI.DrawRect(rect, new(0.5f, 1, 0));
-            EditorGUI.PropertyField(rect, property);
-            return;
         }
 
         if (!foldoutStates[groupName])
             return;
 
-        // Draw all fields in this group
-        EditorGUI.indentLevel++;
-
-        isDrawing = true;
-        float y = position.y + EditorGUIUtility.singleLineHeight + 2;
-        foreach (var prop in props)
+        if (isDrawing)
         {
-            Debug.Log($"Drawing for {prop}");
-            var thisProperty = property.serializedObject.FindProperty(prop);
-            var rect = position;
-            rect.y = y + 40f;
-            // rect.height = EditorGUI.GetPropertyHeight(thisProperty, true);
-            rect.height = EditorGUIUtility.singleLineHeight;
-            Debug.Log($"{thisProperty.name} height: {rect.height}");
-            // y += 
-            // float height = EditorGUI.GetPropertyHeight(property, true);
-            // EditorGUI.PropertyField(new(position.x, position.y, position.width, height), iterator, true);
-            // y += height + 2;
-            // EditorGUI.PropertyField(rect, property, false);
-            EditorGUI.PropertyField(rect, thisProperty, false);
-            y += rect.height + 2;
-            Debug.Log($"Rect: {rect}");
+            var rect = rects[property.name];
+            EditorGUI.PropertyField(rect, property);
         }
-        EditorGUI.indentLevel--;
-        isDrawing = false;
+        
 
+        if (property.name.Equals(props[0]))
+        {
+            SetRect(position);
+            Debug.Log($"I only executed once from {property.name}");
+            DrawField(property);
+        }
     }
 
     private void SetupFold(SerializedProperty property)
@@ -126,6 +125,34 @@ public class FoldoutGroupDrawer : PropertyDrawer
         // {
         //     Debug.Log($"Item: {item}");
         // }
+    }
+
+    private void SetRect(Rect rect)
+    {
+        rect.y += EditorGUIUtility.singleLineHeight;
+        for (int i = 0; i < props.Count; i++)
+        {
+            var prop = props[i];
+            rects[prop] = rect;
+            rect.y += EditorGUIUtility.singleLineHeight + EditorGUIUtility.standardVerticalSpacing;
+        }
+        // foreach (var item in rects)
+        // {
+        //     Debug.Log($"Rect debug {item.Key}: {item.Value}");
+        // }
+    }
+
+    private void DrawField(SerializedProperty property)
+    {
+        isDrawing = true;
+        foreach (var prop in props)
+        {
+            Debug.Log($"Drawing for {prop}");
+            var thisProperty = property.serializedObject.FindProperty(prop);
+            var rect = rects[prop];
+            EditorGUI.PropertyField(rect, thisProperty, false);
+        }
+        isDrawing = false;
     }
 
     private float GetGroupHeight(SerializedProperty property, string groupName)
@@ -181,7 +208,7 @@ public class FoldoutGroupDrawer : PropertyDrawer
     }
 
     // Reset before repaint so groups can be redrawn
-    [InitializeOnLoadMethod]
+    // [InitializeOnLoadMethod]
     private static void ResetDrawnGroups()
     {
         // EditorApplication.update += () => drawnGroups.Clear();
