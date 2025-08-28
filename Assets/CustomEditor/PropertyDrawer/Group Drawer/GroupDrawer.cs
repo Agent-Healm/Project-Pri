@@ -288,11 +288,11 @@ namespace Healm.Inspector
         {
             if (node is Leaf leaf)
             {
-                int colorIndex = Random.Range(0, 41);
                 var rect = outRects[leaf.id];
                 var seriProp = property.serializedObject.FindProperty(leaf.id);
 
-                EditorGUI.DrawRect(rect, new(0, 0.025f * (colorIndex + 1), 0.025f * (colorIndex + 1), 1));
+                // int colorIndex = Random.Range(0, 41);
+                // EditorGUI.DrawRect(rect, new(0, 0.025f * (colorIndex + 1), 0.025f * (colorIndex + 1), 1));
                 PropertyField_Internal(rect, seriProp, false);
                 return;
             }

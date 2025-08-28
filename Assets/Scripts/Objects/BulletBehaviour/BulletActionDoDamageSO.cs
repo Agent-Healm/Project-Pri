@@ -53,54 +53,30 @@ public class BulletActionDoDamageSO : ScriptableObject, IBulletBehaviour
     // [HorizontalGroup("GroupR")] public int r7;
     // public int rEnd;
 
-    [HorizontalGroup("GroupY")]
-    // public int y0;
-    [VerticalGroup("GroupY/left")] public int y1;
-    [VerticalGroup("GroupY/left")] public int y2;
-    [VerticalGroup("GroupY/left")] public int y3;
-    [VerticalGroup("GroupY/left")] public int y4;
-    [VerticalGroup("GroupY/mid")] public int y5;
-    [VerticalGroup("GroupY/mid")] public int y6;
-    [VerticalGroup("GroupY/mid")] public int y7;
-    [VerticalGroup("GroupY/mid")] public int y8;
-    [VerticalGroup("GroupY/right")] public int y9;
-    [VerticalGroup("GroupY/right")] public int y10;
-    [VerticalGroup("GroupY/right")] public int y11;
-    [VerticalGroup("GroupY/right")] public int y12;
-    public int yEnd;
-    // public int yEnd1;
-    // public int yEnd2;
-    // public int yEnd3;
-    // public int yEnd4;
-    // public int yEnd5;
-    // public int yEnd6;
-    // public int yEnd7;
+    // [HorizontalGroup("GroupY")]
+    // // public int y0;
+    // [VerticalGroup("GroupY/left")] public int y1;
+    // [VerticalGroup("GroupY/left")] public int y2;
+    // [VerticalGroup("GroupY/left")] public int y3;
+    // [VerticalGroup("GroupY/left")] public int y4;
+    // [VerticalGroup("GroupY/mid")] public int y5;
+    // [VerticalGroup("GroupY/mid")] public int y6;
+    // [VerticalGroup("GroupY/mid")] public int y7;
+    // [VerticalGroup("GroupY/mid")] public int y8;
+    // [VerticalGroup("GroupY/right")] public int y9;
+    // [VerticalGroup("GroupY/right")] public int y10;
+    // [VerticalGroup("GroupY/right")] public int y11;
+    // [VerticalGroup("GroupY/right")] public int y12;
+    // public int yEnd;
 
-    // [HorizontalGroup("GroupW")] public int w1;
-    // [HorizontalGroup("GroupW")] public int w2;
-    // [HorizontalGroup("GroupW")] public int w3;
-    // public int wEnd;
+    [FoldoutGroup("GroupF")] public int f1;
+    [FoldoutGroup("GroupF")] public int f2;
+    [FoldoutGroup("GroupF")] public int f3;
+    [FoldoutGroup("GroupF")] public int f4;
+    public int fEnd;
 
-    /*
-        H group1 x1
 
-        H group1 
-        V group1/split x2
 
-        v group1/split
-        H group1/split/inner x3
-
-        v group1/split/inner/inner2 x4
-        v group1/split/inner/inner2 x5
-
-        =>
-        H(x1, V(x2, H(x3, V(x4, x5)), x7), x6)
-
-        x1[] | (    x2[]     ) | x6
-               (x3[] | (x4[]))
-               (       (x5[]))
-               (    x7[]     )
-    */
     public void Apply(Bullet bullet)
     {
         bullet.SetDamage = m_damage;
