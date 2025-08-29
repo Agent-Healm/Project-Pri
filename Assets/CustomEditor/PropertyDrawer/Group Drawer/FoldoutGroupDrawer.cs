@@ -61,7 +61,7 @@ public class FoldoutGroupDrawer : PropertyDrawer
             {
                 return 0;
             }
-            
+
             // Debug.Log($"create foldout heading");
             return EditorGUIUtility.singleLineHeight - props.Count * EditorGUIUtility.standardVerticalSpacing;
         }
@@ -136,7 +136,7 @@ public class FoldoutGroupDrawer : PropertyDrawer
             if (!foundRect)
             {
                 item = position;
-            }            
+            }
             PropertyField_Internal(item, property, true);
         }
     }
@@ -152,10 +152,10 @@ public class FoldoutGroupDrawer : PropertyDrawer
             string path = property.serializedObject.FindProperty(fieldInfo.Name).name;
             var attr = fieldInfo.GetCustomAttribute<FoldoutGroupAttribute>(false);
             if (attr != null)
-            { 
+            {
                 props.Add(path);
                 // props.Add(fieldInfo.Name);
-                
+
                 if (!foldoutStates.ContainsKey(attr?.groupName))
                 {
                     // foldoutStates[attr?.groupName] = false;
@@ -163,7 +163,7 @@ public class FoldoutGroupDrawer : PropertyDrawer
                 }
             }
         }
-        
+
         // foreach (var item in props)
         // {
         //     Debug.Log($"Item: {item}");
@@ -208,15 +208,45 @@ public class FoldoutGroupDrawer : PropertyDrawer
         {
             var thisLabel = property.displayName;
             property = property.FindPropertyRelative("items");
+            // var prevIndent = EditorGUI.indentLevel;
+            // EditorGUI.indentLevel = 0;
+            // var rng = Random.Range(0f, 1f) ;
+            var rng = 0.3f;
+            EditorGUI.DrawRect(rect, new Color(0.2f, 1f, 0.2f, 0.3f * rng));
             EditorGUI.PropertyField(rect, property, new(thisLabel), includeChildren);
+            // PropertyField_Children(rect, property, thisLabel);
+            // EditorGUI.indentLevel = prevIndent;
         }
         else
         {
-            
-            EditorGUI.PropertyField(rect, property, includeChildren);
+
+            PropertyField_Children(rect, property);
+            // EditorGUI.PropertyField(rect, property, includeChildren);
         }
     }
 
+    private void PropertyField_Children(Rect rect, SerializedProperty property, string label = null)
+    {
+        // Debug.Log($"{property.Copy().name} to {property.Copy().GetEndProperty().name}");
+        var start = property.Copy();
+        var end = start.GetEndProperty();
+        label ??= property.displayName;
+
+        var parentRect = rect;
+        parentRect.height = EditorGUIUtility.singleLineHeight;
+        EditorGUI.PropertyField(parentRect, property, new(label), false);
+        // EditorGUI.PropertyField(rect, property, new(label), true);return;
+        if (!property.isExpanded) return;
+
+        bool enterChild = true;
+        while (start.NextVisible(enterChild) && !SerializedProperty.EqualContents(start, end))
+        {
+            rect.y += EditorGUI.GetPropertyHeight(start, false) + EditorGUIUtility.standardVerticalSpacing;
+            PropertyField_Children(rect, start);
+            enterChild = false;
+            // Debug.Log($"{label}. Child {start.name} height: {EditorGUI.GetPropertyHeight(start, true)}");
+        }
+    } 
 }
 
 [Serializable]
