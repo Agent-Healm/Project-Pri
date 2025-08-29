@@ -75,14 +75,6 @@ public class FoldoutGroupDrawer : PropertyDrawer
             {
                 float heightTemp = 0;
                 var prop = property.serializedObject.FindProperty(item);
-                // height += EditorGUI.GetPropertyHeight(prop, true);
-                if (prop.isArray && prop.propertyType != SerializedPropertyType.String)
-                {
-                    float arrayHeight = EditorGUI.GetPropertyHeight(prop, true);
-                    heights[item] = arrayHeight;
-                    height += arrayHeight;
-                    continue;
-                }
 
                 if (prop.hasVisibleChildren)
                 {
@@ -100,7 +92,10 @@ public class FoldoutGroupDrawer : PropertyDrawer
                         }
                     }
                 }
-                heightTemp += EditorGUIUtility.singleLineHeight;
+                if (!prop.type.StartsWith("MyArray"))
+                {
+                    heightTemp += EditorGUIUtility.singleLineHeight;
+                }
                 heights[item] = heightTemp;
                 height += heightTemp;
                 // Debug.Log($"{item} height: {heightTemp}"); 
@@ -137,10 +132,11 @@ public class FoldoutGroupDrawer : PropertyDrawer
         {
             // Debug.Log($"Drawing {property.name}");
             var foundRect = rects.TryGetValue(property.name, out var item);
+
             if (!foundRect)
             {
                 item = position;
-            }
+            }            
             PropertyField_Internal(item, property, true);
         }
     }
@@ -205,10 +201,20 @@ public class FoldoutGroupDrawer : PropertyDrawer
 
     private void PropertyField_Internal(Rect rect, SerializedProperty property, bool includeChildren = true)
     {
-        Debug.Log($"Drawing {property.name}");
+        // Debug.Log($"Drawing {property.name}");
         // var rng = Random.Range(0f, 1f) ;
         // EditorGUI.DrawRect(rect, new Color(0.2f, 1f, 0.2f, 0.3f * rng));
-        EditorGUI.PropertyField(rect, property, includeChildren);
+        if (property.type.StartsWith("MyArray"))
+        {
+            var thisLabel = property.displayName;
+            property = property.FindPropertyRelative("items");
+            EditorGUI.PropertyField(rect, property, new(thisLabel), includeChildren);
+        }
+        else
+        {
+            
+            EditorGUI.PropertyField(rect, property, includeChildren);
+        }
     }
 
 }
