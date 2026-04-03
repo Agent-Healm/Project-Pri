@@ -15,8 +15,5 @@ MonoBehaviour:
   m_damage: 1
   m_speed: 1
   m_uptime: 45
-  f1: 0
-  f2: 0
-  f3: 0
-  f4: 0
   fEnd: 0
+  itemEnd: 0

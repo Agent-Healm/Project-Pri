@@ -1,7 +1,7 @@
 // using EditorAttributes;
 using System;
 using System.Collections.Generic;
-using Healm.Inspector;
+// using Healm.Inspector;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -54,36 +54,38 @@ public class BulletActionDoDamageSO : ScriptableObject, IBulletBehaviour
     // public int rEnd;
 
     // [HorizontalGroup("GroupY")]
-    // // public int y0;
+    // // public MyData y0;
     // [VerticalGroup("GroupY/left")] public int y1;
-    // [VerticalGroup("GroupY/left")] public int y2;
+    // [VerticalGroup("GroupY/left")] public MyData y2;
     // [VerticalGroup("GroupY/left")] public int y3;
-    // [VerticalGroup("GroupY/left")] public int y4;
+    // // [VerticalGroup("GroupY/left")] public int y4;
     // [VerticalGroup("GroupY/mid")] public int y5;
     // [VerticalGroup("GroupY/mid")] public int y6;
     // [VerticalGroup("GroupY/mid")] public int y7;
-    // [VerticalGroup("GroupY/mid")] public int y8;
-    // [VerticalGroup("GroupY/right")] public int y9;
-    // [VerticalGroup("GroupY/right")] public int y10;
-    // [VerticalGroup("GroupY/right")] public int y11;
-    // [VerticalGroup("GroupY/right")] public int y12;
-    // public int yEnd;
+    // // [VerticalGroup("GroupY/mid")] public int y8;
+    // // [VerticalGroup("GroupY/right")] public int y9;
+    // // [VerticalGroup("GroupY/right")] public int y10;
+    // // [VerticalGroup("GroupY/right")] public int y11;
+    // // [VerticalGroup("GroupY/right")] public int y12;
+    // // public int yEnd;
 
-    // [FoldoutGroup("GroupF")] public MyData f0;
-    [FoldoutGroup("GroupF")] public int f1;
-    [FoldoutGroup("GroupF")] public int f2;
+    // // [FoldoutGroup("GroupF")] public MyData f0;
+    // // [FoldoutGroup("GroupF")] public int f1;
+    // // [FoldoutGroup("GroupF")] public int f2;
     // [FoldoutGroup("GroupF")] public MyData f3;
-    [FoldoutGroup("GroupF")] public int f4;
-    [FoldoutGroup("GroupF")] public int f5;
-    [FoldoutGroup("GroupF")] public List<int> f6;
-    // [FoldoutGroup("GroupF")] public List<MyData> f61;
-    [FoldoutGroup("GroupF")] public int f7;
-    [FoldoutGroup("GroupF")] public int f8;
-    // [FoldoutGroup("GroupF")] public List<int> f9;
+    // // [FoldoutGroup("GroupF")] public int f4;
+    // // [FoldoutGroup("GroupF")] public int f5;
+    // // [FoldoutGroup("GroupF")] public List<int> f6;
+    // // [FoldoutGroup("GroupF")] public int[] f6;
+    // [FoldoutGroup("GroupF")] public MyArray<int> f6;
+    // // [FoldoutGroup("GroupF")] public List<MyData> f61;
+    // [FoldoutGroup("GroupF")] public int f7;
+    // // [FoldoutGroup("GroupF")] public int f8;
+    // [FoldoutGroup("GroupF")] public MyArray<MyData> f9;
 
     public int fEnd;
     // public int[] items;
-    // public int itemEnd;
+    public int itemEnd;
 
 
     public void Apply(Bullet bullet)
