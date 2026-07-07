@@ -42,10 +42,10 @@ public class PlayerAction : MonoBehaviour
     }
 
     private void ActionHandler(){
-        if (Input.GetKey(KeyCode.R)){
-            // OnPlayerAction.Invoke(this, EventArgs.Empty);
-            onPlayerAction?.Invoke(this);
-        }
+        // if (Input.GetKey(KeyCode.R)){
+        //     // OnPlayerAction.Invoke(this, EventArgs.Empty);
+        //     onPlayerAction?.Invoke(this);
+        // }
     }
     private void PlayerInteractItem(){
         if (_interactable.TryGetComponent(out IInteractAble interactable)){
