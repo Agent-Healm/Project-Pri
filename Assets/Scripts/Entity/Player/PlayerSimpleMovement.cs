@@ -20,7 +20,7 @@ public class PlayerSimpleMovement : MonoBehaviour
     public void OnMove(InputAction.CallbackContext context)
     {
         m_move = context.ReadValue<Vector2>();
-        Debug.Log("Move: " + m_move);
+        // Debug.Log("Move: " + m_move);
     }
 
     // Update is called once per frame

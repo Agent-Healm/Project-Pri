@@ -553,7 +553,7 @@ MonoBehaviour:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 249936994}
-  m_Enabled: 0
+  m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: c976bf257e38887459180547f9c10123, type: 3}
   m_Name: 
@@ -615,6 +615,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: df8cce21e7ce1984bba77fac5090a501, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  _isInteracting: 0
 --- !u!212 &249937017
 SpriteRenderer:
   serializedVersion: 3
@@ -716,6 +717,70 @@ MonoBehaviour:
         m_CallState: 2
     m_ActionId: fe50b6a4-a940-4667-9b72-f8b45aa5189e
     m_ActionName: 'gameplay/Move[/Keyboard/w,/Keyboard/s,/Keyboard/a,/Keyboard/d]'
+  - m_PersistentCalls:
+      m_Calls:
+      - m_Target: {fileID: 249937016}
+        m_TargetAssemblyTypeName: PlayerAction, Assembly-CSharp
+        m_MethodName: OnInteract
+        m_Mode: 0
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
+    m_ActionId: f534e521-00ea-4758-8553-595731f221e9
+    m_ActionName: 'gameplay/Interact[/Keyboard/r]'
+  - m_PersistentCalls:
+      m_Calls:
+      - m_Target: {fileID: 249937007}
+        m_TargetAssemblyTypeName: PlayerWeaponSlot, Assembly-CSharp
+        m_MethodName: OnWeaponMode
+        m_Mode: 0
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
+    m_ActionId: 5ad5e2e6-28f8-4fdb-a297-15d0cb8ba6bf
+    m_ActionName: 'gameplay/Weapon_Mode[/Keyboard/y]'
+  - m_PersistentCalls:
+      m_Calls:
+      - m_Target: {fileID: 249937007}
+        m_TargetAssemblyTypeName: PlayerWeaponSlot, Assembly-CSharp
+        m_MethodName: OnWeaponDrop
+        m_Mode: 0
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
+    m_ActionId: 00c99f74-2db3-40f5-9c8b-9bb82a31aa20
+    m_ActionName: 'gameplay/Drop[/Keyboard/g]'
+  - m_PersistentCalls:
+      m_Calls:
+      - m_Target: {fileID: 249937007}
+        m_TargetAssemblyTypeName: PlayerWeaponSlot, Assembly-CSharp
+        m_MethodName: OnWeaponSwitch
+        m_Mode: 0
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
+    m_ActionId: 2646484f-6cc8-432d-8d23-1d0f29dfbf39
+    m_ActionName: 'gameplay/Weapon_Next[/Keyboard/t]'
   m_NeverAutoSwitchControlSchemes: 0
   m_DefaultControlScheme: 
   m_DefaultActionMap: gameplay
@@ -7958,6 +8023,10 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 1186612813}
     m_Modifications:
+    - target: {fileID: -3117949403760649546, guid: b8de0f703e20d6b4ab05c6bf179f7f8d, type: 3}
+      propertyPath: m_baseWeaponStats
+      value: 
+      objectReference: {fileID: 0}
     - target: {fileID: 6978791778431701754, guid: b8de0f703e20d6b4ab05c6bf179f7f8d, type: 3}
       propertyPath: m_Name
       value: ShotgunE MkII

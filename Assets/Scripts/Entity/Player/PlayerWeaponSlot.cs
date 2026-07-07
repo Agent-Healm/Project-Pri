@@ -2,6 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEditor;
+using UnityEngine.InputSystem;
 // using UnityEngine.Events;
 public class PlayerWeaponSlot : MonoBehaviour
 {
@@ -27,32 +28,75 @@ public class PlayerWeaponSlot : MonoBehaviour
     void Update()
     {
         _facing = _playerAim.GetCurrentFaceDir();
-        WeaponActionHandler();
+        // WeaponActionHandler();
     }
-    private void WeaponActionHandler(){
-        if (Input.GetKeyDown(KeyCode.T)){
+
+    public void OnWeaponSwitch(InputAction.CallbackContext context){
+        if (context.phase == InputActionPhase.Performed){
             PlayerSwitchWeapon();
         }
-        if (Input.GetKeyDown(KeyCode.Y)){
-            if (weaponInv.Length == 0){
-                return;
-            }
+    }
 
-            _currentWeapon.SwitchWeaponMode();
+    public void OnWeaponMode(InputAction.CallbackContext context)
+    {
+        if (context.phase != InputActionPhase.Performed)
+        {
+            return;
         }
-        if (Input.GetKeyDown(KeyCode.G)){
-            if (weaponInv.Length == 0){
-                return;
-            }
-            PlayerDropCurrentWeapon();
 
-            ArrayUtility.RemoveAt(ref weaponInv, _currentWeaponSlot);
-            if (_currentWeaponSlot >= weaponInv.Length){
-                _currentWeaponSlot -= 1;
-            }
-
-            UpdateCurrentWeapon();
+        if (weaponInv.Length == 0)
+        {
+            return;
         }
+
+        _currentWeapon.SwitchWeaponMode();
+
+    }
+
+    public void OnWeaponDrop(InputAction.CallbackContext context){
+        if (context.phase != InputActionPhase.Performed)
+        {
+            return;
+        }
+
+        if (weaponInv.Length == 0)
+        {
+            return;
+        }
+        
+        PlayerDropCurrentWeapon();
+        ArrayUtility.RemoveAt(ref weaponInv, _currentWeaponSlot);
+        if (_currentWeaponSlot >= weaponInv.Length){
+            _currentWeaponSlot -= 1;
+        }
+        UpdateCurrentWeapon();
+        
+    }
+
+    private void WeaponActionHandler(){
+        // if (Input.GetKeyDown(KeyCode.T)){
+        //     PlayerSwitchWeapon();
+        // }
+        // if (Input.GetKeyDown(KeyCode.Y)){
+        //     if (weaponInv.Length == 0){
+        //         return;
+        //     }
+
+        //     _currentWeapon.SwitchWeaponMode();
+        // }
+        // if (Input.GetKeyDown(KeyCode.G)){
+        //     if (weaponInv.Length == 0){
+        //         return;
+        //     }
+        //     PlayerDropCurrentWeapon();
+
+        //     ArrayUtility.RemoveAt(ref weaponInv, _currentWeaponSlot);
+        //     if (_currentWeaponSlot >= weaponInv.Length){
+        //         _currentWeaponSlot -= 1;
+        //     }
+
+        //     UpdateCurrentWeapon();
+        // }
     }
     public void WeaponAction(PlayerAction playerAction){
         if (weaponInv.Length == 0){

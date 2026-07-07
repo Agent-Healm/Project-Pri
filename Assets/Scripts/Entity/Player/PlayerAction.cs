@@ -2,6 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using System;
+using UnityEngine.InputSystem;
 public class PlayerAction : MonoBehaviour
 {
 
@@ -15,6 +16,25 @@ public class PlayerAction : MonoBehaviour
     
     // private event EventHandler OnPlayerAction;
     // private OnPlayerAction OnPlayerAction;
+
+    [SerializeField] private bool _isInteracting = false;
+
+    public void OnInteract(InputAction.CallbackContext context){
+        switch (context.phase)
+        {
+            case InputActionPhase.Started:
+                _isInteracting = true;
+                break;
+            case InputActionPhase.Performed:
+                break;
+            case InputActionPhase.Canceled:
+                _isInteracting = false;
+                break;
+        }
+
+        // Debug.Log($"Testing Interact: {context.phase}");
+
+    }
 
     // Start is called before the first frame update
     void Start()
@@ -46,7 +66,11 @@ public class PlayerAction : MonoBehaviour
         //     // OnPlayerAction.Invoke(this, EventArgs.Empty);
         //     onPlayerAction?.Invoke(this);
         // }
+        if (_isInteracting){
+                onPlayerAction?.Invoke(this);
+        }
     }
+
     private void PlayerInteractItem(){
         if (_interactable.TryGetComponent(out IInteractAble interactable)){
             onPlayerAction = interactable.OnPickup;
