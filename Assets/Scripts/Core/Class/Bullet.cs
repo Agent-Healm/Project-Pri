@@ -5,8 +5,46 @@ using UnityEngine;
 using Default;
 public class Bullet : MonoBehaviour
 {
+    // [SerializeField]
+    // private BulletDataSO baseBullet;
+
     [SerializeField]
-    private BulletDataSO baseBullet;
+    private int m_damage;
+    [SerializeField]
+    private float m_speed;
+    [SerializeField]
+    private int m_uptime = 60;
+
+    // public int Uptime
+    // {
+    //     get => m_uptime;
+    // }
+
+
+    [SerializeField]
+    private Color m_bulletColor = Color.white;
+    // public Color BulletColor
+    // {
+    //     get => m_bulletColor;
+    // }
+    [SerializeField]
+    private Sprite m_bulletSprite;
+    // public Sprite BulletSprite
+    // {
+    //     get => m_bulletSprite;
+    // }
+
+    public void ApplyStats(Bullet bullet)
+    {
+        bullet.SetDamage = m_damage;
+        bullet.SetSpeed = m_speed;
+        bullet.SetUptime = m_uptime;
+        SpriteRenderer spriteRenderer = bullet.GetComponent<SpriteRenderer>();
+
+        spriteRenderer.sprite = m_bulletSprite;
+        spriteRenderer.color = m_bulletColor;
+    }
+
 
     private Vector2 _direction;
     public Vector2 Direction
@@ -124,12 +162,14 @@ public class Bullet : MonoBehaviour
 
     private void SetupBullet(Bullet bullet)
     {
-        foreach (var behaviourSO in baseBullet.Behaviours)
-        {
-            if (behaviourSO is IBulletBehaviour behaviour)
-            {
-                behaviour.Apply(bullet);
-            }
-        }
+        // foreach (var behaviourSO in baseBullet.Behaviours)
+        // {
+        //     if (behaviourSO is IBulletBehaviour behaviour)
+        //     {
+        //         behaviour.Apply(bullet);
+        //     }
+        // }
+        // baseBullet.Apply(bullet);
+        ApplyStats(bullet);
     }
 }

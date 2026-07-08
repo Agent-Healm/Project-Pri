@@ -6,8 +6,9 @@ using UnityEditor;
 // [System.Serializable]
 public class Pistol : Weapon
 {
-    protected override void Awake() {
-        base.Awake();
-        PistolSO pistol = base.m_baseWeaponStats as PistolSO;
-    }
+    
+    // protected override void Awake() {
+    //     base.Awake();
+    //     // PistolSO pistol = base.m_baseWeaponStats as PistolSO;
+    // }
 }

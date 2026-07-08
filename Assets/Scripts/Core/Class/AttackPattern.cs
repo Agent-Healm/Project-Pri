@@ -31,6 +31,7 @@ public class EnemyAttackPattern
     public bool Attempt(float range){
         if (range <= this.range || this.range == -1.0f){
             // Debug.Log("Attack with "+ this.name);
+            // Debug.Log("Attack");
             return true;
         }
         return false;

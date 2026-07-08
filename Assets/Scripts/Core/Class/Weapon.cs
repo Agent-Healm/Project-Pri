@@ -6,13 +6,50 @@ using UnityEditor;
 // [System.Serializable]
 public class Weapon : LootItem, IInteractAble
 {
+    // [SerializeField]
+    // protected WeaponStatsSO m_baseWeaponStats;
+    
+    // [SerializeField]
+    // protected WeaponTypeSO m_weaponType;
+    // public WeaponTypeSO WeaponType
+    // {
+    //     get => m_weaponType;
+    // }
+    // [SerializeField]
+    // protected WeaponRaritySO m_weaponRarity;
+    // public WeaponRaritySO Rarity
+    // {
+    //     get => m_weaponRarity;
+    // }
+    
     [SerializeField]
-    protected WeaponStatsSO m_baseWeaponStats;
-    protected WeaponTypeSO m_weaponType;
-    protected WeaponRaritySO m_weaponRarity;
     protected int m_deviation;
+    public int Deviation
+    {
+        get => m_deviation;
+    }
+    [SerializeField]
     protected int m_speedModPct;
+    public int SpeedModifier
+    {
+        get => m_speedModPct;
+    }
+    [SerializeField]
     protected PlayerWeaponAttackPattern[] m_pwap;
+    public PlayerWeaponAttackPattern[] AttackPatterns
+    {
+        get => m_pwap;
+    }
+    // public virtual void InitializeWeapon(Weapon weapon)
+    // {
+        
+    // }
+
+    // protected WeaponTypeSO m_weaponType;
+    // protected WeaponRaritySO m_weaponRarity;
+    // protected int m_deviation;
+    // protected int m_speedModPct;
+    // protected PlayerWeaponAttackPattern[] m_pwap;
 
     protected int _currentWeaponMode = 0;
     protected PlayerWeaponAttackPattern _currentPwap;
@@ -25,11 +62,11 @@ public class Weapon : LootItem, IInteractAble
 
     protected virtual void Awake()
     {
-        m_weaponType = m_baseWeaponStats.WeaponType;
-        m_weaponRarity = m_baseWeaponStats.Rarity;
-        m_deviation = m_baseWeaponStats.Deviation;
-        m_speedModPct = m_baseWeaponStats.SpeedModifier;
-        m_pwap = m_baseWeaponStats.AttackPatterns;
+        // m_weaponType = m_baseWeaponStats.WeaponType;
+        // m_weaponRarity = m_baseWeaponStats.Rarity;
+        // m_deviation = m_baseWeaponStats.Deviation;
+        // m_speedModPct = m_baseWeaponStats.SpeedModifier;
+        // m_pwap = m_baseWeaponStats.AttackPatterns;
 
         _currentPwap = m_pwap[_currentWeaponMode];
     }

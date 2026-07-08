@@ -73,7 +73,7 @@ public class PlayerWeaponSlot : MonoBehaviour
         
     }
 
-    private void WeaponActionHandler(){
+    // private void WeaponActionHandler(){
         // if (Input.GetKeyDown(KeyCode.T)){
         //     PlayerSwitchWeapon();
         // }
@@ -97,7 +97,8 @@ public class PlayerWeaponSlot : MonoBehaviour
 
         //     UpdateCurrentWeapon();
         // }
-    }
+    // }
+
     public void WeaponAction(PlayerAction playerAction){
         if (weaponInv.Length == 0){
             Debug.Log("Player has no weapons");
@@ -109,6 +110,8 @@ public class PlayerWeaponSlot : MonoBehaviour
         //     _currentWeapon.Action(_facing, transform.position);
         // }
         // _currentWeapon.AttemptAction(_playerMana.ConsumeMana(1));
+        Debug.Log($"Last erorr here");
+        
         if(_playerMana.ConsumeMana(_currentWeapon.CurrentManaCost)){
             _currentWeapon.Action(_facing, transform.position);
         }
